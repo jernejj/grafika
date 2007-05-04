@@ -1,0 +1,11 @@
+TODO:
+
+1. brisanje povezav
+2. undo, redo! (vse kar dodas na canvas se shranis v nek seznam po katerem se potem lahko premikas naprej in nazaj)
+
+3. nastavi cas med dvema 'vrsticama'/ korakoma pravilnostne tabele  
+	- okence kjer lahko vpises milisekunde
+
+4. ko se kazalec zapelje cez nozico se naj pokaze njena trenutna vrednost 
+
+5. Menu: ko se pokaze tooltip prevec na desni ga prekrije canvas! (kako odpraviti)
