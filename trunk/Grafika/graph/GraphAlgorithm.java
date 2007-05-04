@@ -15,7 +15,7 @@ import java.awt.*;
   */
 
 
-public class GraphAlgorithm extends java.applet.Applet {
+@SuppressWarnings("serial")public class GraphAlgorithm extends java.applet.Applet {
 
     GraphCanvas graphcanvas = new GraphCanvas(this);
     Options options = new Options(this);   
@@ -44,7 +44,7 @@ public class GraphAlgorithm extends java.applet.Applet {
 }
 
 
-class Options extends Panel {
+@SuppressWarnings("serial")class Options extends Panel {
 // set of options at the right of the screen
     Button b1 = new Button("clear");
     Button b2 = new Button("run");
@@ -115,7 +115,7 @@ class Options extends Panel {
 }    
 
 
-class Documentation extends Panel {
+@SuppressWarnings("serial")class Documentation extends Panel {
 // Documentation on top of the screen
     DocOptions docopt = new DocOptions(this);
     DocText doctext = new DocText();
@@ -128,7 +128,7 @@ class Documentation extends Panel {
 }
 
 
-class DocOptions extends Panel {
+@SuppressWarnings("serial")class DocOptions extends Panel {
     Choice doc = new Choice();
     Documentation parent;   
    
@@ -162,7 +162,7 @@ class DocOptions extends Panel {
 }
 
 
-class DocText extends TextArea {
+@SuppressWarnings("serial")class DocText extends TextArea {
     final String drawnodes = new String("DRAWING NODES:\n"+
 	  "Draw a node by clicking the mouse.\n\n");
     final String rmvnodes = new String("REMOVE NODES:\n"+
@@ -266,7 +266,7 @@ class DocText extends TextArea {
 }
 
 
-class GraphCanvas extends Canvas implements Runnable {
+@SuppressWarnings("serial")class GraphCanvas extends Canvas implements Runnable {
 // drawing area for the graph
     
     final int MAXNODES = 20;
@@ -361,7 +361,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	Locked=false;
     }
 
-    public void start() {
+    @SuppressWarnings("deprecation")	public void start() {
 	if (algrthm != null) algrthm.resume();
     }
 
@@ -375,7 +375,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	performalg = false;
     }
 
-    public void clear() {
+    @SuppressWarnings("deprecation")	public void clear() {
     // removes graph from screen
 	startgraph=0;
 	numnodes=0;
@@ -391,7 +391,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	repaint();
     }
 
-    public void reset() {
+    @SuppressWarnings("deprecation")	public void reset() {
     // resets a graph after running an algorithm
 	init();
 	if (algrthm != null) algrthm.stop();
@@ -440,11 +440,11 @@ class GraphCanvas extends Canvas implements Runnable {
 	repaint();
     }
 
-    public void stop() {
+    @SuppressWarnings("deprecation")	public void stop() {
 	if (algrthm != null) algrthm.suspend();
     }
 
-    public void run() {
+    @SuppressWarnings("static-access")	public void run() {
 	for(int i=0; i<(numnodes-emptyspots); i++){
 	  nextstep();
 	  try { algrthm.sleep(2000); }
@@ -453,7 +453,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	algrthm = null;
     }
 
-    public void showexample() {
+    @SuppressWarnings("deprecation")	public void showexample() {
     // draws a graph on the screen
 	int w, h;
 	clear();
@@ -585,7 +585,7 @@ class GraphCanvas extends Canvas implements Runnable {
     }
 
 
-    public boolean mouseUp(Event evt, int x, int y) {
+    @SuppressWarnings("deprecation")	public boolean mouseUp(Event evt, int x, int y) {
 	if ( (!Locked) && clicked ) {
 	   if (movenode) {
 	   // move the node if the new position is not to close to 
@@ -651,7 +651,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	return false;
     }
 
-    public boolean arrowhit(int x, int y, int dist) {
+    public boolean arrowhit(int x, int y, int dist) {
     // checks if you hit an arrow with your mouseclick
 	for (int i=0; i<numnodes; i++)
 	  for (int j=0; j<numnodes; j++) {
@@ -802,8 +802,8 @@ class GraphCanvas extends Canvas implements Runnable {
 	char c=(char)((int)'a'+i);
 	return ""+c;
     }
-
-    public final synchronized void update(Graphics g) {
+
+    @SuppressWarnings("deprecation")	public final synchronized void update(Graphics g) {
     // prepare new image offscreen
 	Dimension d=size();
 	if ((offScreenImage == null) || (d.width != offScreenSize.width) ||
@@ -816,7 +816,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	offScreenGraphics.fillRect(0, 0, d.width, d.height);
 	paint(offScreenGraphics);
 	g.drawImage(offScreenImage, 0, 0, null);
-    }
+    } 
 
     public void drawarrow(Graphics g, int i, int j) {
     // draw arrow between node i and node j
@@ -958,7 +958,7 @@ class GraphCanvas extends Canvas implements Runnable {
 	    detailsDijkstra(g, i, j);
     }
 
-    public void endstepalg(Graphics g) {
+    @SuppressWarnings("deprecation")	public void endstepalg(Graphics g) {
     // more algorithms can be added later
 	if (algorithm==DIJKSTRA)
 	    endstepDijkstra(g);
