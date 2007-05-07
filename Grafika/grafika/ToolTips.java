@@ -20,7 +20,13 @@ public class ToolTips
 	/** Returns the ToolTip string*/
 	public String getToolTip ()
 	{
-		this.toolTip = "<html><img src="+this.imageName+"></html>";
-		return this.toolTip;
+		if (!(imageName.equals("BOX")))
+		{
+			this.toolTip = "<html><img src="+this.imageName+"></html>";
+			return this.toolTip;
+		}
+		
+		else
+			return "TODO";
 	}
 }
