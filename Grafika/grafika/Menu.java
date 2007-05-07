@@ -6,22 +6,33 @@ import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 
 
 class Menu extends JPanel implements ActionListener{
 	
-    JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"));
-    JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"));
-    JButton b3 = new JButton(createImageIcon("../grafika/logicalOperators/nandV.png"));
-    JButton b4 = new JButton(createImageIcon("../grafika/logicalOperators/norV.png"));
-    JButton b5 = new JButton(createImageIcon("../grafika/logicalOperators/xorV.png"));
-    JButton b6 = new JButton(createImageIcon("../grafika/logicalOperators/xnorV.png"));
-    JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"));
-    JButton b8 = new JButton("BOX");
+    JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b3 = new JButton(createImageIcon("../grafika/logicalOperators/nandV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b4 = new JButton(createImageIcon("../grafika/logicalOperators/norV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b5 = new JButton(createImageIcon("../grafika/logicalOperators/xorV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b6 = new JButton(createImageIcon("../grafika/logicalOperators/xnorV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"))
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    JButton b8 = new JButton("BOX")
+    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
 
     Grafika parent;   
 
@@ -35,6 +46,9 @@ class Menu extends JPanel implements ActionListener{
 
         // Takoj prikazi ToolTip
         ToolTipManager.sharedInstance().setInitialDelay(0);
+        
+        // ToolTip prikazuj dokler je miska nad gumbom
+        ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
         
     	ToolTips toolTip = new ToolTips("file:grafika/logicalOperators/andTruthTable.png");
         b1.setToolTipText(toolTip.getToolTip());
