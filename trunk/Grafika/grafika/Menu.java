@@ -18,6 +18,7 @@ import javax.swing.*;
 class Menu extends JPanel implements ActionListener{
 	
     JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
+    	// Pozicija ToolTipa
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
     JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
