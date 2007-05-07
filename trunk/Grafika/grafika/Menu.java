@@ -33,14 +33,22 @@ class Menu extends JPanel implements ActionListener{
     	setBackground(Color.WHITE);
     	setLayout(new GridLayout(8, 1, 0, 10));
 
-        b1.setToolTipText("AND");
-        b2.setToolTipText("OR");
-        b3.setToolTipText("NAND");
-        b4.setToolTipText("NOR");
-        b5.setToolTipText("XOR");
-        b6.setToolTipText("XNOR");
-        b7.setToolTipText("NOT");
-        b8.setToolTipText("BOX");
+    	ToolTips toolTip = new ToolTips("AND");
+        b1.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("OR");
+        b2.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("NAND");
+        b3.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("NOR");
+        b4.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("XOR");
+        b5.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("XNOR");
+        b6.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("NOT");
+        b7.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("BOX");
+        b8.setToolTipText(toolTip.getToolTip());
         
         b1.addActionListener(this);
         b2.addActionListener(this);
