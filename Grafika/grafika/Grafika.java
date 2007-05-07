@@ -22,10 +22,10 @@ public class Grafika extends JApplet {
 		// bl.setHgap(0);
 		// bl.setVgap(0);
 		setLayout(bl);
-		add("West", menu);
 		add("Center", GrafikaCanvas);
 		add("North", documentation);
 		add("East", options);
+		add("West", menu);
 	}
 
 	/**
