@@ -74,6 +74,11 @@ class Menu extends JPanel implements ActionListener{
     	add(b6);
     	add(b7);
     	add(b8);
+    	
+    	// Omogocimo, da je ToolTip viden cez vse elemente layouta
+    	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+    	ToolTipManager ttm = ToolTipManager.sharedInstance();
+    	ttm.setLightWeightPopupEnabled(false);
     }
 
 
