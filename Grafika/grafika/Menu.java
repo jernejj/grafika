@@ -33,6 +33,9 @@ class Menu extends JPanel implements ActionListener{
     	setBackground(Color.WHITE);
     	setLayout(new GridLayout(8, 1, 0, 10));
 
+        // Show tool tips immediately
+        ToolTipManager.sharedInstance().setInitialDelay(0);
+    	
     	ToolTips toolTip = new ToolTips("AND");
         b1.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("OR");
