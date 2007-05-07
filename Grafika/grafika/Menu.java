@@ -33,22 +33,22 @@ class Menu extends JPanel implements ActionListener{
     	setBackground(Color.WHITE);
     	setLayout(new GridLayout(8, 1, 0, 10));
 
-        // Show tool tips immediately
+        // Takoj prikazi ToolTip
         ToolTipManager.sharedInstance().setInitialDelay(0);
-    	
-    	ToolTips toolTip = new ToolTips("AND");
+        
+    	ToolTips toolTip = new ToolTips("file:grafika/logicalOperators/andTruthTable.png");
         b1.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("OR");
+        toolTip.setToolTip("file:grafika/logicalOperators/orTruthTable.png");
         b2.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("NAND");
+        toolTip.setToolTip("file:grafika/logicalOperators/nandTruthTable.png");
         b3.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("NOR");
+        toolTip.setToolTip("file:grafika/logicalOperators/norTruthTable.png");
         b4.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("XOR");
+        toolTip.setToolTip("file:grafika/logicalOperators/xorTruthTable.png");
         b5.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("XNOR");
+        toolTip.setToolTip("file:grafika/logicalOperators/xnorTruthTable.png");
         b6.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("NOT");
+        toolTip.setToolTip("file:grafika/logicalOperators/notTruthTable.png");
         b7.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("BOX");
         b8.setToolTipText(toolTip.getToolTip());
