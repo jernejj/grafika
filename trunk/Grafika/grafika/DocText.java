@@ -20,6 +20,7 @@ class DocText extends TextArea {
 		super(5, 2);
 		setBackground(Color.WHITE);
 		setText(EMPTY);
+		setEditable(false);  //onemogoci pisanje v Doc area
 	}
 
 	public void showline(String str) {
