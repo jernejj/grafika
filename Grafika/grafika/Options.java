@@ -41,7 +41,7 @@ public class Options extends JPanel {
 			if (((String)arg).equals("step")) {
 				if (!Locked) {
 					b3.setLabel("next step");
-					parent.GrafikaCanvas.stepalg();
+					//parent.GrafikaCanvas.stepalg();
 				}
 				else parent.documentation.doctext.showline("locked");
 			}
@@ -59,8 +59,9 @@ public class Options extends JPanel {
 			}
 			if (((String)arg).equals("run")) {
 				if (!Locked)  
-					parent.GrafikaCanvas.runalg();
-				else parent.documentation.doctext.showline("locked");
+					//parent.GrafikaCanvas.runalg();
+				//else parent.documentation.doctext.showline("locked");
+					;
 			}
 			if (((String)arg).equals("example")) {
 				if (!Locked)   

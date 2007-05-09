@@ -268,7 +268,7 @@ import java.awt.*;
 
 @SuppressWarnings("serial")class GraphCanvas extends Canvas implements Runnable {
 // drawing area for the graph
-    
+    int stevec = 0;
     final int MAXNODES = 20;
     final int MAX = MAXNODES+1;
     final int NODESIZE = 26;
@@ -977,7 +977,7 @@ import java.awt.*;
 	} 
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g) {    	System.out.println(stevec++);
         mindist=0;
 	minnode=MAXNODES;
 	minstart=MAXNODES;

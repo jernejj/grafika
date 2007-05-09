@@ -13,6 +13,7 @@ class DocText extends TextArea {
 	final String NOT = "Operator NOT selected."; 
 	final String BOX = "Nothing to do!";
 	final String LOCKED = "Selection not possible!";
+	final String IZBERI_ELEMENT = "Izberi element!";
 		
 	final String EMPTY = "";
 		
@@ -33,6 +34,7 @@ class DocText extends TextArea {
 		else if (str.equals("NOT")) setText(NOT);
 		else if (str.equals("BOX")) setText(BOX);
 		else if (str.equals("LOCKED")) setText(LOCKED);
+		else if (str.equals("IZBERI_ELEMENT")) setText(IZBERI_ELEMENT);
 		else setText(EMPTY);
 
 	}

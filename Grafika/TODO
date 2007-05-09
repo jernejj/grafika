@@ -8,4 +8,16 @@ TODO:
 
 4. ko se kazalec zapelje cez nozico se naj pokaze njena trenutna vrednost 
 
-5. Menu: ko se pokaze tooltip prevec na desni ga prekrije canvas! (kako odpraviti)
+
+
+
+
+
+
+99. Ne vemo kateri element je izbrani!
+
+100. Popravi nodehit funkcijo, da bo preverjala realno stanje elementa in ne celotne slike oz. nekega navideznega podrocja.
+
+
+
+200. Popravi, da ne bo mozno premikat miske pri premikanju elementa izven risalnega polja.
