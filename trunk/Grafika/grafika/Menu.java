@@ -1,23 +1,24 @@
 package grafika;
 
 
-import java.awt.BorderLayout;
-import java.awt.Choice;
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.ToolTipManager;
 
 
+@SuppressWarnings("serial")
 class Menu extends JPanel implements ActionListener{
 	
-    JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
+  	JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
     	// Pozicija ToolTipa
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
     JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))

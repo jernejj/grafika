@@ -14,8 +14,8 @@ public class Grafika extends JApplet {
 	Menu menu = new Menu(this);
 
 	public void init() {
-		setBackground(Color.WHITE);
-		setForeground(Color.WHITE);
+		this.setBackground(Color.WHITE);
+		this.setForeground(Color.WHITE);
 		setSize(1024,768);
 		BorderLayout bl = new BorderLayout(0, 0);
 		// TODO: 

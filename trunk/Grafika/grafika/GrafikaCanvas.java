@@ -9,11 +9,19 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.Iterator;
 
-class GrafikaCanvas extends Canvas implements Runnable {
+import javax.imageio.ImageIO;
 
-	Vector<Element> elementList = new Vector<Element>();
+class GrafikaCanvas extends Canvas  implements Runnable  {
+	private int stevec = 0;
+	private Element izbraniElement=null;
+	private Vector<Element> elementList = new Vector<Element>();
 	int elementType = -1;
 	
 	// #########################################################
@@ -58,7 +66,7 @@ class GrafikaCanvas extends Canvas implements Runnable {
 	boolean movearrow = false;
 	boolean movestart = false;
 	boolean deletenode = false;
-	boolean movenode = false;
+	boolean moveElement = false;
 	boolean performalg = false;
 	boolean clicked = false;
 
@@ -106,19 +114,12 @@ class GrafikaCanvas extends Canvas implements Runnable {
 		Locked=false;
 	}
 
-	public void start() {
-		if (algrthm != null) algrthm.resume();
-	}
+//	public void start() {
+//		if (algrthm != null) algrthm.resume();
+//	}
 
 	public void init() {
 		setBackground(Color.WHITE);
-		for (int i=0;i<MAXNODES;i++) {
-			colornode[i]=Color.gray;
-			for (int j=0; j<MAXNODES;j++)
-				algedge[i][j]=false;
-		}
-		colornode[startgraph]=Color.blue;
-		performalg = false;
 	}
 
 	/** removes graph from screen */
@@ -146,35 +147,35 @@ class GrafikaCanvas extends Canvas implements Runnable {
 		repaint();
 	}
 
-	/** gives an animation of the algorithm */
-	public void runalg() {
-		parent.lock();
-		initalg();
-		performalg = true;
-		algrthm = new Thread(this);
-		algrthm.start();
-	}
+//	/** gives an animation of the algorithm */
+//	public void runalg() {
+//		parent.lock();
+//		initalg();
+//		performalg = true;
+//		algrthm = new Thread(this);
+//		algrthm.start();
+//	}
 
 	/** lets you step through the algorithm */ 
-	public void stepalg() {
-		parent.lock();
-		initalg();
-		performalg = true;
-		nextstep();
-	}
+//	public void stepalg() {
+//		parent.lock();
+//		initalg();
+//		performalg = true;
+//		nextstep();
+//	}
 
-	public void initalg() {
-		init();
-		for(int i=0; i<MAXNODES; i++) {
-			dist[i]=-1;
-			finaldist[i]=-1;
-			for (int j=0; j<MAXNODES;j++)
-				algedge[i][j]=false;
-		}
-		dist[startgraph]=0;
-		finaldist[startgraph]=0;
-		step=0;
-	}
+//	public void initalg() {
+//		init();
+//		for(int i=0; i<MAXNODES; i++) {
+//			dist[i]=-1;
+//			finaldist[i]=-1;
+//			for (int j=0; j<MAXNODES;j++)
+//				algedge[i][j]=false;
+//		}
+//		dist[startgraph]=0;
+//		finaldist[startgraph]=0;
+//		step=0;
+//	}
 
 	public void nextstep() {
 		// calculates a step in the algorithm (finds a shortest 
@@ -187,10 +188,11 @@ class GrafikaCanvas extends Canvas implements Runnable {
 		repaint();
 	}
 
-	public void stop() {
-		if (algrthm != null) algrthm.suspend();
-	}
+//	public void stop() {
+//		if (algrthm != null) algrthm.suspend();
+//	}
 
+	
 	public void run() {
 		for(int i=0; i<(numnodes-emptyspots); i++){
 			nextstep();
@@ -235,62 +237,29 @@ class GrafikaCanvas extends Canvas implements Runnable {
 		if (Locked)
 			parent.documentation.doctext.showline("locked");
 		else {
+			Element temp;
 			clicked = true;
-			if (evt.shiftDown()) {
-				// move a node (gradnik)
-				if (nodehit(x, y, NODESIZE)) {
-					oldpoint = node[hitnode];
-					node1 = hitnode;
-					movenode=true;
+			if (evt.controlDown()) {
+				// delete element
+				if ( null != (temp=elementHit(x, y))) {
+					this.elementList.remove(temp);
+					// TODO: pobrisi povezave, ce obstajajo!
 				}
 			}
-			else if (evt.controlDown()) {
-				// delete a node (gradnik)
-				if (nodehit(x, y, NODESIZE)) {
-					node1 = hitnode;
-					if (startgraph==node1) {
-						movestart=true;
-						thispoint = new Point(x,y);
-						colornode[startgraph]=Color.gray;
-					}
-					else
-						deletenode= true;
-				}
-				// TODO: else if( pinHit() )
-			}
-			else if (arrowhit(x, y, 5)) {
-				// change weihgt of an edge
-				movearrow = true;
-				repaint();
-			}
-			else if (nodehit(x, y, NODESIZE)) { // if(pinHit( ) ) => draw new line
-				// draw a new arrow
-				if (!newarrow) {
-					newarrow = true;
-					thispoint = new Point(x, y);
-					node1 = hitnode;
-				}
-			}
-			else if ( !nodehit(x, y, 50) && !arrowhit(x, y, 50) )  {
-				// draw new node
-				if (emptyspots==0) {
-					// take the next available spot in the array
-					if (numnodes < MAXNODES)
-						node[numnodes++]=new Point(x, y);
-					else  parent.documentation.doctext.showline("maxnodes");
-				}
-				else {
-					// take an empty spot in the array (from previously deleted node)
-					int i;
-					for (i=0;i<numnodes;i++)
-						if (node[i].x==-100) break;
-					node[i]=new Point(x, y);
-					emptyspots--;
-				}
+			else if (null != (temp = elementHit(x, y))) { // if(pinHit( ) ) => draw new line
+				izbraniElement = temp;
+				moveElement = true;
+				// TODO: if hit pin -> draw line !
+				
 			}
 			else {
-				// mouseclick to close to a point or arrowhead, so probably an error
-				parent.documentation.doctext.showline("toclose");
+				// Zadel si prazno polje, narisemo nov izbrani element!
+				if(elementType == -1) {
+					parent.documentation.doctext.showline("IZBERI_ELEMENT");
+				}
+				else {
+					addNewElement(new Element(elementType, new Point(x,y)));
+				}
 			}
 			repaint();
 		}
@@ -299,13 +268,11 @@ class GrafikaCanvas extends Canvas implements Runnable {
 
 	public boolean mouseDrag(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
-			if (movenode) { // ce premikamo gradnik
-				// move node and adjust arrows coming into/outof the node
-				node[node1]=new Point(x, y);
-				for (int i=0;i<numnodes;i++) {
-					if (true) // popravi samo tiste, ki so povezani s tem gradnikom 
-						arrowupdate(i, node1);
-				}
+			if (moveElement) { // ce premikamo gradnik
+				// premakni element popravi povezave 
+				izbraniElement.setPosition(new Point(x, y));
+				System.out.println("mouseDrag: "+ izbraniElement);
+				// TODO: Popravi povezave!
 				repaint();
 			}
 			else if (newarrow) {
@@ -318,50 +285,28 @@ class GrafikaCanvas extends Canvas implements Runnable {
 
 	public boolean mouseUp(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
-			if (movenode) {
-				// move the node if the new position is not to close to 
-				// another node or outside of the panel
-				node[node1]=new Point(0, 0);
-				if ( nodehit(x, y, 50) || (x<0) || (x>this.size().width) || 
-						(y<0) || (y>this.size().height) ) {
-					node[node1]=oldpoint;
-					parent.documentation.doctext.showline("toclose");
-				}
-				else  {
-					node[node1]=new Point(x, y);
-				}
-				movenode=false;
-			}
-			else if (deletenode) {
-				nodedelete();
-				deletenode=false;
-			}
-			else if (newarrow) {
-				newarrow = false;
-				if (nodehit(x, y, NODESIZE)) {
-					node2=hitnode;
-					if (node1!=node2) {
-						arrowupdate(node1, node2);
-						parent.documentation.doctext.showline("change weights");
-					}
-					else System.out.println("zelfde");
-				}
-			}
+			izbraniElement = null;
+			moveElement = false;
 			repaint();
 		}
+		clicked = false;
 		return true;
 	}
 
-	// TODO: rabimo pinHit
-	public boolean nodehit(int x, int y, int dist) {
+	// TODO: POPRAVI MEJE DA SE NE PREKRIVAJO ELEMENTI
+	public Element elementHit(int x, int y) {
 		// checks if you hit a node with your mouseclick
-		for (int i=0; i<numnodes; i++)
-			if ( (x-node[i].x)*(x-node[i].x) + 
-					(y-node[i].y)*(y-node[i].y) < dist*dist ) {
-				hitnode = i;
-				return true;
+		Element check;
+		if(this.elementList.isEmpty())
+			return null;
+		for (Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+			check = i.next();
+			if ( ((x > check.getXposition() && (x < (check.getXposition() + check.getSizeX())))) &&  
+					((y > check.getYposition() && (y < (check.getYposition() + check.getSizeY())))) ) {
+				return check;
 			}
-		return false;
+		}
+		return null;
 	}
 	
 	public boolean arrowhit(int x, int y, int dist) {
@@ -426,8 +371,19 @@ class GrafikaCanvas extends Canvas implements Runnable {
 	}
 
 	
-	public void drawNewElement(Graphics g, Element e) {
-		
+	public void drawElement(Graphics g, Element e) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(e.getSymbol());
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		g.drawImage(img, e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
+	}
+	
+	public void addNewElement(Element e) {
+		this.elementList.add(e);
 	}
 	
 	public void drawarrow(Graphics g, int i, int j) {
@@ -441,59 +397,15 @@ class GrafikaCanvas extends Canvas implements Runnable {
 	}
 	
 	public void paint(Graphics g) {
-		mindist=0;
-		minnode=MAXNODES;
-		minstart=MAXNODES;
-		minend=MAXNODES;
-		for(int i=0; i<MAXNODES; i++) 
-			changed[i]=false;
-		numchanged=0;
-		neighbours=0;
+//		System.out.println(stevec++);
+		
 		g.setFont(roman);
 		g.setColor(Color.black);
-		if (step==1)
-			showstring="Grafika running: red arrows point to nodes reachable from " +
-			" the startnode.\nThe distance to: ";
-		else 
-			showstring="Step " + step + ": Red arrows point to nodes reachable from " +
-			"nodes that already have a final distance." +
-			"\nThe distance to: ";
-		// draw a new arrow upto current mouse position
-		if (newarrow)
-			g.drawLine(node[node1].x, node[node1].y, thispoint.x, thispoint.y);
-		// draw all arrows
-		for (int i=0; i<numnodes; i++)
-			for (int j=0; j<numnodes; j++)
-				if (true  /*weight [i][j]>0 */) { // TODO: narisi vse povezave
-					// CE se pomnikamo po vrsticah generatorja osvezi vrednosti na posameznih nozicah (oziroma na izhodni)!
-					if (performalg)
-						; //detailsalg(g, i, j);
-					drawarrow(g, i, j);
-				}
 
-		// draw the nodes
-		for (int i=0; i<numnodes; i++)
-			if (node[i].x>0) {
-				g.setColor(colornode[i]);
-				g.fillOval(node[i].x-NODERADIX, node[i].y-NODERADIX, 
-						NODESIZE, NODESIZE);
-			}
-		// reflect the startnode being moved
-		g.setColor(Color.blue);
-		if (movestart)
-			g.fillOval(thispoint.x-NODERADIX, thispoint.y-NODERADIX, 
-					NODESIZE, NODESIZE);
-		g.setColor(Color.black);
-		
-		// draw black circles around nodes, write their names to the screen
-		g.setFont(helvetica);
-		for (int i=0; i<numnodes; i++)
-			if (node[i].x>0) {
-				g.setColor(Color.black);
-				g.drawOval(node[i].x-NODERADIX, node[i].y-NODERADIX, 
-						NODESIZE, NODESIZE);
-				g.setColor(Color.blue);
-				g.drawString(intToString(i), node[i].x-14, node[i].y-14);
-			}
+		// draw element
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+				drawElement(g, i.next());
+		}
+
 	}
 }
