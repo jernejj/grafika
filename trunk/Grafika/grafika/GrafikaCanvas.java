@@ -18,53 +18,20 @@ import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
 class GrafikaCanvas extends Canvas implements Runnable  {
-//	private int stevec = 0;
-	private Element izbraniElement=null;
-	private Vector<Element> elementList = new Vector<Element>();
-	int elementType = -1;
-	
-	// #########################################################
-	//	drawing area for the graph
-	final int MAXNODES = 20;
-	final int MAX = MAXNODES+1;
-	final int NODESIZE = 26;
-	final int NODERADIX = 13;
-	final int DIJKSTRA = 1;
-
-	// basic graph information
-	Point node[] = new Point[MAX];          // node
-	Point startp[][] = new Point[MAX][MAX]; // start and
-	Point endp[][] = new Point[MAX][MAX];   // endpoint of arrow
-
-	// graph information while running algorithm
-	boolean algedge[][] = new boolean[MAX][MAX];
-	int dist[] = new int[MAX];
-	int finaldist[] = new int[MAX];
-	Color colornode[] = new Color[MAX];
-	boolean changed[] = new boolean[MAX];   // indicates distance change during algorithm   
-	int numchanged =0; 
-	int neighbours=0;
-
-	int step=0;
-
-	// information used by the algorithm to find the next 
-	// node with minimum distance
-	int mindist, minnode, minstart, minend;
-
-	int numnodes=0;      // number of nodes
-	int emptyspots=0;    // empty spots in array node[] (due to node deletion)
-	int startgraph=0;    // start of graph
-	int hitnode;         // mouse clicked on or close to this node
-	int node1, node2;    // numbers of nodes involved in current action
-
+	// mouse actions
 	Point thispoint=new Point(0,0); // current mouseposition
 	Point oldpoint=new Point(0, 0); // previous position of node being moved
 
+	// list  
+	Vector<Element> elementList = new Vector<Element>();
+	int elementType = -1;
+	
 	// current action
 	boolean deletenode = false;
 	boolean moveElement = false;
 	boolean performalg = false;
 	boolean clicked = false;
+	Element izbraniElement = null;
 
 	// fonts
 	Font roman= new Font("TimesRoman", Font.BOLD, 12);
@@ -81,12 +48,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// for run option
 	Thread algrthm;
 
-	// current algorithm, (in case more algorithms are added)
-	int algorithm;
-
-	// algorithm information to be displayed in documetation panel
-	String showstring = new String("");
-
 	boolean stepthrough=false;
 
 	// locking the screen while running the algorithm
@@ -97,7 +58,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	GrafikaCanvas(Grafika myparent) {
 		parent = myparent;
 		init();
-		algorithm=DIJKSTRA;
 		setBackground(Color.white);
 	}
 
@@ -120,15 +80,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	/** removes graph from screen */
 	public void clear() {
-		startgraph=0;
-		numnodes=0;
-		emptyspots=0;
 		init();
-		for(int i=0; i<MAXNODES; i++) {
-			node[i]=new Point(0, 0);
-			for (int j=0; j<MAXNODES;j++)
-				; // weight[i][j]=0;
-		}
+		this.elementList.clear();
+		// TODO: pobrisi povezave
 		if (algrthm != null) algrthm.stop();
 		parent.unlock();
 		repaint();
@@ -161,14 +115,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 //	public void initalg() {
 //		init();
-//		for(int i=0; i<MAXNODES; i++) {
-//			dist[i]=-1;
-//			finaldist[i]=-1;
-//			for (int j=0; j<MAXNODES;j++)
-//				algedge[i][j]=false;
-//		}
-//		dist[startgraph]=0;
-//		finaldist[startgraph]=0;
 //		step=0;
 //	}
 
@@ -183,9 +129,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	
 	public void run() {
-		for(int i=0; i<(numnodes-emptyspots); i++){
+		// TODO: Algoritem za izracun
+		for(int i=0; i<this.elementList.size(); i++){
 			nextstep();
-			try { algrthm.sleep(2000); }
+			try { Thread.sleep(2000); }
 			catch (InterruptedException e) {}
 		}
 		algrthm = null;
@@ -198,27 +145,16 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		clear();
 		init();
 
-		numnodes=10;
-		emptyspots=0;
+		w=this.getWidth()/8;
+		h=this.getHeight()/8;
+		
+//		node[0]=new Point(w, h);     node[1]=new Point(3*w, h);   
+//		node[2]=new Point(5*w, h);   node[3]=new Point(w, 4*h); 
+//		node[4]=new Point(3*w, 4*h); node[5]=new Point(5*w, 4*h);
+//		node[6]=new Point(w, 7*h);   node[7]=new Point(3*w, 7*h); 
+//		node[8]=new Point(5*w, 7*h); node[9]=new Point(7*w, 4*h);
 
-		for(int i=0; i<MAXNODES; i++) {
-			node[i]=new Point(0, 0);
-			for (int j=0; j<MAXNODES;j++)
-				; // weight[i][j]=0;
-		}
 
-		w=this.size().width/8;
-		h=this.size().height/8;
-		node[0]=new Point(w, h);     node[1]=new Point(3*w, h);   
-		node[2]=new Point(5*w, h);   node[3]=new Point(w, 4*h); 
-		node[4]=new Point(3*w, 4*h); node[5]=new Point(5*w, 4*h);
-		node[6]=new Point(w, 7*h);   node[7]=new Point(3*w, 7*h); 
-		node[8]=new Point(5*w, 7*h); node[9]=new Point(7*w, 4*h);
-
-		for (int i=0;i<numnodes;i++)
-			for (int j=0;j<numnodes;j++)
-				if ( true /* weight[i][j]>0 */)
-					arrowupdate(i, j);
 		repaint();
 	}
 
@@ -320,55 +256,31 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return false;
 	}
 	
-	public boolean arrowhit(int x, int y, int dist) {
-		// checks if you hit an arrow with your mouseclick
-		for (int i=0; i<numnodes; i++)
-			for (int j=0; j<numnodes; j++) {
-				// ce arrow obstaja && in smo kliknili v okolico puscice x^2 + y^2 < z^2 (kroznica) 
-				if ( true /*( weight[i][j]>0 ) && (Math.pow(x-arrow[i][j].x, 2) + 	Math.pow(y-arrow[i][j].y, 2) < Math.pow(dist, 2) )*/ ) {
-					node1 = i;
-					node2 = j;
-					return true;
-				}
-			}
+	public boolean lineHit(int x, int y, int dist) {
+		// TODO: poglej, ce si zadel povezavo
 		return false;
 	}
 
 	/** TODO: pobrisi gradnik in pripadajoce povezave
 	 * delete a node and the arrows coming into/outof the node
 	 */
-	public void nodedelete() {
-		node[node1]=new Point(-100, -100);
-		for (int j=0;j<numnodes;j++) {
-			// weight[node1][j]=0;
-			// weight[j][node1]=0;
-		}
-		emptyspots++;
+	public void elementDelete() {
+		;
 	}
 
 	// TODO: line update
-	public void arrowupdate(int p1, int p2) {
-		// make a new arrow from pin p1 to p2  
-		// calculate the resulting position of the arrowhead
-		// int dx, dy;
-		// direction line between p1 and p2
-		// dx = node[p2].x - node[p1].x;
-		// dy = node[p2].y - node[p1].y;
-		// calculate the start and endpoints of the arrow,
-		startp[p1][p2] = new Point(node[p1].x, node[p1].y);
-		endp[p1][p2] = new Point(node[p2].x, node[p2].y);
+	public void lineUpdate(int p1, int p2) {
+		
 	}
 
 	public String intToString(int i) {
 		return ""+(char)((int)'a'+i);
 	}
 	
-	// TODO: kaj pocne ta funkcija? - "to klice applet" 
 	// brez tega prihaja do blinkanja 
 	@SuppressWarnings("deprecation")
 	public final synchronized void update(Graphics g) {
 		// prepare new image offscreen
-
 		Dimension d=size();
 		if ((offScreenImage == null) || (d.width != offScreenSize.width) ||	(d.height != offScreenSize.height)) {
 			offScreenImage = createImage(d.width, d.height);
@@ -397,19 +309,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		this.elementList.add(e);
 	}
 	
-	public void drawarrow(Graphics g, int i, int j) {
-		// draw arrow between node i and node j
-		
-		// if edge already chosen by algorithm change color
-		// if (algedge[i][j]) g.setColor(Color.orange);
-
-		// draw arrow
-		g.drawLine(startp[i][j].x, startp[i][j].y, endp[i][j].x, endp[i][j].y);
+	public void drawLine(Graphics g, int i, int j) {
+		// g.drawLine();
 	}
 	
 	public void paint(Graphics g) {
-//		System.out.println(stevec++);
-		
 		g.setFont(roman);
 		g.setColor(Color.black);
 
