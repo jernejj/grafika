@@ -43,11 +43,12 @@ public class Element {
 	
 	public Element(int type, Point position) {
 		this.position = position;
-		setType(type);
+		// TODO: potrebno je dodati k vsakemu gradniku, ko se spremenijo slike in to globalno pobrisati
+		// sizeX, sizeY, size
 		sizeX = 40;
 		sizeY = 62;
 		size = sizeX * sizeY;
-		
+		setType(type);	
 	}
 	
 	private void setPin1(short value) {
@@ -96,21 +97,20 @@ public class Element {
 		position = new Point(newX,newY);
 	}
 	
-	// TODO: enumeration
 	public void setType(int type) {
-//		Toolkit toolkit = getToolkit();
-//		Image img = toolkit.createImage(e.getSymbol().toString());
-		
 		switch(type) {
 			case AND:
 				type=type;
 				symbol = new File("grafika/logicalOperators/and.png");
-				this.pin1up = new Point(11,7);
-				this.pin1down = new Point(15,13);
-				this.pin2up = new Point(25,7);
-				this.pin2down = new Point(29,13);
-				this.outup = new Point(18,48);
-				this.outdown = new Point(22,54);
+				sizeX = 30;
+				sizeY = 47;
+				size = sizeX * sizeY;
+				this.pin1up = new Point(6,0);
+				this.pin1down = new Point(9,5);
+				this.pin2up = new Point(20,0);
+				this.pin2down = new Point(23,5);
+				this.outup = new Point(13,41);
+				this.outdown = new Point(16,46);
 				break;
 			case OR:
 				type=type;
