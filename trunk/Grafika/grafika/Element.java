@@ -145,7 +145,6 @@ public class Element {
 		switch(type) {
 			case AND:
 				return "AND";
-				
 			case OR:
 				return "OR";
 			case NAND:
@@ -160,11 +159,31 @@ public class Element {
 				return "NOT";
 			default:
 				return "Invalid Type!";
-				
 		}
-	}	
+	}		
 	
+	public Point getPin1up() {
+		return this.pin1up;
+	}
 	
+	public Point getPin1down() {
+		return this.pin1down;
+	}
+	public Point getPin2up() {
+		return this.pin2up;
+	}
+	
+	public Point getPin2down() {
+		return this.pin2down;
+	}
+	
+	public Point getOutUp() {
+		return this.outup;
+	}
+	
+	public Point getOutDown() {
+		return this.outdown;
+	}
 	
 	public File getSymbol() {
 		return symbol;
