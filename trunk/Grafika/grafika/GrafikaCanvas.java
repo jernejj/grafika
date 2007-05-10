@@ -9,17 +9,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
-class GrafikaCanvas extends Canvas  implements Runnable  {
-	private int stevec = 0;
+@SuppressWarnings("serial")
+class GrafikaCanvas extends Canvas implements Runnable  {
+//	private int stevec = 0;
 	private Element izbraniElement=null;
 	private Vector<Element> elementList = new Vector<Element>();
 	int elementType = -1;
@@ -62,9 +61,6 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 	Point oldpoint=new Point(0, 0); // previous position of node being moved
 
 	// current action
-	boolean newarrow = false;
-	boolean movearrow = false;
-	boolean movestart = false;
 	boolean deletenode = false;
 	boolean moveElement = false;
 	boolean performalg = false;
@@ -142,7 +138,6 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 	public void reset() {
 		init(); 
 		// TODO: postavi generator na zacetek
-		if (algrthm != null) algrthm.stop();
 		parent.unlock();
 		repaint();
 	}
@@ -178,13 +173,7 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 //	}
 
 	public void nextstep() {
-		// calculates a step in the algorithm (finds a shortest 
-		// path to a next node).
-		finaldist[minend]=mindist;
-		algedge[minstart][minend]=true;
-		colornode[minend]=Color.orange;
-		// build more information to display on documentation panel
-		step++;
+		// TODO: step true generator
 		repaint();
 	}
 
@@ -250,7 +239,9 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 				izbraniElement = temp;
 				moveElement = true;
 				// TODO: if hit pin -> draw line !
-				
+				if(pinHit(temp,x,y)) {
+					;
+				}
 			}
 			else {
 				// Zadel si prazno polje, narisemo nov izbrani element!
@@ -268,15 +259,10 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 
 	public boolean mouseDrag(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
-			if (moveElement) { // ce premikamo gradnik
+			if (moveElement) { 
 				// premakni element popravi povezave 
 				izbraniElement.setPosition(new Point(x, y));
-				System.out.println("mouseDrag: "+ izbraniElement);
 				// TODO: Popravi povezave!
-				repaint();
-			}
-			else if (newarrow) {
-				thispoint = new Point(x, y);
 				repaint();
 			}
 		}
@@ -307,6 +293,31 @@ class GrafikaCanvas extends Canvas  implements Runnable  {
 			}
 		}
 		return null;
+	}
+	
+	public boolean pinHit(Element e, int x, int y){
+		int absX = x - e.getXposition();
+		int absY = y - e.getYposition();
+		
+		// Pin1 clicked
+		if( absX > e.getPin1up().x &&  absX < e.getPin1down().x && absY > e.getPin1up().y &&  absY < e.getPin1down().y) {
+			System.out.println("Pin1 clicked.");
+			
+			return true;
+		}
+		// Pin2 clicked
+		else if(absX > e.getPin2up().x &&  absX < e.getPin2down().x && absY > e.getPin2up().y &&  absY < e.getPin2down().y) {
+			System.out.println("Pin2 clicked.");
+			
+			return true;
+		}
+		// Out clicked
+		else if(absX > e.getOutUp().x &&  absX < e.getOutDown().x && absY > e.getOutUp().y &&  absY < e.getOutDown().y) {
+			System.out.println("Out clicked.");
+			
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean arrowhit(int x, int y, int dist) {
