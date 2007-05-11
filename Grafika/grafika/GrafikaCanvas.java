@@ -34,6 +34,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	boolean clicked = false;
 	Element selectedElement = null;
 	Pin selectedPin = null;
+	Point oldPosition = null;
+	int offsetX = -1;
+	int offsetY = -1;
 
 	// fonts
 	Font roman= new Font("TimesRoman", Font.BOLD, 12);
@@ -176,6 +179,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			else if (null != (temp = elementHit(x, y))) { 
 				// Zadel si element
 				selectedElement = temp;
+				oldPosition = new Point(x,y);
+				offset(selectedElement,oldPosition);
 				moveElement = true;
 				
 				Pin tmpPin;
@@ -204,7 +209,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		if ( (!Locked) && clicked ) {
 			if (moveElement) { 
 				// premakni element popravi povezave 
-				selectedElement.setPosition(new Point(x, y));
+				selectedElement.setPosition(dragElement(selectedElement, x, y));
 				// TODO: Popravi povezave!
 				repaint();
 			}
@@ -264,6 +269,16 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			return e.getOut();
 		}
 		return null;
+	}
+	
+	private Point offset(Element e, Point p) {
+		offsetX = oldPosition.x - e.getXposition();
+		offsetY = oldPosition.y - e.getYposition();
+		return new Point(offsetX, offsetY);
+	}
+	
+	public Point dragElement(Element e, int x, int y) {		
+		return new Point(x - offsetX, y - offsetY);
 	}
 	
 	public boolean lineHit(int x, int y, int dist) {
