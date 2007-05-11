@@ -2,7 +2,10 @@ package grafika;
 
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.ToolTipManager;
-
 
 @SuppressWarnings("serial")
 class Menu extends JPanel implements ActionListener{
@@ -44,7 +46,10 @@ class Menu extends JPanel implements ActionListener{
     Menu(Grafika myparent) {
     	parent = myparent;
     	setBackground(Color.WHITE);
-    	setLayout(new GridLayout(8, 1, 0, 10));
+    	//setLayout(new GridLayout(8, 1, 0, 10));
+    	setLayout(new GridBagLayout());
+    	GridBagConstraints c = new GridBagConstraints();
+    	c.fill = GridBagConstraints.HORIZONTAL;
     	
         // Takoj prikazi ToolTip
         ToolTipManager.sharedInstance().setInitialDelay(0);
@@ -85,14 +90,33 @@ class Menu extends JPanel implements ActionListener{
         b6.setActionCommand("XNOR");
         b7.setActionCommand("NOT");
         b8.setActionCommand("BOX");
-    	add(b1);
-    	add(b2);
-    	add(b3);
-    	add(b4);
-    	add(b5); 
-    	add(b6);
-    	add(b7);
-    	add(b8);
+        
+        c.insets = new Insets(10,0,0,0);
+        c.ipady=0;
+        c.gridx = 0;
+        c.gridy = 0;
+    	add(b1,c);
+    	c.gridx = 0;
+    	c.gridy = 1;
+    	add(b2,c);
+    	c.gridx = 0;
+    	c.gridy = 2;
+    	add(b3,c);
+    	c.gridx = 0;
+    	c.gridy = 3;
+    	add(b4,c);
+    	c.gridx = 0;
+    	c.gridy = 4;
+    	add(b5,c); 
+    	c.gridx = 0;
+    	c.gridy = 5;
+    	add(b6,c);
+    	c.gridx = 0;
+    	c.gridy = 6;
+    	add(b7,c);
+    	c.gridx = 0;
+    	c.gridy = 7;
+    	add(b8,c);
     	
     	// Omogocimo, da je ToolTip viden cez vse elemente layouta
     	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
