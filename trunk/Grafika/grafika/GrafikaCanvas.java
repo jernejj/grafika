@@ -29,9 +29,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// current action
 	boolean deletenode = false;
 	boolean moveElement = false;
+	boolean drawLine = false;
 	boolean performalg = false;
 	boolean clicked = false;
-	Element izbraniElement = null;
+	Element selectedElement = null;
+	Pin selectedPin = null;
 
 	// fonts
 	Font roman= new Font("TimesRoman", Font.BOLD, 12);
@@ -165,18 +167,23 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			Element temp;
 			clicked = true;
 			if (evt.controlDown()) {
-				// delete element
+				// Delete element
 				if ( null != (temp=elementHit(x, y))) {
 					this.elementList.remove(temp);
 					// TODO: pobrisi povezave, ce obstajajo!
 				}
 			}
-			else if (null != (temp = elementHit(x, y))) { // if(pinHit( ) ) => draw new line
-				izbraniElement = temp;
+			else if (null != (temp = elementHit(x, y))) { 
+				// Zadel si element
+				selectedElement = temp;
 				moveElement = true;
-				// TODO: if hit pin -> draw line !
-				if(pinHit(temp,x,y)) {
-					;
+				
+				Pin tmpPin;
+				// TODO: if pin hit -> draw line !
+				if(null != (tmpPin = pinHit(temp,x,y))) {
+					moveElement = false;
+					drawLine = true;
+					selectedPin = tmpPin;
 				}
 			}
 			else {
@@ -197,9 +204,12 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		if ( (!Locked) && clicked ) {
 			if (moveElement) { 
 				// premakni element popravi povezave 
-				izbraniElement.setPosition(new Point(x, y));
+				selectedElement.setPosition(new Point(x, y));
 				// TODO: Popravi povezave!
 				repaint();
+			}
+			else if (drawLine) {
+				
 			}
 		}
 		return true;
@@ -207,7 +217,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	public boolean mouseUp(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
-			izbraniElement = null;
+			selectedElement = null;
 			moveElement = false;
 			repaint();
 		}
@@ -231,29 +241,29 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return null;
 	}
 	
-	public boolean pinHit(Element e, int x, int y){
+	public Pin pinHit(Element e, int x, int y){
 		int absX = x - e.getXposition();
 		int absY = y - e.getYposition();
 		
 		// Pin1 clicked
-		if( absX > e.getPin1up().x &&  absX < e.getPin1down().x && absY > e.getPin1up().y &&  absY < e.getPin1down().y) {
+		if( absX > e.getPin1upPosition().x &&  absX < e.getPin1downPosition().x && absY > e.getPin1upPosition().y &&  absY < e.getPin1downPosition().y) {
 			System.out.println("Pin1 clicked.");
-			
-			return true;
+
+			return e.getPin1();
 		}
 		// Pin2 clicked
-		else if(absX > e.getPin2up().x &&  absX < e.getPin2down().x && absY > e.getPin2up().y &&  absY < e.getPin2down().y) {
+		else if(absX > e.getPin2upPosition().x &&  absX < e.getPin2downPosition().x && absY > e.getPin2upPosition().y &&  absY < e.getPin2downPosition().y) {
 			System.out.println("Pin2 clicked.");
-			
-			return true;
+
+			return  e.getPin2();
 		}
 		// Out clicked
-		else if(absX > e.getOutUp().x &&  absX < e.getOutDown().x && absY > e.getOutUp().y &&  absY < e.getOutDown().y) {
+		else if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
 			System.out.println("Out clicked.");
 			
-			return true;
+			return e.getOut();
 		}
-		return false;
+		return null;
 	}
 	
 	public boolean lineHit(int x, int y, int dist) {
@@ -281,7 +291,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	@SuppressWarnings("deprecation")
 	public final synchronized void update(Graphics g) {
 		// prepare new image offscreen
-		Dimension d=size();
+		Dimension d = getSize();
 		if ((offScreenImage == null) || (d.width != offScreenSize.width) ||	(d.height != offScreenSize.height)) {
 			offScreenImage = createImage(d.width, d.height);
 			offScreenSize = d;
