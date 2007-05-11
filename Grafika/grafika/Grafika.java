@@ -2,6 +2,7 @@ package grafika;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
 import javax.swing.*;
 
@@ -16,16 +17,17 @@ public class Grafika extends JApplet {
 	public void init() {
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
-		setSize(1024,768);
+		this.setSize(1024,768);
+		this.setMinimumSize(new Dimension(800,600));
 		BorderLayout bl = new BorderLayout(0, 0);
 		// TODO: 
 		// bl.setHgap(0);
 		// bl.setVgap(0);
-		setLayout(bl);
-		add("Center", GrafikaCanvas);
-		add("North", documentation);
-		add("East", options);
-		add("West", menu);
+		this.setLayout(bl);
+		this.add("Center", GrafikaCanvas);
+		this.add("North", documentation);
+		this.add("East", options);
+		this.add("West", menu);
 	}
 
 	/**
@@ -37,12 +39,10 @@ public class Grafika extends JApplet {
 		return new Insets(10, 10, 10, 10);
 	}
 
-
 	public void lock() {
 		GrafikaCanvas.lock();
 		options.lock();
 	} 
-
 
 	public void unlock() {
 		GrafikaCanvas.unlock();
