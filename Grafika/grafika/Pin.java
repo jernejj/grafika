@@ -8,8 +8,9 @@ public class Pin {
 	private Point down;
 	private int type;
 	
-	public final static int IN = 1;
-	public final static int OUT = 2;
+	public static final int IN1 = 1;
+	public static final int IN2 = 2;
+	public static final int OUT = 3;
 	
 	public Pin(int type) {
 		setType(type);
@@ -41,11 +42,14 @@ public class Pin {
 	
 	private void setType(int type) {
 		switch(type) {
-			case IN:
-				this.type = IN;
+			case IN1:
+				this.type = Pin.IN1;
 				break;
+			case IN2:
+				this.type = Pin.IN2;
+				break;				
 			case OUT:
-				this.type = OUT;
+				this.type = Pin.OUT;
 				break;
 			default:
 				System.err.println("Wrong pin type!");
@@ -59,6 +63,6 @@ public class Pin {
 	}
 	
 	public Point getPinPosition() {
-		return  new Point(this.down.x - this.up.x, this.down.y - this.up.y); 
+		return  new Point( (this.down.x - this.up.x)/2, (this.down.y - this.up.y)/2); 
 	}
 }
