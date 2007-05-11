@@ -12,7 +12,7 @@ public class Pin {
 	public final static int OUT = 2;
 	
 	public Pin(int type) {
-		
+		setType(type);
 	}
 	
 	public int getValue() {
@@ -52,5 +52,9 @@ public class Pin {
 				System.exit(101);
 				break;
 		}
+	}
+	
+	public int getType() {
+		return this.type;
 	}
 }
