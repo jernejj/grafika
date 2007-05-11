@@ -7,24 +7,21 @@ import java.io.File;
 public class Element {
 	private int type;
 	private File symbol;
-	private short pin1;
-	private short pin2;
-	private short out;
+	private Pin pin1;
+	private Pin pin2;
+	private Pin out;
 	
-	private Povezava naPin1;
-	private Povezava naPin2;
-	private Povezava naOut;
-	
-	private Point pin1up;
-	private Point pin1down;
-	private Point pin2up;
-	private Point pin2down;
-	private Point outup;
-	private Point outdown;
+	private Line toPin1;
+	private Line toPin2;
+	private Line toOut;
 	
 	private Image slika;
 	
 	private int size;
+	// picture width
+	private int sizeX;
+	// picture height
+	private int sizeY;
 	
 	public static final int AND = 0;
 	public static final int OR = 1;
@@ -34,31 +31,12 @@ public class Element {
 	public static final int XNOR = 5;
 	public static final int NOT = 6;
 	
-	private int sizeX;
-	private int sizeY;
-	
 	private Point position; 
-	
-	public Element() {}
 	
 	public Element(int type, Point position) {
 		this.position = position;
-		// TODO: potrebno je dodati k vsakemu gradniku, ko se spremenijo slike in to globalno pobrisati
-		// sizeX, sizeY, size
-		sizeX = 40;
-		sizeY = 62;
-		size = sizeX * sizeY;
 		setType(type);	
 	}
-	
-	private void setPin1(short value) {
-		pin1 = value;
-	}
-	
-	private void setPin2(short value) {
-		pin2 = value;
-	}
-	
 	
 	public int getSizeX() {
 		return sizeX;
@@ -73,8 +51,8 @@ public class Element {
 	}
 	
 	public void setPins(short valuePin1, short valuePin2) {
-		setPin1(valuePin1);
-		setPin2(valuePin2);
+		setPin1value(valuePin1);
+		setPin2value(valuePin2);
 	}
 	
 	public Point getPosition() {
@@ -100,45 +78,87 @@ public class Element {
 	public void setType(int type) {
 		switch(type) {
 			case AND:
-				type=type;
+				this.type = Element.AND;
 				symbol = new File("grafika/logicalOperators/and.png");
 				sizeX = 30;
 				sizeY = 47;
 				size = sizeX * sizeY;
-				this.pin1up = new Point(6,0);
-				this.pin1down = new Point(9,5);
-				this.pin2up = new Point(20,0);
-				this.pin2down = new Point(23,5);
-				this.outup = new Point(13,41);
-				this.outdown = new Point(16,46);
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(6,0));
+				this.pin1.setDown(new Point(9,5));
+				this.pin2.setUp(new Point(20,0));
+				this.pin2.setDown(new Point(23,5));
+				this.out.setUp(new Point(13,41));
+				this.out.setDown(new Point(16,46));
 				break;
 			case OR:
-				type=type;
+				this.type = Element.OR;
 				symbol = new File("grafika/logicalOperators/or.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			case NAND:
-				type=type;
+				this.type = Element.NAND;
 				symbol = new File("grafika/logicalOperators/nand.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			case NOR:
-				type=type;
+				this.type = Element.NOR;
 				symbol = new File("grafika/logicalOperators/nor.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			case XOR:
-				type=type;
+				this.type = Element.XOR;
 				symbol = new File("grafika/logicalOperators/xor.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			case XNOR:
-				type=type;
+				this.type = Element.XNOR;
 				symbol = new File("grafika/logicalOperators/xnor.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.pin2 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			case NOT:
-				type=type;
+				this.type = Element.NOT;
 				symbol = new File("grafika/logicalOperators/not.png");
+				sizeX = 40;
+				sizeY = 62;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN);
+				this.out = new Pin(Pin.OUT);
 				break;
 			default:
 				System.err.print("Invalid Type!");
 		}
+	}
+	
+	public int getType() {
+		return this.type;
 	}
 	
 	public String getElementType(int type) {
@@ -162,27 +182,67 @@ public class Element {
 		}
 	}		
 	
-	public Point getPin1up() {
-		return this.pin1up;
+	public void compute() {
+		switch(this.type) {
+			case AND:
+				this.out.setValue(this.pin1.getValue() & this.pin2.getValue());
+				break;
+			case OR:
+				this.out.setValue(this.pin1.getValue() | this.pin2.getValue());
+				break;
+			case NAND:
+				this.out.setValue(~(this.pin1.getValue() & this.pin2.getValue()));
+				break;
+			case NOR:
+				this.out.setValue(~(this.pin1.getValue() | this.pin2.getValue()));
+				break;
+			case XOR:
+				this.out.setValue(this.pin1.getValue() ^ this.pin2.getValue());
+				break;
+			case XNOR:
+				this.out.setValue(~(this.pin1.getValue() ^ this.pin2.getValue()));
+				break;
+			case NOT:
+				this.out.setValue(~this.pin1.getValue());
+				break;
+			default:
+				System.err.print("Invalid Type!");
+		}
 	}
 	
-	public Point getPin1down() {
-		return this.pin1down;
-	}
-	public Point getPin2up() {
-		return this.pin2up;
+	public Pin getPin1() {
+		return this.pin1;
 	}
 	
-	public Point getPin2down() {
-		return this.pin2down;
+	public Pin getPin2(){
+		return this.pin2;
 	}
 	
-	public Point getOutUp() {
-		return this.outup;
+	public Pin getOut(){
+		return this.out;
 	}
 	
-	public Point getOutDown() {
-		return this.outdown;
+	public Point getPin1upPosition() {
+		return this.pin1.getUp();
+	}
+	
+	public Point getPin1downPosition() {
+		return this.pin1.getDown();
+	}
+	public Point getPin2upPosition() {
+		return this.pin2.getUp();
+	}
+	
+	public Point getPin2downPosition() {
+		return this.pin2.getDown();
+	}
+	
+	public Point getOutUpPosition() {
+		return this.out.getUp();
+	}
+	
+	public Point getOutDownPosition() {
+		return this.out.getDown();
 	}
 	
 	public File getSymbol() {
@@ -191,5 +251,44 @@ public class Element {
 	
 	public Image getImage() {
 		return slika;
+	}
+	
+	public int getPinValue() {
+		if(this.type != Element.NOT) {
+			System.err.println("getPinValue() is only for NOT");
+			System.exit(102);
+		}
+		return this.pin1.getValue();
+	}
+	
+	public void setPinValue(int value) {
+		if(this.type != Element.NOT) {
+			System.err.println("getPinValue() is only for NOT");
+			System.exit(102);
+		}
+		this.pin1.setValue(value);
+	}
+	public int getPin1value() {
+		return this.pin1.getValue();
+	}
+	
+	public void setPin1value(int value) {
+		this.pin1.setValue(value);
+	}
+	
+	public int getPin2value() {
+		return this.pin2.getValue();
+	}
+	
+	public void setPin2value(int value) {
+		this.pin2.setValue(value);
+	}
+
+	public int getOutValue() {
+		return this.out.getValue();
+	}
+	
+	public void setOut(int value) {
+		this.out.setValue(value);
 	}
 }
