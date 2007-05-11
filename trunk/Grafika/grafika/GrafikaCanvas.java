@@ -34,7 +34,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	boolean performalg = false;
 	boolean clicked = false;
 	Element selectedElement = null;
+	Element tempElement = null;
 	Pin selectedPin = null;
+	Pin tempPin = null;
 	Point oldPosition = null;
 	Point tempPinPosition = null;
 	Line tempLine = null;
@@ -186,17 +188,18 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				offset(selectedElement,oldPosition);
 				moveElement = true;
 				
-				Pin tmpPin;
 				// TODO: if pin hit -> draw line !
-				if(null != (tmpPin = pinHit(temp,x,y))) {
+				if(null != (tempPin = pinHit(temp,x,y))) {
 					moveElement = false;
 					drawLine = true;
-					selectedPin = tmpPin;
+					selectedPin = tempPin;
 					tempLine = new Line(selectedElement,null);
 					lineList.add(tempLine);
+					selectedElement.setLine(tempLine,selectedPin);
 					// tempPinPosition = pinPosition(selectedElement,selectedPin);
 					tempLine.setStartPoint(new Point(x + selectedPin.getPinPosition().x, y + selectedPin.getPinPosition().y));
 					tempLine.setEndPoint(new Point(x + selectedPin.getPinPosition().x, y + selectedPin.getPinPosition().y));
+					selectedPin = null;
 				}
 			}
 			else {
@@ -223,6 +226,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			}
 			else if (drawLine) {
 				tempLine.setEndPoint(new Point(x,y));
+				repaint();
 			}
 		}
 		return true;
@@ -230,8 +234,29 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	public boolean mouseUp(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
-			selectedElement = null;
-			moveElement = false;
+			if(moveElement) {
+				selectedElement = null;
+				moveElement = false;
+			}
+			else if(drawLine) {
+				if(null != (tempElement =  elementHit(x,y))) {
+					if(null != (tempPin = pinHit(tempElement, x, y))) {
+						//if(tempLine.getOneEndElement())
+						tempLine.setEndPoint(new Point(x, y));
+						tempLine.setOtherEndElement(tempElement);
+						tempElement.setLine(tempLine,tempPin);
+						tempElement = null;
+					} else {
+						this.lineList.remove(tempLine);
+						tempElement = null;
+					}
+				} 
+				else {
+					this.lineList.remove(tempLine);
+				}
+				tempLine = null;
+				drawLine = false;
+			}
 			repaint();
 		}
 		clicked = false;
