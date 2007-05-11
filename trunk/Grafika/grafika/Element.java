@@ -30,6 +30,8 @@ public class Element {
 	public static final int XOR = 4;
 	public static final int XNOR = 5;
 	public static final int NOT = 6;
+	public static final int GND = 7;
+	public static final int VCC = 8;
 	
 	private Point position; 
 	
@@ -96,8 +98,8 @@ public class Element {
 			case OR:
 				this.type = Element.OR;
 				symbol = new File("grafika/logicalOperators/or.png");
-				sizeX = 40;
-				sizeY = 62;
+				sizeX = 28;
+				sizeY = 47;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
@@ -128,8 +130,8 @@ public class Element {
 			case NOR:
 				this.type = Element.NOR;
 				symbol = new File("grafika/logicalOperators/nor.png");
-				sizeX = 40;
-				sizeY = 62;
+				sizeX = 28;
+				sizeY = 57;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
@@ -144,8 +146,8 @@ public class Element {
 			case XOR:
 				this.type = Element.XOR;
 				symbol = new File("grafika/logicalOperators/xor.png");
-				sizeX = 40;
-				sizeY = 62;
+				sizeX = 28;
+				sizeY = 52;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
@@ -160,7 +162,7 @@ public class Element {
 			case XNOR:
 				this.type = Element.XNOR;
 				symbol = new File("grafika/logicalOperators/xnor.png");
-				sizeX = 40;
+				sizeX = 28;
 				sizeY = 62;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
@@ -176,8 +178,8 @@ public class Element {
 			case NOT:
 				this.type = Element.NOT;
 				symbol = new File("grafika/logicalOperators/not.png");
-				sizeX = 40;
-				sizeY = 62;
+				sizeX = 30;
+				sizeY = 46;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
@@ -185,6 +187,26 @@ public class Element {
 				this.pin1.setDown(new Point(16,5));
 				this.out.setUp(new Point(13,40));
 				this.out.setDown(new Point(16,45));
+				break;
+			case GND:
+				this.type = Element.GND;
+				symbol = new File("grafika/logicalOperators/gnd.png");
+				sizeX = 24;
+				sizeY = 24;
+				size = sizeX * sizeY;
+				this.out = new Pin(Pin.OUT);
+				this.out.setUp(new Point(10,18));
+				this.out.setDown(new Point(13,23));
+				break;
+			case VCC:
+				this.type = Element.VCC;
+				symbol = new File("grafika/logicalOperators/vcc.png");
+				sizeX = 18;
+				sizeY = 24;
+				size = sizeX * sizeY;
+				this.out = new Pin(Pin.OUT);
+				this.out.setUp(new Point(7,18));
+				this.out.setDown(new Point(10,23));
 				break;
 			default:
 				System.err.print("Invalid Type!");
@@ -211,6 +233,10 @@ public class Element {
 				return "XNOR";
 			case NOT:
 				return "NOT";
+			case GND:
+				return "GND";
+			case VCC:
+				return "VCC";
 			default:
 				return "Invalid Type!";
 		}
@@ -238,6 +264,12 @@ public class Element {
 				break;
 			case NOT:
 				this.out.setValue(~this.pin1.getValue());
+				break;
+			case GND:
+				this.out.setValue(~this.out.getValue());
+				break;
+			case VCC:
+				this.out.setValue(~this.out.getValue());
 				break;
 			default:
 				System.err.print("Invalid Type!");
