@@ -35,7 +35,9 @@ class Menu extends JPanel implements ActionListener{
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
     JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"))
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
-    JButton b8 = new JButton("BOX")
+	JButton b8 = new JButton(createImageIcon("../grafika/logicalOperators/gnd.png"));
+	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"));
+    JButton b10 = new JButton("BOX")
     	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
 
     Grafika parent;   
@@ -72,7 +74,7 @@ class Menu extends JPanel implements ActionListener{
         toolTip.setToolTip("file:grafika/logicalOperators/notTruthTable.png");
         b7.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("BOX");
-        b8.setToolTipText(toolTip.getToolTip());
+        b10.setToolTipText(toolTip.getToolTip());
         
         b1.addActionListener(this);
         b2.addActionListener(this);
@@ -81,7 +83,7 @@ class Menu extends JPanel implements ActionListener{
         b5.addActionListener(this);
         b6.addActionListener(this);
         b7.addActionListener(this);
-        b8.addActionListener(this);
+        b10.addActionListener(this);
         b1.setActionCommand("AND");
         b2.setActionCommand("OR");
         b3.setActionCommand("NAND");
@@ -89,10 +91,11 @@ class Menu extends JPanel implements ActionListener{
         b5.setActionCommand("XOR");
         b6.setActionCommand("XNOR");
         b7.setActionCommand("NOT");
-        b8.setActionCommand("BOX");
+        b10.setActionCommand("BOX");
         
         c.insets = new Insets(10,0,0,0);
-        c.ipady=0;
+        c.ipady=10;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
     	add(b1,c);
@@ -114,9 +117,17 @@ class Menu extends JPanel implements ActionListener{
     	c.gridx = 0;
     	c.gridy = 6;
     	add(b7,c);
+    	c.gridwidth = 1;
     	c.gridx = 0;
     	c.gridy = 7;
     	add(b8,c);
+    	c.gridx = 1;
+    	c.gridy = 7;
+    	add(b9,c);
+    	c.gridwidth = 2;
+    	c.gridx = 0;
+    	c.gridy = 8;
+    	add(b10,c);
     	
     	// Omogocimo, da je ToolTip viden cez vse elemente layouta
     	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
