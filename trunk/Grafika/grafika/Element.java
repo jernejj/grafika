@@ -102,16 +102,28 @@ public class Element {
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(5,0));
+				this.pin1.setDown(new Point(8,12));
+				this.pin2.setUp(new Point(19,0));
+				this.pin2.setDown(new Point(22,12));
+				this.out.setUp(new Point(12,40));
+				this.out.setDown(new Point(15,56));
 				break;
 			case NAND:
 				this.type = Element.NAND;
 				symbol = new File("grafika/logicalOperators/nand.png");
-				sizeX = 40;
-				sizeY = 62;
+				sizeX = 30;
+				sizeY = 57;
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(6,0));
+				this.pin1.setDown(new Point(9,5));
+				this.pin2.setUp(new Point(20,0));
+				this.pin2.setDown(new Point(23,5));
+				this.out.setUp(new Point(13,51));
+				this.out.setDown(new Point(16,56));
 				break;
 			case NOR:
 				this.type = Element.NOR;
@@ -122,6 +134,12 @@ public class Element {
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(5,0));
+				this.pin1.setDown(new Point(8,12));
+				this.pin2.setUp(new Point(19,0));
+				this.pin2.setDown(new Point(22,12));
+				this.out.setUp(new Point(12,51));
+				this.out.setDown(new Point(15,56));
 				break;
 			case XOR:
 				this.type = Element.XOR;
@@ -132,6 +150,12 @@ public class Element {
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(5,0));
+				this.pin1.setDown(new Point(8,8));
+				this.pin2.setUp(new Point(19,0));
+				this.pin2.setDown(new Point(22,8));
+				this.out.setUp(new Point(12,46));
+				this.out.setDown(new Point(15,51));
 				break;
 			case XNOR:
 				this.type = Element.XNOR;
@@ -142,6 +166,12 @@ public class Element {
 				this.pin1 = new Pin(Pin.IN);
 				this.pin2 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(5,0));
+				this.pin1.setDown(new Point(8,8));
+				this.pin2.setUp(new Point(19,0));
+				this.pin2.setDown(new Point(22,8));
+				this.out.setUp(new Point(12,56));
+				this.out.setDown(new Point(15,61));
 				break;
 			case NOT:
 				this.type = Element.NOT;
@@ -151,6 +181,10 @@ public class Element {
 				size = sizeX * sizeY;
 				this.pin1 = new Pin(Pin.IN);
 				this.out = new Pin(Pin.OUT);
+				this.pin1.setUp(new Point(13,0));
+				this.pin1.setDown(new Point(16,5));
+				this.out.setUp(new Point(13,40));
+				this.out.setDown(new Point(16,45));
 				break;
 			default:
 				System.err.print("Invalid Type!");
