@@ -26,6 +26,14 @@ public class Line {
 		this.otherEnd = e;
 	}
 	
+	public Element getOneEndElement() {
+		return this.oneEnd;
+	}
+	
+	public Element getOtherEndElement() {
+		return this.otherEnd;
+	}
+	
 	public Point getStartPoint() {
 		return this.startPoint;
 	}
