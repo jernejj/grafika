@@ -57,4 +57,8 @@ public class Pin {
 	public int getType() {
 		return this.type;
 	}
+	
+	public Point getPinPosition() {
+		return  new Point(this.down.x - this.up.x, this.down.y - this.up.y); 
+	}
 }
