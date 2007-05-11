@@ -45,7 +45,7 @@ class Menu extends JPanel implements ActionListener{
     	parent = myparent;
     	setBackground(Color.WHITE);
     	setLayout(new GridLayout(8, 1, 0, 10));
-
+    	
         // Takoj prikazi ToolTip
         ToolTipManager.sharedInstance().setInitialDelay(0);
         
