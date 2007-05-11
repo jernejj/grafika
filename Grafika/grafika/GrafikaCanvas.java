@@ -24,6 +24,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	// list  
 	Vector<Element> elementList = new Vector<Element>();
+	Vector<Line> lineList = new Vector<Line>();
 	int elementType = -1;
 	
 	// current action
@@ -35,6 +36,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	Element selectedElement = null;
 	Pin selectedPin = null;
 	Point oldPosition = null;
+	Point tempPinPosition = null;
+	Line tempLine = null;
 	int offsetX = -1;
 	int offsetY = -1;
 
@@ -189,6 +192,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					moveElement = false;
 					drawLine = true;
 					selectedPin = tmpPin;
+					tempLine = new Line(selectedElement,null);
+					lineList.add(tempLine);
+					// tempPinPosition = pinPosition(selectedElement,selectedPin);
+					tempLine.setStartPoint(new Point(x + selectedPin.getPinPosition().x, y + selectedPin.getPinPosition().y));
+					tempLine.setEndPoint(new Point(x + selectedPin.getPinPosition().x, y + selectedPin.getPinPosition().y));
 				}
 			}
 			else {
@@ -214,7 +222,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				repaint();
 			}
 			else if (drawLine) {
-				
+				tempLine.setEndPoint(new Point(x,y));
 			}
 		}
 		return true;
@@ -232,7 +240,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	// TODO: POPRAVI MEJE DA SE NE PREKRIVAJO ELEMENTI
 	public Element elementHit(int x, int y) {
-		// checks if you hit a node with your mouseclick
+		// checks if you hit an element with your mouseclick
 		Element check;
 		if(this.elementList.isEmpty())
 			return null;
@@ -250,26 +258,46 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		int absX = x - e.getXposition();
 		int absY = y - e.getYposition();
 		
-		// Pin1 clicked
-		if( absX > e.getPin1upPosition().x &&  absX < e.getPin1downPosition().x && absY > e.getPin1upPosition().y &&  absY < e.getPin1downPosition().y) {
-			System.out.println("Pin1 clicked.");
+		if(e.getType() == Element.NOT) {
+			// Pin clicked
+			if( absX > e.getPin1upPosition().x &&  absX < e.getPin1downPosition().x && absY > e.getPin1upPosition().y &&  absY < e.getPin1downPosition().y) {
+				System.out.println("Pin1 clicked.");
 
-			return e.getPin1();
-		}
-		// Pin2 clicked
-		else if(absX > e.getPin2upPosition().x &&  absX < e.getPin2downPosition().x && absY > e.getPin2upPosition().y &&  absY < e.getPin2downPosition().y) {
-			System.out.println("Pin2 clicked.");
+				return e.getPin1();
+			}
+			// Out clicked
+			else if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
+				System.out.println("Out clicked.");
 
-			return  e.getPin2();
-		}
-		// Out clicked
-		else if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
-			System.out.println("Out clicked.");
-			
-			return e.getOut();
+				return e.getOut();
+			}
+		} 
+		else {
+			// Pin1 clicked
+			if( absX > e.getPin1upPosition().x &&  absX < e.getPin1downPosition().x && absY > e.getPin1upPosition().y &&  absY < e.getPin1downPosition().y) {
+				System.out.println("Pin1 clicked.");
+
+				return e.getPin1();
+			}
+			// Pin2 clicked
+			else if(absX > e.getPin2upPosition().x &&  absX < e.getPin2downPosition().x && absY > e.getPin2upPosition().y &&  absY < e.getPin2downPosition().y) {
+				System.out.println("Pin2 clicked.");
+
+				return  e.getPin2();
+			}
+			// Out clicked
+			else if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
+				System.out.println("Out clicked.");
+				
+				return e.getOut();
+			}
 		}
 		return null;
 	}
+	
+	public Point pinPosition(Element element, Pin pin) {
+		return new Point(pin.getPinPosition().x + element.getPosition().x, pin.getPinPosition().y + element.getPosition().y);
+	}	
 	
 	private Point offset(Element e, Point p) {
 		offsetX = oldPosition.x - e.getXposition();
@@ -296,10 +324,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// TODO: line update
 	public void lineUpdate(int p1, int p2) {
 		
-	}
-
-	public String intToString(int i) {
-		return ""+(char)((int)'a'+i);
 	}
 	
 	// brez tega prihaja do blinkanja 
@@ -334,8 +358,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		this.elementList.add(e);
 	}
 	
-	public void drawLine(Graphics g, int i, int j) {
-		// g.drawLine();
+	public void drawLine(Graphics g, Line l) {
+		 g.drawLine(l.getStartPoint().x, l.getStartPoint().y, l.getEndPoint().x, l.getEndPoint().y);
 	}
 	
 	public void paint(Graphics g) {
@@ -345,6 +369,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		// draw element
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 				drawElement(g, i.next());
+		}
+		
+		for(Iterator<Line> i = this.lineList.iterator(); i.hasNext(); ) {
+			drawLine(g, i.next());
 		}
 
 	}
