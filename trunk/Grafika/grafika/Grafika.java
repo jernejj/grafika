@@ -18,7 +18,6 @@ public class Grafika extends JApplet {
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
 		this.setSize(1024,768);
-		this.setMinimumSize(new Dimension(800,600));
 		BorderLayout bl = new BorderLayout(0, 0);
 		// TODO: 
 		// bl.setHgap(0);
