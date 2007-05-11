@@ -85,8 +85,8 @@ public class Element {
 				sizeX = 30;
 				sizeY = 47;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(6,0));
 				this.pin1.setDown(new Point(9,5));
@@ -101,8 +101,8 @@ public class Element {
 				sizeX = 28;
 				sizeY = 47;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(5,0));
 				this.pin1.setDown(new Point(8,12));
@@ -117,8 +117,8 @@ public class Element {
 				sizeX = 30;
 				sizeY = 57;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(6,0));
 				this.pin1.setDown(new Point(9,5));
@@ -133,8 +133,8 @@ public class Element {
 				sizeX = 28;
 				sizeY = 57;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(5,0));
 				this.pin1.setDown(new Point(8,12));
@@ -149,8 +149,8 @@ public class Element {
 				sizeX = 28;
 				sizeY = 52;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(5,0));
 				this.pin1.setDown(new Point(8,8));
@@ -165,8 +165,8 @@ public class Element {
 				sizeX = 28;
 				sizeY = 62;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
-				this.pin2 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin2 = new Pin(Pin.IN2);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(5,0));
 				this.pin1.setDown(new Point(8,8));
@@ -181,7 +181,7 @@ public class Element {
 				sizeX = 30;
 				sizeY = 46;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN);
+				this.pin1 = new Pin(Pin.IN1);
 				this.out = new Pin(Pin.OUT);
 				this.pin1.setUp(new Point(13,0));
 				this.pin1.setDown(new Point(16,5));
@@ -356,5 +356,34 @@ public class Element {
 	
 	public void setOut(int value) {
 		this.out.setValue(value);
+	}
+	
+	public void setLineToPin1(Line line_to_pin1) {
+		this.toPin1 = line_to_pin1;
+	}
+
+	public void setLineToPin2(Line line_to_pin2) {
+		this.toPin2 = line_to_pin2;
+	}
+	
+	public void setLineToOut(Line line_to_out) {
+		this.toOut = line_to_out;
+	}
+	
+	public void setLine(Line line, Pin pin) {
+		switch(pin.getType()) {
+			case Pin.IN1:
+				this.toPin1 = line;
+				break;
+			case Pin.IN2:
+				this.toPin2 = line;
+				break;
+			case Pin.OUT:
+				this.toOut = line;
+				break;
+			default:
+				System.err.println("Wrong ping!");
+				System.exit(103);
+		}
 	}
 }
