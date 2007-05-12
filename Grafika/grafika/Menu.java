@@ -22,28 +22,28 @@ class Menu extends JPanel implements ActionListener{
 	
   	JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
     	// Pozicija ToolTipa
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b3 = new JButton(createImageIcon("../grafika/logicalOperators/nandV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b4 = new JButton(createImageIcon("../grafika/logicalOperators/norV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b5 = new JButton(createImageIcon("../grafika/logicalOperators/xorV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b6 = new JButton(createImageIcon("../grafika/logicalOperators/xnorV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"))
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
-	JButton b8 = new JButton(createImageIcon("../grafika/logicalOperators/gnd.png"));
-	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"));
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
+	JButton b8 = new JButton(createImageIcon("../grafika/logicalOperators/gnd.png"))
+		{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
+	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"))
+		{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b10 = new JButton("BOX")
-    	{ public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0); } };
+    	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
 
     Grafika parent;   
-
     boolean locked=false;
-
 
     Menu(Grafika myparent) {
     	parent = myparent;
@@ -73,6 +73,10 @@ class Menu extends JPanel implements ActionListener{
         b6.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("file:grafika/logicalOperators/notTruthTable.png");
         b7.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("GND");
+        b8.setToolTipText(toolTip.getToolTip());
+        toolTip.setToolTip("VCC");
+        b9.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("BOX");
         b10.setToolTipText(toolTip.getToolTip());
         
@@ -83,6 +87,8 @@ class Menu extends JPanel implements ActionListener{
         b5.addActionListener(this);
         b6.addActionListener(this);
         b7.addActionListener(this);
+        b8.addActionListener(this);
+        b9.addActionListener(this);
         b10.addActionListener(this);
         b1.setActionCommand("AND");
         b2.setActionCommand("OR");
@@ -91,10 +97,11 @@ class Menu extends JPanel implements ActionListener{
         b5.setActionCommand("XOR");
         b6.setActionCommand("XNOR");
         b7.setActionCommand("NOT");
+        b8.setActionCommand("GND");
+        b9.setActionCommand("VCC");
         b10.setActionCommand("BOX");
         
         c.insets = new Insets(10,0,0,0);
-        c.ipady=10;
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
@@ -127,6 +134,8 @@ class Menu extends JPanel implements ActionListener{
     	c.gridwidth = 2;
     	c.gridx = 0;
     	c.gridy = 8;
+    	c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
+    	c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
     	add(b10,c);
     	
     	// Omogocimo, da je ToolTip viden cez vse elemente layouta
@@ -140,7 +149,6 @@ class Menu extends JPanel implements ActionListener{
 		if (e.getSource() instanceof JButton) {
 			if (e.getActionCommand().equals("AND")) {
 				if (!locked) {
-					/** TODO */ 
 					parent.GrafikaCanvas.elementType = Element.AND; 
 					parent.documentation.doctext.showline("AND");
 				}
@@ -187,7 +195,21 @@ class Menu extends JPanel implements ActionListener{
 					parent.documentation.doctext.showline("NOT");
 				}
 				else parent.documentation.doctext.showline("LOCKED");
-			} 
+			}
+			if (e.getActionCommand().equals("GND")) {
+				if(!locked) {
+					parent.GrafikaCanvas.elementType = Element.GND; 
+					parent.documentation.doctext.showline("GND");
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}
+			if (e.getActionCommand().equals("VCC")) {
+				if(!locked) {
+					parent.GrafikaCanvas.elementType = Element.VCC; 
+					parent.documentation.doctext.showline("VCC");
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}
 			if (e.getActionCommand().equals("BOX")) {
 				if(!locked) {
 					// parent.GrafikaCanvas.elementType = Element.BOX; 
