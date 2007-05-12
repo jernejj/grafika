@@ -296,7 +296,23 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 				return e.getOut();
 			}
-		} 
+		}
+		else if (e.getType() == Element.GND) {
+			// Out clicked
+			if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
+				System.out.println("Out clicked.");
+
+				return e.getOut();
+			}
+		}
+		else if (e.getType() == Element.VCC) {
+			// Out clicked
+			if(absX > e.getOutUpPosition().x &&  absX < e.getOutDownPosition().x && absY > e.getOutUpPosition().y &&  absY < e.getOutDownPosition().y) {
+				System.out.println("Out clicked.");
+
+				return e.getOut();
+			}
+		}
 		else {
 			// Pin1 clicked
 			if( absX > e.getPin1upPosition().x &&  absX < e.getPin1downPosition().x && absY > e.getPin1upPosition().y &&  absY < e.getPin1downPosition().y) {
