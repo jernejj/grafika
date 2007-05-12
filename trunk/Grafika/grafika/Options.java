@@ -47,8 +47,12 @@ public class Options extends JPanel implements ActionListener{
         b5.setActionCommand("EXAMPLE");
         b6.setActionCommand("EXIT");
         
+        // Global settings
         c.insets = new Insets(10,0,0,0);
         c.gridwidth = 1;
+        c.ipady=10;
+        
+        // Button settings
         c.gridx = 0;
         c.gridy = 0;
     	add(b1,c);
