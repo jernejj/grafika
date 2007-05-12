@@ -47,7 +47,7 @@ class Menu extends JPanel implements ActionListener{
     Menu(Grafika myparent) {
     	parent = myparent;
     	setBackground(Color.WHITE);
-    	//setLayout(new GridLayout(8, 1, 0, 10));
+    	
     	setLayout(new GridBagLayout());
     	GridBagConstraints c = new GridBagConstraints();
     	c.fill = GridBagConstraints.HORIZONTAL;
