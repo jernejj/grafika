@@ -19,9 +19,6 @@ public class Grafika extends JApplet {
 		this.setForeground(Color.WHITE);
 		this.setSize(1024,768);
 		BorderLayout bl = new BorderLayout(0, 0);
-		// TODO: 
-		// bl.setHgap(0);
-		// bl.setVgap(0);
 		this.setLayout(bl);
 		this.add("Center", GrafikaCanvas);
 		this.add("North", documentation);
