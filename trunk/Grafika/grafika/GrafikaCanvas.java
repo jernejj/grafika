@@ -88,12 +88,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		setBackground(Color.WHITE);
 	}
 
-	/** removes graph from screen */
+	/** removes elements and arrows from screen */
 	public void clear() {
 		init();
 		this.elementList.clear();
-		// TODO: pobrisi povezave
-		if (algrthm != null) algrthm.stop();
+		this.lineList.clear();
 		parent.unlock();
 		repaint();
 	}
