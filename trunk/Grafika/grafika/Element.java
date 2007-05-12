@@ -195,8 +195,8 @@ public class Element {
 				sizeY = 24;
 				size = sizeX * sizeY;
 				this.out = new Pin(Pin.OUT);
-				this.out.setUp(new Point(10,18));
-				this.out.setDown(new Point(13,23));
+				this.out.setUp(new Point(10,0));
+				this.out.setDown(new Point(13,5));
 				break;
 			case VCC:
 				this.type = Element.VCC;
