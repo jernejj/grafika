@@ -2,14 +2,19 @@ package grafika;
 
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-
-
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Options extends JPanel {
+@SuppressWarnings("serial")
+public class Options extends JPanel implements ActionListener{
 
-//	set of options at the right of the screen
+	// Set of options at the right of the screen
 	JButton b1 = new JButton("clear");
 	JButton b2 = new JButton("run");
 	JButton b3 = new JButton("step");
@@ -18,72 +23,106 @@ public class Options extends JPanel {
 	JButton b6 = new JButton("exit");
 
 	Grafika parent;   
-
-	boolean Locked=false;
-
+	boolean locked=false;
 
 	Options(Grafika myparent) {
 		parent = myparent;
 		setBackground(Color.WHITE);
-		setLayout(new GridLayout(6, 1, 0, 10));
-		add(b1);
-		add(b2);
-		add(b3);
-		add(b4);
-		add(b5); 
-		add(b6);
+		
+		setLayout(new GridBagLayout());
+    	GridBagConstraints c = new GridBagConstraints();
+    	c.fill = GridBagConstraints.HORIZONTAL;
+        
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        b4.addActionListener(this);
+        b5.addActionListener(this);
+        b6.addActionListener(this);
+
+        b1.setActionCommand("CLEAR");
+        b2.setActionCommand("RUN");
+        b3.setActionCommand("STEP");
+        b4.setActionCommand("RESET");
+        b5.setActionCommand("EXAMPLE");
+        b6.setActionCommand("EXIT");
+        
+        c.insets = new Insets(10,0,0,0);
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+    	add(b1,c);
+    	c.gridx = 0;
+    	c.gridy = 1;
+    	add(b2,c);
+    	c.gridx = 0;
+    	c.gridy = 2;
+    	add(b3,c);
+    	c.gridx = 0;
+    	c.gridy = 3;
+    	add(b4,c);
+    	c.gridx = 0;
+    	c.gridy = 4;
+    	add(b5,c); 
+    	c.gridx = 0;
+    	c.gridy = 5;
+    	c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
+    	c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
+    	add(b6,c);
+    	
+    	// Omogocimo, da je ToolTip viden cez vse elemente layouta
+    	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+    	ToolTipManager ttm = ToolTipManager.sharedInstance();
+    	ttm.setLightWeightPopupEnabled(false);
 	}
 
-
-	public boolean action(Event evt, Object arg) {
-
-		if (evt.target instanceof JButton) {
-			if (((String)arg).equals("step")) {
-				if (!Locked) {
-					b3.setLabel("next step");
-					//parent.GrafikaCanvas.stepalg();
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() instanceof JButton) {
+			if (e.getActionCommand().equals("CLEAR")) {
+				if (!locked) {
+					parent.GrafikaCanvas.clear();
 				}
-				else parent.documentation.doctext.showline("locked");
+				else parent.documentation.doctext.showline("LOCKED");
 			}
-			if (((String)arg).equals("next step")) 
-				parent.GrafikaCanvas.nextstep();
-			if (((String)arg).equals("reset")) { 
-				parent.GrafikaCanvas.reset();
-				b3.setLabel("step");
-				parent.documentation.doctext.showline("all items");
+			if (e.getActionCommand().equals("RUN")) {
+				if(!locked) {
+					
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}				
+			if (e.getActionCommand().equals("STEP")) { 
+				if(!locked) {
+					
+				}
+				else parent.documentation.doctext.showline("LOCKED");
 			}
-			if (((String)arg).equals("clear")) { 
-				parent.GrafikaCanvas.clear();
-				b3.setLabel("step");
-				parent.documentation.doctext.showline("all items");
+			if (e.getActionCommand().equals("RESET")) { 
+				if(!locked) {
+					
+				}
+				else parent.documentation.doctext.showline("LOCKED");
 			}
-			if (((String)arg).equals("run")) {
-				if (!Locked)  
-					//parent.GrafikaCanvas.runalg();
-				//else parent.documentation.doctext.showline("locked");
-					;
+			if (e.getActionCommand().equals("EXAMPLE")) {
+				if(!locked) {
+					
+				}
+				else parent.documentation.doctext.showline("LOCKED");
 			}
-			if (((String)arg).equals("example")) {
-				if (!Locked)   
-					parent.GrafikaCanvas.showexample();
-				else parent.documentation.doctext.showline("locked");
-			} 
-			if (((String)arg).equals("exit")) { 
-				System.exit(0);
+			if (e.getActionCommand().equals("EXIT")) {
+				if(!locked) {
+					System.exit(0);
+				}
+				else parent.documentation.doctext.showline("LOCKED");
 			} 
 		}                   
-		return true; 
-	}
-
-
+    }
 
 	public void lock() {
-		Locked=true;
+		locked=true;
 	}
 
 
 	public void unlock() {
-		Locked=false;
-		b3.setLabel("step"); 
+		locked=false;
 	} 
 }    
