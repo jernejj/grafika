@@ -100,7 +100,10 @@ class Menu extends JPanel implements ActionListener{
         b9.setActionCommand("VCC");
         b10.setActionCommand("BOX");
         
+        // Global settings
         c.insets = new Insets(10,0,0,0);
+        
+        // Button settings
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
