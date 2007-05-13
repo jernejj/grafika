@@ -37,7 +37,10 @@ public class Element {
 	
 	public Element(int type, Point position) {
 		this.position = position;
-		setType(type);	
+		setType(type);
+		this.toPin1 = null;
+		this.toPin2 = null;
+		this.toOut = null;
 	}
 	
 	public int getSizeX() {
@@ -278,6 +281,17 @@ public class Element {
 		}
 	}
 	
+	public Pin getPin(int type) {
+		if(type == Pin.IN1)
+			return this.pin1;
+		else if(type == Pin.IN2)
+			return this.pin2;
+		else if(type == Pin.OUT)
+			return this.out;
+		else 
+			return null;
+	}
+	
 	public Pin getPin1() {
 		return this.pin1;
 	}
@@ -368,6 +382,18 @@ public class Element {
 		this.toPin2 = line_to_pin2;
 	}
 	
+	public Line getLineToOut() {
+		return this.toOut;
+	}
+	
+	public Line getLineToPin1() {
+		return this.toPin1; 
+	}
+
+	public Line getLineToPin2() {
+		return this.toPin2; 
+	}
+	
 	public void setLineToOut(Line line_to_out) {
 		this.toOut = line_to_out;
 	}
@@ -386,6 +412,20 @@ public class Element {
 			default:
 				System.err.println("Wrong ping!");
 				System.exit(103);
+		}
+	}
+	public Line getLine(int type) {
+		switch(type) {
+			case Pin.IN1:
+				return this.toPin1 ;
+			case Pin.IN2:
+				return this.toPin2;
+			case Pin.OUT:
+				return this.toOut;
+			default:
+				System.err.println("Wrong ping!");
+				System.exit(103);
+				return null;
 		}
 	}
 }
