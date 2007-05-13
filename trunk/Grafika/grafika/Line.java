@@ -3,50 +3,50 @@ package grafika;
 import java.awt.Point;
 
 public class Line {
-	Element oneEnd;
-	Element otherEnd;
+	private Element out;
+	private Element in;
 	
-	private Point startPoint;
-	private Point endPoint;
+	private Point outPoint;
+	private Point inPoint;
 	
 	public Line() {
 		
 	}
 	
-	public Line(Element first, Element second) {
-		this.oneEnd = first;
-		this.otherEnd = second;
+	public Line(Element out, Element in) {
+		this.out = out;
+		this.in = in;
 	}
 	
-	public void setOneEndElement(Element e) {
-		this.oneEnd = e;
+	public void setPartTowardsOut(Element out) {
+		this.out = out;
 	}
 	
-	public void setOtherEndElement(Element e) {
-		this.otherEnd = e;
+	public void setPartTowardsIn(Element in) {
+		this.in = in;
 	}
 	
-	public Element getOneEndElement() {
-		return this.oneEnd;
+	public Element getPartTowardsOut() {
+		return this.out;
 	}
 	
-	public Element getOtherEndElement() {
-		return this.otherEnd;
+	public Element getPartTowardsIn() {
+		return this.in;
 	}
 	
-	public Point getStartPoint() {
-		return this.startPoint;
+	public Point getOutPoint() {
+		return this.outPoint;
 	}
 	
-	public void setStartPoint(Point starting_position) {
-		this.startPoint = starting_position;
+	public void setOutPoint(Point out) {
+		this.outPoint = out;
 	}
 	
-	public Point getEndPoint() {
-		return this.endPoint;
+	public Point getInPoint() {
+		return this.inPoint;
 	}
 	
-	public void setEndPoint(Point ending_position) {
-		this.endPoint = ending_position;
+	public void setInPoint(Point in) {
+		this.inPoint = in;
 	}
 }
