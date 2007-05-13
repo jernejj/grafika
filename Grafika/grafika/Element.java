@@ -197,6 +197,7 @@ public class Element {
 				this.out = new Pin(Pin.OUT);
 				this.out.setUp(new Point(10,0));
 				this.out.setDown(new Point(13,5));
+				this.out.setValue(0);
 				break;
 			case VCC:
 				this.type = Element.VCC;
@@ -207,6 +208,7 @@ public class Element {
 				this.out = new Pin(Pin.OUT);
 				this.out.setUp(new Point(7,18));
 				this.out.setDown(new Point(10,23));
+				this.out.setValue(1);
 				break;
 			default:
 				System.err.print("Invalid Type!");
