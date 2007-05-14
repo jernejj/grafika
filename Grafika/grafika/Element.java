@@ -428,4 +428,8 @@ public class Element {
 				return null;
 		}
 	}
+	
+	public String toString(){
+		return getElementType(this.type);
+	}
 }
