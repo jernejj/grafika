@@ -523,13 +523,14 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		g.setFont(roman);
 		g.setColor(Color.black);
 
-		// draw element
-		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
-				drawElement(g, i.next());
-		}
-		
+		// draw lines
 		for(Iterator<Line> i = this.lineList.iterator(); i.hasNext(); ) {
 			drawLine(g, i.next());
+		}
+		
+		// draw elements
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+				drawElement(g, i.next());
 		}
 	}
 	
