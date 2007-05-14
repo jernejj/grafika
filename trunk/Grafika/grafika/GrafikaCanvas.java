@@ -176,7 +176,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				}
 				//Delete line
 				if(null != (selectedLine = lineHit(x, y, 0.05))){
-					lineList.remove(selectedLine);
+					lineDelete(selectedLine);
 				}
 			}
 			else if (null != (temp = elementHit(x, y))) { 
@@ -307,7 +307,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					}
 				} 
 				else {
-					this.lineList.remove(tempLine);
+				//	this.lineList.remove(tempLine);
+					lineDelete(tempLine);
 				}
 				tempLine = null;
 				drawLine = false;
@@ -462,6 +463,33 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			this.lineList.remove(tmpLine);
 		}
 		this.elementList.remove(e);
+	}
+	
+	/**
+	 * Pobrise Line l, ter se pobrise povezava na pinih elementov na katere je pritrjena 
+	 * @param l
+	 */
+	public void lineDelete(Line l){
+		Element tmpElement;
+		if(null != (tmpElement = l.getPartTowardsIn())  ){
+	//		System.out.println(tmpElement.toString());
+			//na kateri pin je povezana povezava, potrebno je tistemu pinu pobrisat povezavo
+			if(tmpElement.getLineToPin1() == l )
+				tmpElement.setLineToPin1(null);
+			else if(tmpElement.getLineToPin2() == l)
+				tmpElement.setLineToPin2(null);
+			else
+				System.err.print("Error in line delete in pin");
+		}
+		if(null !=(tmpElement = l.getPartTowardsOut() ) ) {
+			//ce je line povezana na kaksen out pin, je treba ta out pin nastavit na null
+			if(tmpElement.getLineToOut() == l)
+				tmpElement.setLineToOut(null);
+			else
+				System.err.println("Error in line delete out pin");
+		}
+					
+		this.lineList.remove(l);
 	}
 	
 	// brez tega prihaja do blinkanja 
