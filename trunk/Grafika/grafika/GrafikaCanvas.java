@@ -377,11 +377,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		}
 		return null;
 	}
-	
-	public Point pinPosition(Element element, Pin pin) {
-		return new Point(pin.getPinPosition().x + element.getPosition().x, pin.getPinPosition().y + element.getPosition().y);
-	}	
-	
+		
 	private Point offset(Element e, Point p) {
 		int offsetX = p.x - e.getXposition();
 		int offsetY = p.y - e.getYposition();
@@ -397,22 +393,36 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return false;
 	}
 
-	/** TODO: pobrisi gradnik in pripadajoce povezave
-	 * delete a node and the arrows coming into/outof the node
-	 */
 	public void elementDelete(Element e) {
-		this.elementList.remove(e);
-		
-		Line tmp;
-		if(null != (tmp = e.getLineToOut())) {
+		Line tmpLine;
+		Element tmpElement;
+		if(null != (tmpLine = e.getLineToOut())) {
+			// System.out.println(tmpLine.toString());
 			// Ce obstaja povezava pin_out, potem je potrebno pripadajocemu elementu nastaviti pin_in na null.
-			//tmp.in
+			tmpElement = tmpLine.getPartTowardsIn();
+			if(tmpElement.getLineToPin1() == tmpLine)
+				tmpElement.setLineToPin1(null);
+			if(tmpElement.getLineToPin2() == tmpLine)
+				tmpElement.setLineToPin2(null);
+			this.lineList.remove(tmpLine);
 		}
-	}
-
-	// TODO: line update
-	public void lineUpdate(int p1, int p2) {
-		
+		if(null != (tmpLine = e.getLineToPin1())) {
+			// System.out.println(tmpLine.toString());
+			// Ce obstaja povezava pin_in1, potem je potrebno pripadajocemu elementu nastaviti pin_out na null.
+			tmpElement = tmpLine.getPartTowardsOut();
+			if(tmpElement.getLineToOut() == tmpLine)
+				tmpElement.setLineToOut(null);
+			this.lineList.remove(tmpLine);
+		}
+		if(null != (tmpLine = e.getLineToPin2())) {
+			// System.out.println(tmpLine.toString());
+			// Ce obstaja povezava pin_in2, potem je potrebno pripadajocemu elementu nastaviti pin_out na null.
+			tmpElement = tmpLine.getPartTowardsOut();
+			if(tmpElement.getLineToOut() == tmpLine)
+				tmpElement.setLineToOut(null);
+			this.lineList.remove(tmpLine);
+		}
+		this.elementList.remove(e);
 	}
 	
 	// brez tega prihaja do blinkanja 
