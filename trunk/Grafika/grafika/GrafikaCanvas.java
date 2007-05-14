@@ -174,6 +174,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				if ( null != (temp=elementHit(x, y))) {
 					elementDelete(temp);
 				}
+				//Delete line
+				if(null != (selectedLine = lineHit(x, y, 0.05))){
+					lineList.remove(selectedLine);
+				}
 			}
 			else if (null != (temp = elementHit(x, y))) { 
 				// Zadel si element
