@@ -19,6 +19,7 @@ public class Line {
 	public Line(Element out, Element in) {
 		this.out = out;
 		this.in = in;
+		this.color = Color.BLACK;
 	}
 	
 	public void setPartTowardsOut(Element out) {
