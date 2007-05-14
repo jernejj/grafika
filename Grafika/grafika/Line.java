@@ -1,16 +1,19 @@
 package grafika;
 
+import java.awt.Color;
 import java.awt.Point;
 
 public class Line {
 	private Element out;
 	private Element in;
 	
+	private Color color;
+	
 	private Point outPoint;
 	private Point inPoint;
 	
 	public Line() {
-		
+		this.color = Color.BLACK;
 	}
 	
 	public Line(Element out, Element in) {
@@ -48,5 +51,13 @@ public class Line {
 	
 	public void setInPoint(Point in) {
 		this.inPoint = in;
+	}
+	
+	public void setColor(Color c) {
+		this.color = c;
+	}
+	
+	public Color getColor() {
+		return this.color;
 	}
 }
