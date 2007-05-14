@@ -211,11 +211,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					selectedElement.setLine(tempLine,selectedPin);	
 				}
 			}
-			else if(null != (selectedLine = lineHit(x,y,1))) {
+			else if(null != (selectedLine = lineHit(x, y, 0.05))) {
 				System.err.println("SelectedLine: "+selectedLine.toString());
-				if(selectedLine.getColor() == Color.BLACK)
+				if(selectedLine.getColor().equals(Color.BLACK))
 					selectedLine.setColor(Color.RED);
-				else
+				else if(selectedLine.getColor().equals(Color.RED))
 					selectedLine.setColor(Color.BLACK);
 			}
 			else {
@@ -397,32 +397,32 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return new Point(x - offset.x, y - offset.y);
 	}
 	
-	public Line lineHit(int x, int y, int dist) {
+	public Line lineHit(int x, int y, double dist) {
 		// TODO: poglej, ce si zadel povezavo
 		Line tmpLine = null;
-		// int d,A,B;
-		float k;
+		double d,A,B;
+//		float k;
 		Point i;
 		Point j;
 		for(Iterator<Line> l = this.lineList.iterator(); l.hasNext();) {
 			tmpLine = l.next();
 			i = tmpLine.getOutPoint();
 			j = tmpLine.getInPoint();
-			/*
+			
 			d = d(i,j);
 			A = d(i.x, i.y, x, y);
 			B = d(j.x, j.y, x, y);
 			
-			if( ((A + B) < (d+1)) &&  ((A + B) > (d-1)))
-				return tmpLine;*/
-			
-			if((i.x - j.x) < 0.000000001)
-				k = 0;
-			else
-				k = (i.y - j.y)/(i.x - j.x);
-			
-			if( (y <= ( k*(x - i.x) + i.y + dist)) && (y >= ( k*(x - i.x) + i.y - dist)))
+			if( ((A + B) < (d+dist)) &&  ((A + B) > (d-dist)))
 				return tmpLine;
+			
+//			if((i.x - j.x) < 0.000000001)
+//				k = 0;
+//			else
+//				k = (i.y - j.y)/(i.x - j.x);
+//			
+//			if( (y <= ( k*(x - i.x) + i.y + dist)) && (y >= ( k*(x - i.x) + i.y - dist)))
+//				return tmpLine;
 			
 		}
 		return null;
@@ -494,6 +494,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	
 	public void drawLine(Graphics g, Line l) {
 		g.setColor(l.getColor());
+//		System.err.println(l.getColor().toString());
 		g.drawLine(l.getOutPoint().x, l.getOutPoint().y, l.getInPoint().x, l.getInPoint().y);
 		g.setColor(Color.BLACK);
 	}
@@ -532,11 +533,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		}
 	}
 	
-	private int d(Point i, Point j) {
-		return (int) Math.sqrt(Math.pow((double)(j.x-i.x), 2.0) + Math.pow((double)(j.y-i.y), 2.0));
+	private double d(Point i, Point j) {
+		return  Math.sqrt(Math.pow((double)(j.x-i.x), 2.0) + Math.pow((double)(j.y-i.y), 2.0));
 	}
 	
-	private int d(int x1, int y1, int x2, int y2) {
-		return (int) Math.sqrt(Math.pow((double)(x2-x1), 2.0) + Math.pow((double)(y2-y1), 2.0));
+	private double d(int x1, int y1, int x2, int y2) {
+		return  Math.sqrt(Math.pow((double)(x2-x1), 2.0) + Math.pow((double)(y2-y1), 2.0));
 	}
 }
