@@ -35,6 +35,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	private Element tempElement = null;
 	private Pin selectedPin = null;
 	private Line tempLine = null;
+	private Line selectedLine = null;
 	private Point offset = null;
 
 	// fonts
@@ -144,6 +145,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// TODO: Dodajmo en primer za zacetek
 	public void showexample() {
 		// draws a graph on the screen
+		@SuppressWarnings("unused")
 		int w, h;
 		clear();
 		init();
@@ -208,6 +210,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					lineList.add(tempLine);
 					selectedElement.setLine(tempLine,selectedPin);	
 				}
+			}
+			else if(null != (selectedLine = lineHit(x,y,1))) {
+				System.err.println("SelectedLine: "+selectedLine.toString());
+				if(selectedLine.getColor() == Color.BLACK)
+					selectedLine.setColor(Color.RED);
+				else
+					selectedLine.setColor(Color.BLACK);
 			}
 			else {
 				// Zadel si prazno polje, narisemo nov izbrani element!
@@ -388,9 +397,35 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return new Point(x - offset.x, y - offset.y);
 	}
 	
-	public boolean lineHit(int x, int y, int dist) {
+	public Line lineHit(int x, int y, int dist) {
 		// TODO: poglej, ce si zadel povezavo
-		return false;
+		Line tmpLine = null;
+		// int d,A,B;
+		float k;
+		Point i;
+		Point j;
+		for(Iterator<Line> l = this.lineList.iterator(); l.hasNext();) {
+			tmpLine = l.next();
+			i = tmpLine.getOutPoint();
+			j = tmpLine.getInPoint();
+			/*
+			d = d(i,j);
+			A = d(i.x, i.y, x, y);
+			B = d(j.x, j.y, x, y);
+			
+			if( ((A + B) < (d+1)) &&  ((A + B) > (d-1)))
+				return tmpLine;*/
+			
+			if((i.x - j.x) < 0.000000001)
+				k = 0;
+			else
+				k = (i.y - j.y)/(i.x - j.x);
+			
+			if( (y <= ( k*(x - i.x) + i.y + dist)) && (y >= ( k*(x - i.x) + i.y - dist)))
+				return tmpLine;
+			
+		}
+		return null;
 	}
 
 	public void elementDelete(Element e) {
@@ -458,7 +493,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 	
 	public void drawLine(Graphics g, Line l) {
-		 g.drawLine(l.getOutPoint().x, l.getOutPoint().y, l.getInPoint().x, l.getInPoint().y);
+		g.setColor(l.getColor());
+		g.drawLine(l.getOutPoint().x, l.getOutPoint().y, l.getInPoint().x, l.getInPoint().y);
+		g.setColor(Color.BLACK);
 	}
 	
 	private void repositionLines(Element e, int x, int y) {
@@ -493,6 +530,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		for(Iterator<Line> i = this.lineList.iterator(); i.hasNext(); ) {
 			drawLine(g, i.next());
 		}
-
+	}
+	
+	private int d(Point i, Point j) {
+		return (int) Math.sqrt(Math.pow((double)(j.x-i.x), 2.0) + Math.pow((double)(j.y-i.y), 2.0));
+	}
+	
+	private int d(int x1, int y1, int x2, int y2) {
+		return (int) Math.sqrt(Math.pow((double)(x2-x1), 2.0) + Math.pow((double)(y2-y1), 2.0));
 	}
 }
