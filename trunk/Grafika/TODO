@@ -1,6 +1,16 @@
 TODO:
 
-1. brisanje povezav
+1. Ko bo algoritem racunal je potrebno paziti na cikle. Lahko mogoce pogledamo na to, ze pri samem povezovanju povezav.
+   Sepravi funkcija, ki bo delala nekaj v stilu: 
+  Ce delamo povezavo v smeri: out -> in
+  	temp = izbraniElement.next
+  	if( temp == izbranielement)
+  		break ali false
+  	
+  	... mogoce raje ... dodajmo gumb, scheme consistency, ki tako samo enkrat pred racuanjem preveri pravilnost sheme, 
+  	lahko pa to izvedemo kar avtomasko in povezavo, ki je napacna nekako obarvamo
+  	
+
 2. undo, redo! (vse kar dodas na canvas se shranis v nek seznam po katerem se potem lahko premikas naprej in nazaj)
 
 3. nastavi cas med dvema 'vrsticama'/ korakoma pravilnostne tabele  
@@ -16,7 +26,7 @@ TODO:
 
 99. Ne vemo kateri element je izbrani!
 
-100. Popravi nodehit funkcijo, da bo preverjala realno stanje elementa in ne celotne slike oz. nekega navideznega podrocja.
+100. Popravi elementHit funkcijo, da bo preverjala realno stanje elementa in ne celotne slike oz. nekega navideznega podrocja.
 
 
 
