@@ -33,7 +33,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	private boolean clicked = false;
 	private Element selectedElement = null;
 	private Element tempElement = null;
+	private Element elementOnMouseDown = null;
 	private Pin selectedPin = null;
+	private Pin pinOnMouseDown = null;
 	private Line tempLine = null;
 	private Line selectedLine = null;
 	private Point offset = null;
@@ -181,38 +183,41 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			}
 			else if (null != (temp = elementHit(x, y))) { 
 				// Zadel si element
-				selectedElement = temp;
+				elementOnMouseDown = selectedElement = temp;
 				offset = offset(selectedElement,new Point(x,y));
 				moveElement = true;
+				System.err.println("MouseDown: "+elementOnMouseDown);
 				
 				Pin tempPin = null;
 				if(null != (tempPin = pinHit(temp,x,y))) {
 					moveElement = false;
-					drawLine = true;
-					selectedPin = tempPin;
-					if(tempPin.getType() == Pin.IN1) { 
-						tempLine = new Line(null, null);
-						tempLine.setPartTowardsIn(selectedElement);
-						tempLine.setInPoint(new Point(x - offset.x + temp.getPin1upPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getPin1upPosition().y + tempPin.getPinPosition().y));
-						tempLine.setOutPoint(tempLine.getInPoint());
+					if(!temp.isPinSet(tempPin.getType())) {
+						drawLine = true;
+						pinOnMouseDown = selectedPin = tempPin;
+						if(tempPin.getType() == Pin.IN1) { 
+							tempLine = new Line(null, null);
+							tempLine.setPartTowardsIn(selectedElement);
+							tempLine.setInPoint(new Point(x - offset.x + temp.getPin1upPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getPin1upPosition().y + tempPin.getPinPosition().y));
+							tempLine.setOutPoint(tempLine.getInPoint());
+						}
+						else if(tempPin.getType() == Pin.IN2) {
+							tempLine = new Line(null, null);
+							tempLine.setPartTowardsIn(selectedElement);
+							tempLine.setInPoint(new Point(x - offset.x + temp.getPin2upPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getPin2upPosition().y + tempPin.getPinPosition().y));
+							tempLine.setOutPoint(tempLine.getInPoint());
+						}
+						else if(tempPin.getType() == Pin.OUT){ 
+							tempLine = new Line(null, null);
+							tempLine.setPartTowardsOut(selectedElement);
+							tempLine.setOutPoint(new Point(x - offset.x + temp.getOutUpPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getOutUpPosition().y + tempPin.getPinPosition().y));
+							tempLine.setInPoint(tempLine.getOutPoint());
+						}
+						else {
+							System.err.println("PIN ?!?");
+						}
+						lineList.add(tempLine);
+						selectedElement.setLine(tempLine,selectedPin);	
 					}
-					else if(tempPin.getType() == Pin.IN2) {
-						tempLine = new Line(null, null);
-						tempLine.setPartTowardsIn(selectedElement);
-						tempLine.setInPoint(new Point(x - offset.x + temp.getPin2upPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getPin2upPosition().y + tempPin.getPinPosition().y));
-						tempLine.setOutPoint(tempLine.getInPoint());
-					}
-					else if(tempPin.getType() == Pin.OUT){ 
-						tempLine = new Line(null, null);
-						tempLine.setPartTowardsOut(selectedElement);
-						tempLine.setOutPoint(new Point(x - offset.x + temp.getOutUpPosition().x  + tempPin.getPinPosition().x, y - offset.y + temp.getOutUpPosition().y + tempPin.getPinPosition().y));
-						tempLine.setInPoint(tempLine.getOutPoint());
-					}
-					else {
-						System.err.println("PIN ?!?");
-					}
-					lineList.add(tempLine);
-					selectedElement.setLine(tempLine,selectedPin);	
 				}
 			}
 			else if(null != (selectedLine = lineHit(x, y, 0.05))) {
@@ -273,37 +278,41 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				moveElement = false;
 			}
 			else if(drawLine) {
-				if((null != (tempElement =  elementHit(x,y))) && (tempElement != selectedElement)) {
-					Pin tempPin = null;
-
-					// if (pinHit) -> tempPin is pinHit
-					if(null != (tempPin = pinHit(tempElement, x, y))) {
-						offset = offset(tempElement,new Point(x,y));
-									
-						// TODO: 5555 (glej list)
-
-						if(tempPin.getType() == Pin.IN1) {
-							tempLine.setPartTowardsIn(tempElement);
-							tempElement.setLine(tempLine,tempPin);
-							tempLine.setInPoint(new Point((x - offset.x) + tempElement.getPin1upPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getPin1upPosition().y + tempPin.getPinPosition().y));
+				if(null != (tempElement =  elementHit(x,y))) {					
+					if(tempElement != elementOnMouseDown) {
+						Pin tempPin = null;
+						if(null != (tempPin = pinHit(tempElement, x, y))) {
+							if((!tempElement.isPinSet(tempPin.getType())) && (pinOnMouseDown.getType() != tempPin.getType()) && ((pinOnMouseDown.getType() == Pin.OUT && tempPin.getType() == Pin.IN1) || (pinOnMouseDown.getType() == Pin.IN1 && tempPin.getType() == Pin.OUT) || (pinOnMouseDown.getType() == Pin.IN2 && tempPin.getType() == Pin.OUT) || (pinOnMouseDown.getType() == Pin.OUT && tempPin.getType() == Pin.IN2))) {
+								offset = offset(tempElement,new Point(x,y));
+								if(tempPin.getType() == Pin.IN1) {
+									tempLine.setPartTowardsIn(tempElement);
+									tempElement.setLine(tempLine,tempPin);
+									tempLine.setInPoint(new Point((x - offset.x) + tempElement.getPin1upPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getPin1upPosition().y + tempPin.getPinPosition().y));
+								}
+								else if (tempPin.getType() == Pin.IN2) {
+									tempLine.setPartTowardsIn(tempElement);
+									tempElement.setLine(tempLine,tempPin);
+									tempLine.setInPoint(new Point((x - offset.x) + tempElement.getPin2upPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getPin2upPosition().y + tempPin.getPinPosition().y));
+								}
+								else if(tempPin.getType() == Pin.OUT){ 
+									tempLine.setPartTowardsOut(tempElement);
+									tempElement.setLine(tempLine,tempPin);
+									tempLine.setOutPoint(new Point((x - offset.x) + tempElement.getOutUpPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getOutUpPosition().y + tempPin.getPinPosition().y));
+								}
+								else {
+									System.err.println("PIN ?!?");
+								}
+								tempElement = null;
+							} else {
+								lineDelete(tempLine);
+								tempElement = null;
+							}
+						} else {
+							lineDelete(tempLine);
+							tempElement = null;
 						}
-						else if (tempPin.getType() == Pin.IN2) {
-							tempLine.setPartTowardsIn(tempElement);
-							tempElement.setLine(tempLine,tempPin);
-							tempLine.setInPoint(new Point((x - offset.x) + tempElement.getPin2upPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getPin2upPosition().y + tempPin.getPinPosition().y));
-						}
-						else if(tempPin.getType() == Pin.OUT){ 
-							tempLine.setPartTowardsOut(tempElement);
-							tempElement.setLine(tempLine,tempPin);
-							tempLine.setOutPoint(new Point((x - offset.x) + tempElement.getOutUpPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getOutUpPosition().y + tempPin.getPinPosition().y));
-						}
-						else {
-							System.err.println("PIN ?!?");
-						}
-						tempElement = null;
 					} else {
-						this.lineList.remove(tempLine);
-						tempElement = null;
+						lineDelete(tempLine);
 					}
 				} 
 				else {
