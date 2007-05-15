@@ -410,7 +410,7 @@ public class Element {
 				this.toOut = line;
 				break;
 			default:
-				System.err.println("Wrong ping!");
+				System.err.println("Wrong pin!");
 				System.exit(103);
 		}
 	}
@@ -423,13 +423,37 @@ public class Element {
 			case Pin.OUT:
 				return this.toOut;
 			default:
-				System.err.println("Wrong ping!");
+				System.err.println("Wrong pin!");
 				System.exit(103);
 				return null;
 		}
 	}
 	
-	public String toString(){
-		return getElementType(this.type);
+	public boolean isPinSet(int type) {
+		switch(type) {
+			case Pin.IN1:
+				if(this.toPin1 == null)
+					return false;
+				else 
+					return true;
+			case Pin.IN2:
+				if(this.toPin2 == null)
+					return false;
+				else 
+					return true;
+			case Pin.OUT:
+				if(this.toOut == null)
+					return false;
+				else 
+					return true;
+			default:
+				System.err.println("Wrong pin!");
+				System.exit(103);
+				return false;
+		}
 	}
+	
+//	public String toString(){
+//		return getElementType(this.type);
+//	}
 }
