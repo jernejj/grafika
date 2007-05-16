@@ -21,6 +21,9 @@ TODO:
 
 
 
+10. JPanel -> this.setCursor(Cursor cursor) // mogoce bi lahko spremenili kurzor v sliko izranega elementa
+
+
 
 
 
