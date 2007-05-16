@@ -7,14 +7,22 @@ import java.awt.Event;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 class GrafikaCanvas extends Canvas implements Runnable  {
@@ -233,7 +241,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					parent.documentation.doctext.showline("IZBERI_ELEMENT");
 				}
 				else {
-					addNewElement(new Element(elementType, new Point(x,y)));
+					addNewElement(new Element(parent, elementType, new Point(x,y)));
 				}
 			}
 			repaint();
@@ -519,14 +527,15 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	
 	public void drawElement(Graphics g, Element e) {
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(e.getSymbol());
-		}
-		catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		g.drawImage(img, e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
+//		try {
+//			img = ImageIO.read(e.symbol_path);
+//			
+//			//img = new BufferedImage();
+//		}
+//		catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+		g.drawImage(e.getBufferedImage(), e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
 	}
 	
 	public void addNewElement(Element e) {
