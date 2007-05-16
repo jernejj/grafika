@@ -20,24 +20,33 @@ import javax.swing.ToolTipManager;
 @SuppressWarnings("serial")
 class Menu extends JPanel implements ActionListener{
 	
-  	JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
+//  	JButton b1 = new JButton(createImageIcon("../grafika/logicalOperators/andV.png"))
+		JButton b1 = new JButton(createImageIcon("logicalOperators/andV.png"))
     	// Pozicija ToolTipa
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))
+//    JButton b2 = new JButton(createImageIcon("../grafika/logicalOperators/orV.png"))
+    	JButton b2 = new JButton(createImageIcon("logicalOperators/orV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b3 = new JButton(createImageIcon("../grafika/logicalOperators/nandV.png"))
+//    JButton b3 = new JButton(createImageIcon("../grafika/logicalOperators/nandV.png"))
+    	JButton b3 = new JButton(createImageIcon("logicalOperators/nandV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b4 = new JButton(createImageIcon("../grafika/logicalOperators/norV.png"))
+//    JButton b4 = new JButton(createImageIcon("../grafika/logicalOperators/norV.png"))
+    	JButton b4 = new JButton(createImageIcon("logicalOperators/norV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b5 = new JButton(createImageIcon("../grafika/logicalOperators/xorV.png"))
+//    JButton b5 = new JButton(createImageIcon("../grafika/logicalOperators/xorV.png"))
+    	JButton b5 = new JButton(createImageIcon("logicalOperators/xorV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b6 = new JButton(createImageIcon("../grafika/logicalOperators/xnorV.png"))
+//    JButton b6 = new JButton(createImageIcon("../grafika/logicalOperators/xnorV.png"))
+    	JButton b6 = new JButton(createImageIcon("logicalOperators/xnorV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-    JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"))
+//    JButton b7 = new JButton(createImageIcon("../grafika/logicalOperators/notV.png"))
+    	JButton b7 = new JButton(createImageIcon("logicalOperators/notV.png"))
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-	JButton b8 = new JButton(createImageIcon("../grafika/logicalOperators/gnd.png"))
+//	JButton b8 = new JButton(createImageIcon("../grafika/logicalOperators/gnd.png"))
+    	JButton b8 = new JButton(createImageIcon("logicalOperators/gnd.png"))
 		{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"))
+//	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"))
+		JButton b9 = new JButton(createImageIcon("logicalOperators/vcc.png"))
 		{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
     JButton b10 = new JButton("BOX")
     	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
@@ -61,19 +70,32 @@ class Menu extends JPanel implements ActionListener{
         
     	ToolTips toolTip = null;
     	
-    	toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/andTruthTable.png"));
+//    	toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/andTruthTable.png"));
+//        b1.setToolTipText(toolTip.getToolTip());
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/orTruthTable.png"));
+//        b2.setToolTipText(toolTip.getToolTip());       
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/nandTruthTable.png"));
+//        b3.setToolTipText(toolTip.getToolTip()); 
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/norTruthTable.png"));
+//        b4.setToolTipText(toolTip.getToolTip());
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xorTruthTable.png"));
+//        b5.setToolTipText(toolTip.getToolTip());
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xnorTruthTable.png"));
+//        b6.setToolTipText(toolTip.getToolTip());
+//        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/notTruthTable.png"));
+    	toolTip = new ToolTips(returnImagePath("logicalOperators/andTruthTable.png"));
         b1.setToolTipText(toolTip.getToolTip());
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/orTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/orTruthTable.png"));
         b2.setToolTipText(toolTip.getToolTip());       
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/nandTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/nandTruthTable.png"));
         b3.setToolTipText(toolTip.getToolTip()); 
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/norTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/norTruthTable.png"));
         b4.setToolTipText(toolTip.getToolTip());
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xorTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/xorTruthTable.png"));
         b5.setToolTipText(toolTip.getToolTip());
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xnorTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/xnorTruthTable.png"));
         b6.setToolTipText(toolTip.getToolTip());
-        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/notTruthTable.png"));
+        toolTip = new ToolTips(returnImagePath("logicalOperators/notTruthTable.png"));
         b7.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("GND");
         b8.setToolTipText(toolTip.getToolTip());
