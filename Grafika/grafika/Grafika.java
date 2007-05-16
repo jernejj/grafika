@@ -2,9 +2,8 @@ package grafika;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Insets;
-import javax.swing.*;
+import javax.swing.JApplet;
 
 
 public class Grafika extends JApplet {
@@ -13,8 +12,9 @@ public class Grafika extends JApplet {
 	Options options = new Options(this);   
 	Documentation documentation = new Documentation();
 	Menu menu = new Menu(this);
+	Images images;
 
-	public void init() {
+	public void init() { 
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
 		this.setSize(1024,768);
@@ -24,6 +24,9 @@ public class Grafika extends JApplet {
 		this.add("North", documentation);
 		this.add("East", options);
 		this.add("West", menu);
+		this.images = new Images(this);
+		
+		System.out.println(images.elementBufferedImageAND.toString());
 	}
 
 	/**
