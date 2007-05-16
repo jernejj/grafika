@@ -1,12 +1,16 @@
 package grafika;
 
+
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 
 public class Element {
 	private int type;
 	private File symbol;
+	public URL symbol_path;
 	private Pin pin1;
 	private Pin pin2;
 	private Pin out;
@@ -16,6 +20,8 @@ public class Element {
 	private Line toOut;
 	
 	private Image slika;
+	private BufferedImage bufImg;
+	private Grafika parent;
 	
 	private int size;
 	// picture width
@@ -35,7 +41,8 @@ public class Element {
 	
 	private Point position; 
 	
-	public Element(int type, Point position) {
+	public Element(Grafika parent, int type, Point position) {
+		this.parent = parent;
 		this.position = position;
 		setType(type);
 		this.toPin1 = null;
@@ -52,7 +59,7 @@ public class Element {
 	}
 	
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 	
 	public void setPins(short valuePin1, short valuePin2) {
@@ -84,7 +91,7 @@ public class Element {
 		switch(type) {
 			case AND:
 				this.type = Element.AND;
-				symbol = new File("grafika/logicalOperators/and.png");
+				bufImg = parent.images.elementBufferedImageAND;
 				sizeX = 30;
 				sizeY = 47;
 				size = sizeX * sizeY;
@@ -100,7 +107,7 @@ public class Element {
 				break;
 			case OR:
 				this.type = Element.OR;
-				symbol = new File("grafika/logicalOperators/or.png");
+				bufImg = parent.images.elementBufferedImageOR;
 				sizeX = 28;
 				sizeY = 47;
 				size = sizeX * sizeY;
@@ -116,7 +123,7 @@ public class Element {
 				break;
 			case NAND:
 				this.type = Element.NAND;
-				symbol = new File("grafika/logicalOperators/nand.png");
+				bufImg = parent.images.elementBufferedImageNAND;
 				sizeX = 30;
 				sizeY = 57;
 				size = sizeX * sizeY;
@@ -132,7 +139,7 @@ public class Element {
 				break;
 			case NOR:
 				this.type = Element.NOR;
-				symbol = new File("grafika/logicalOperators/nor.png");
+				bufImg = parent.images.elementBufferedImageNOR;
 				sizeX = 28;
 				sizeY = 57;
 				size = sizeX * sizeY;
@@ -148,7 +155,7 @@ public class Element {
 				break;
 			case XOR:
 				this.type = Element.XOR;
-				symbol = new File("grafika/logicalOperators/xor.png");
+				bufImg = parent.images.elementBufferedImageXOR;
 				sizeX = 28;
 				sizeY = 52;
 				size = sizeX * sizeY;
@@ -164,7 +171,7 @@ public class Element {
 				break;
 			case XNOR:
 				this.type = Element.XNOR;
-				symbol = new File("grafika/logicalOperators/xnor.png");
+				bufImg = parent.images.elementBufferedImageXNOR;
 				sizeX = 28;
 				sizeY = 62;
 				size = sizeX * sizeY;
@@ -180,7 +187,7 @@ public class Element {
 				break;
 			case NOT:
 				this.type = Element.NOT;
-				symbol = new File("grafika/logicalOperators/not.png");
+				bufImg = parent.images.elementBufferedImageNOT;
 				sizeX = 30;
 				sizeY = 46;
 				size = sizeX * sizeY;
@@ -193,7 +200,7 @@ public class Element {
 				break;
 			case GND:
 				this.type = Element.GND;
-				symbol = new File("grafika/logicalOperators/gnd.png");
+				bufImg = parent.images.elementBufferedImageGND;
 				sizeX = 24;
 				sizeY = 24;
 				size = sizeX * sizeY;
@@ -204,7 +211,7 @@ public class Element {
 				break;
 			case VCC:
 				this.type = Element.VCC;
-				symbol = new File("grafika/logicalOperators/vcc.png");
+				bufImg = parent.images.elementBufferedImageVCC;
 				sizeX = 18;
 				sizeY = 24;
 				size = sizeX * sizeY;
@@ -453,6 +460,19 @@ public class Element {
 		}
 	}
 	
+    protected static URL elementSymbolPath(String path) {
+        URL imgURL = Grafika.class.getResource(path);
+        if (imgURL != null) {
+            return imgURL;
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }	
+	
+    public BufferedImage getBufferedImage() {
+    	return this.bufImg;
+    }
 //	public String toString(){
 //		return getElementType(this.type);
 //	}
