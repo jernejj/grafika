@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,19 +59,21 @@ class Menu extends JPanel implements ActionListener{
         // ToolTip prikazuj dokler je miska nad gumbom
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
         
-    	ToolTips toolTip = new ToolTips("file:grafika/logicalOperators/andTruthTable.png");
+    	ToolTips toolTip = null;
+    	
+    	toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/andTruthTable.png"));
         b1.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/orTruthTable.png");
-        b2.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/nandTruthTable.png");
-        b3.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/norTruthTable.png");
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/orTruthTable.png"));
+        b2.setToolTipText(toolTip.getToolTip());       
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/nandTruthTable.png"));
+        b3.setToolTipText(toolTip.getToolTip()); 
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/norTruthTable.png"));
         b4.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/xorTruthTable.png");
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xorTruthTable.png"));
         b5.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/xnorTruthTable.png");
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/xnorTruthTable.png"));
         b6.setToolTipText(toolTip.getToolTip());
-        toolTip.setToolTip("file:grafika/logicalOperators/notTruthTable.png");
+        toolTip = new ToolTips(returnImagePath("../grafika/logicalOperators/notTruthTable.png"));
         b7.setToolTipText(toolTip.getToolTip());
         toolTip.setToolTip("GND");
         b8.setToolTipText(toolTip.getToolTip());
@@ -240,5 +243,10 @@ class Menu extends JPanel implements ActionListener{
             System.err.println("Couldn't find file: " + path);
             return null;
         }
+    }
+    
+    private String returnImagePath(String image_path) {
+    	URL imgURL = Grafika.class.getResource(image_path);
+    	return imgURL.toString();
     }
 }
