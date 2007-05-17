@@ -16,8 +16,10 @@ public class Options extends JPanel implements ActionListener{
 	JButton b2 = new JButton("run");
 	JButton b3 = new JButton("step");
 	JButton b4 = new JButton("reset");
-	JButton b5 = new JButton("example");
-	JButton b6 = new JButton("exit");
+	JButton b5 = new JButton("save");
+	JButton b6 = new JButton("load");
+	JButton b7 = new JButton("example");
+	JButton b8 = new JButton("exit");
 
 	Grafika parent;   
 	boolean locked=false;
@@ -36,13 +38,17 @@ public class Options extends JPanel implements ActionListener{
         b4.addActionListener(this);
         b5.addActionListener(this);
         b6.addActionListener(this);
+        b7.addActionListener(this);
+        b8.addActionListener(this);
 
         b1.setActionCommand("CLEAR");
         b2.setActionCommand("RUN");
         b3.setActionCommand("STEP");
         b4.setActionCommand("RESET");
-        b5.setActionCommand("EXAMPLE");
-        b6.setActionCommand("EXIT");
+        b5.setActionCommand("SAVE");
+        b6.setActionCommand("LOAD");
+        b7.setActionCommand("EXAMPLE");
+        b8.setActionCommand("EXIT");
         
         // Global settings
         c.insets = new Insets(10,0,0,0);
@@ -67,9 +73,15 @@ public class Options extends JPanel implements ActionListener{
     	add(b5,c); 
     	c.gridx = 0;
     	c.gridy = 5;
+    	add(b6,c); 
+    	c.gridx = 0;
+    	c.gridy = 6;
+    	add(b7,c); 
+    	c.gridx = 0;
+    	c.gridy = 7;
     	c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
     	c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
-    	add(b6,c);
+    	add(b8,c);
     	
     	// Omogocimo, da je ToolTip viden cez vse elemente layouta
     	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
@@ -98,6 +110,18 @@ public class Options extends JPanel implements ActionListener{
 				else parent.documentation.doctext.showline("LOCKED");
 			}
 			if (e.getActionCommand().equals("RESET")) { 
+				if(!locked) {
+					
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}
+			if (e.getActionCommand().equals("SAVE")) { 
+				if(!locked) {
+					Xml.save(parent);
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}
+			if (e.getActionCommand().equals("LOAD")) { 
 				if(!locked) {
 					
 				}
