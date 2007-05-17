@@ -7,25 +7,15 @@ import java.awt.Event;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.PixelGrabber;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
-@SuppressWarnings("serial")
 class GrafikaCanvas extends Canvas implements Runnable  {
+
+	private static final long serialVersionUID = -1832060394418052832L;
 	// mouse actions
 	Point thispoint=new Point(0,0); // current mouseposition
 	Point oldpoint=new Point(0, 0); // previous position of node being moved
@@ -33,6 +23,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// list  
 	Vector<Element> elementList = new Vector<Element>();
 	Vector<Line> lineList = new Vector<Line>();
+	Vector<Element> listForGenerator = new Vector<Element>();
 	int elementType = -1;
 	
 	// current action
@@ -98,6 +89,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		init();
 		this.elementList.clear();
 		this.lineList.clear();
+		Grafika.element = 0;
 		parent.unlock();
 		repaint();
 	}
@@ -540,6 +532,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	
 	public void addNewElement(Element e) {
 		this.elementList.add(e);
+		if(Grafika.verbose) {System.err.println(e.getName());}
 	}
 	
 	public void drawLine(Graphics g, Line l) {
@@ -590,5 +583,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	
 	private double d(int x1, int y1, int x2, int y2) {
 		return  Math.sqrt(Math.pow((double)(x2-x1), 2.0) + Math.pow((double)(y2-y1), 2.0));
+	}
+	
+	public void generateElementList() {
+		Element temp;
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+			temp = i.next();
+			// Working on it
+		}
 	}
 }
