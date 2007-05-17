@@ -16,6 +16,8 @@ class DocText extends TextArea {
 	final String BOX = "Nothing to do!";
 	final String LOCKED = "Selection not possible!";
 	final String IZBERI_ELEMENT = "Izberi element!";
+	final String SAVE_CANCELLED = "Save cancelled by user!";
+	final String SAVED = "Workspace successfully saved!";
 		
 	final String EMPTY = "";
 		
@@ -39,6 +41,8 @@ class DocText extends TextArea {
 		else if (str.equals("BOX")) setText(BOX);
 		else if (str.equals("LOCKED")) setText(LOCKED);
 		else if (str.equals("IZBERI_ELEMENT")) setText(IZBERI_ELEMENT);
+		else if (str.equals("SAVE_CANCELLED")) setText(SAVE_CANCELLED);
+		else if (str.equals("SAVED")) setText(SAVED);
 		else setText(EMPTY);
 
 	}
