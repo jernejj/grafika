@@ -14,6 +14,9 @@ public class Element {
 	private Pin pin1;
 	private Pin pin2;
 	private Pin out;
+	private String name;
+	
+	private boolean computed; 
 	
 	private Line toPin1;
 	private Line toPin2;
@@ -48,6 +51,8 @@ public class Element {
 		this.toPin1 = null;
 		this.toPin2 = null;
 		this.toOut = null;
+		this.computed = false;
+		this.name = getElementType(type) + Grafika.element++;
 	}
 	
 	public int getSizeX() {
@@ -472,6 +477,18 @@ public class Element {
 	
     public BufferedImage getBufferedImage() {
     	return this.bufImg;
+    }
+    
+    public String getName() {
+    	return this.name;
+    }
+    
+    public void setComputed() {
+    	this.computed = true;
+    }
+    
+    public boolean getComputed() {
+    	return this.computed;
     }
 //	public String toString(){
 //		return getElementType(this.type);
