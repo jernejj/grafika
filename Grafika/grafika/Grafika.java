@@ -8,15 +8,32 @@ import javax.swing.JApplet;
 
 public class Grafika extends JApplet {
 
+	private static final long serialVersionUID = -2741614183571105141L;
+
 	GrafikaCanvas GrafikaCanvas = new GrafikaCanvas(this);
 	Options options = new Options(this);   
 	Documentation documentation = new Documentation();
 	Menu menu = new Menu(this);
 	Images images;
+	
+	static int element = 0;
+	static Boolean verbose;
 
 	public void init() { 
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
+		this.verbose = true;
+		
+		int requestedWidth = 0;
+		String windowWidthString = this.getParameter("WINDOWWIDTH");
+		if (windowWidthString != null) {
+		    try {
+		        requestedWidth = Integer.parseInt(windowWidthString);
+		    } catch (NumberFormatException e) {
+		        //Use default width.
+		    }
+		}
+		
 		this.setSize(1024,768);
 		BorderLayout bl = new BorderLayout(0, 0);
 		this.setLayout(bl);
@@ -26,7 +43,7 @@ public class Grafika extends JApplet {
 		this.add("West", menu);
 		this.images = new Images(this);
 		
-		System.out.println(images.elementBufferedImageAND.toString());
+		//System.out.println(images.elementBufferedImageAND.toString());
 	}
 
 	/**
@@ -47,4 +64,30 @@ public class Grafika extends JApplet {
 		GrafikaCanvas.unlock();
 		options.unlock();
 	} 
+	
+	// TODO:
+    public String[][] getParameterInfo() {
+        String[][] info = {
+          // Parameter Name     Kind of Value   Description
+            {"imagesource",     "URL",          "a directory"},
+            {"startup",         "URL",          "displayed at startup"},
+            {"background",      "URL",          "displayed as background"},
+            {"startimage",      "int",          "start index"},
+            {"endimage",        "int",          "end index"},
+            {"namepattern",     "URL",          "used to generate indexed names"},
+            {"pause",           "int",          "milliseconds"},
+            {"pauses",          "ints",         "milliseconds"},
+            {"repeat",          "boolean",      "repeat or not"},
+            {"positions",       "coordinates",  "path"},
+            {"soundsource",     "URL",          "audio directory"},
+            {"soundtrack",      "URL",          "background music"},
+            {"sounds",          "URLs",         "audio samples"},
+        };
+        return info;
+    }    
+    
+    // TODO:
+    public String getAppletInfo() {
+        return "GetApplets by Kathy Walrath";
+    }
 }
