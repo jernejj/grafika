@@ -22,7 +22,7 @@ public class Grafika extends JApplet {
 	public void init() { 
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
-		this.verbose = true;
+		Grafika.verbose = true;
 		
 		int requestedWidth = 0;
 		String windowWidthString = this.getParameter("WINDOWWIDTH");
