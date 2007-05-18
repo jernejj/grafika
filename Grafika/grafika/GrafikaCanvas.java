@@ -22,6 +22,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	// list  
 	Vector<Element> elementList = new Vector<Element>();
+	// Vector<Element> outputList = new Vector<Element>();
 	Vector<Line> lineList = new Vector<Line>();
 	Vector<Element> listForGenerator = new Vector<Element>();
 	int elementType = -1;
@@ -88,6 +89,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	public void clear() {
 		init();
 		this.elementList.clear();
+		// this.outputList.clear();
+		this.listForGenerator.clear();
 		this.lineList.clear();
 		Grafika.element = 0;
 		parent.unlock();
@@ -186,7 +189,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				elementOnMouseDown = selectedElement = temp;
 				offset = offset(selectedElement,new Point(x,y));
 				moveElement = true;
-				System.err.println("MouseDown: "+elementOnMouseDown);
+				
+				if(Grafika.verbose) System.err.println("GrafikaCanvas.mouseDown(): "+elementOnMouseDown);
 				
 				Pin tempPin = null;
 				if(null != (tempPin = pinHit(temp,x,y))) {
@@ -213,7 +217,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 							tempLine.setInPoint(tempLine.getOutPoint());
 						}
 						else {
-							System.err.println("PIN ?!?");
+							System.err.println("GrafikaCanvas.mouseDown(): PIN ?!?");
 						}
 						lineList.add(tempLine);
 						selectedElement.setLine(tempLine,selectedPin);	
@@ -221,7 +225,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				}
 			}
 			else if(null != (selectedLine = lineHit(x, y, 0.05))) {
-				System.err.println("SelectedLine: "+selectedLine.toString());
+				System.err.println("GrafikaCanvas.mouseDown() - SelectedLine: "+selectedLine.toString());
 				if(selectedLine.getColor().equals(Color.BLACK))
 					selectedLine.setColor(Color.RED);
 				else if(selectedLine.getColor().equals(Color.RED))
@@ -233,7 +237,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					parent.documentation.doctext.showline("IZBERI_ELEMENT");
 				}
 				else {
-					addNewElement(new Element(parent, elementType, new Point(x,y)));
+//					if(elementType == Element.OUTPUT)
+//						addNewOutPutElement(new Element(parent, elementType, new Point(x,y)));
+//					else
+						addNewElement(new Element(parent, elementType, new Point(x,y)));
 				}
 			}
 			repaint();
@@ -260,7 +267,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					tempLine.setInPoint(new Point(x,y));
 				}
 				else {
-					System.err.println("PIN ?!?");
+					System.err.println("GrafikaCanvas.mouseDrag(): PIN ?!?");
 				}
 				repaint();
 			}
@@ -300,7 +307,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 									tempLine.setOutPoint(new Point((x - offset.x) + tempElement.getOutUpPosition().x  + tempPin.getPinPosition().x, (y - offset.y) + tempElement.getOutUpPosition().y + tempPin.getPinPosition().y));
 								}
 								else {
-									System.err.println("PIN ?!?");
+									System.err.println("GrafikaCanvas.mouseUp(): PIN ?!?");
 								}
 								tempElement = null;
 							} else {
@@ -332,8 +339,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	public Element elementHit(int x, int y) {
 		// checks if you hit an element with your mouseclick
 		Element check;
-		if(this.elementList.isEmpty())
-			return null;
+//		if(this.elementList.isEmpty())
+//			return null;
 		for (Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			check = i.next();
 			if ( ((x > check.getXposition() && (x < (check.getXposition() + check.getSizeX())))) &&  
@@ -341,6 +348,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				return check;
 			}
 		}
+//		for (Iterator<Element> i = this.outputList.iterator(); i.hasNext(); ) {
+//			check = i.next();
+//			if ( ((x > check.getXposition() && (x < (check.getXposition() + check.getSizeX())))) &&  
+//					((y > check.getYposition() && (y < (check.getYposition() + check.getSizeY())))) ) {
+//				return check;
+//			}
+//		}
 		return null;
 	}
 	
@@ -351,21 +365,29 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		if(e.getType() == Element.NOT) {
 			// Pin clicked
 			if( absX >= e.getPin1upPosition().x &&  absX <= e.getPin1downPosition().x && absY >= e.getPin1upPosition().y &&  absY <= e.getPin1downPosition().y) {
-				System.out.println("Pin1 clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Pin1 clicked.");
 
 				return e.getPin1();
 			}
 			// Out clicked
 			else if(absX >= e.getOutUpPosition().x &&  absX <= e.getOutDownPosition().x && absY >= e.getOutUpPosition().y &&  absY <= e.getOutDownPosition().y) {
-				System.out.println("Out clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
 
 				return e.getOut();
+			}
+		}
+		else if (e.getType() == Element.OUTPUT) {
+			// In clicked
+			if(absX >= e.getPin1upPosition().x &&  absX <= e.getPin1downPosition().x && absY >= e.getPin1upPosition().y &&  absY <= e.getPin1downPosition().y) {
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
+
+				return e.getPin1();
 			}
 		}
 		else if (e.getType() == Element.GND) {
 			// Out clicked
 			if(absX >= e.getOutUpPosition().x &&  absX <= e.getOutDownPosition().x && absY >= e.getOutUpPosition().y &&  absY <= e.getOutDownPosition().y) {
-				System.out.println("Out clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
 
 				return e.getOut();
 			}
@@ -373,7 +395,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		else if (e.getType() == Element.VCC) {
 			// Out clicked
 			if(absX >= e.getOutUpPosition().x &&  absX <= e.getOutDownPosition().x && absY >= e.getOutUpPosition().y &&  absY <= e.getOutDownPosition().y) {
-				System.out.println("Out clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
 
 				return e.getOut();
 			}
@@ -381,19 +403,19 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		else {
 			// Pin1 clicked
 			if( absX >= e.getPin1upPosition().x &&  absX <= e.getPin1downPosition().x && absY >= e.getPin1upPosition().y &&  absY <= e.getPin1downPosition().y) {
-				System.out.println("Pin1 clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Pin1 clicked.");
 
 				return e.getPin1();
 			}
 			// Pin2 clicked
 			else if(absX >= e.getPin2upPosition().x &&  absX <= e.getPin2downPosition().x && absY >= e.getPin2upPosition().y &&  absY <= e.getPin2downPosition().y) {
-				System.out.println("Pin2 clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Pin2 clicked.");
 
 				return  e.getPin2();
 			}
 			// Out clicked
 			else if(absX >= e.getOutUpPosition().x &&  absX <= e.getOutDownPosition().x && absY >= e.getOutUpPosition().y &&  absY <= e.getOutDownPosition().y) {
-				System.out.println("Out clicked.");
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
 				
 				return e.getOut();
 			}
@@ -412,7 +434,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 	
 	public Line lineHit(int x, int y, double dist) {
-		// TODO: poglej, ce si zadel povezavo
 		Line tmpLine = null;
 		double d,A,B;
 //		float k;
@@ -446,7 +467,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		Line tmpLine;
 		Element tmpElement;
 		if(null != (tmpLine = e.getLineToOut())) {
-			// System.out.println(tmpLine.toString());
+			// if(Grafika.verbose) System.out.println("GrafikaCanvas.elementDelete(): "+tmpLine.toString());
 			// Ce obstaja povezava pin_out, potem je potrebno pripadajocemu elementu nastaviti pin_in na null.
 			tmpElement = tmpLine.getPartTowardsIn();
 			if(tmpElement.getLineToPin1() == tmpLine)
@@ -456,7 +477,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			this.lineList.remove(tmpLine);
 		}
 		if(null != (tmpLine = e.getLineToPin1())) {
-			// System.out.println(tmpLine.toString());
+			// if(Grafika.verbose) System.out.println("GrafikaCanvas.elementDelete(): tmpLine.toString());
 			// Ce obstaja povezava pin_in1, potem je potrebno pripadajocemu elementu nastaviti pin_out na null.
 			tmpElement = tmpLine.getPartTowardsOut();
 			if(tmpElement.getLineToOut() == tmpLine)
@@ -464,7 +485,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			this.lineList.remove(tmpLine);
 		}
 		if(null != (tmpLine = e.getLineToPin2())) {
-			// System.out.println(tmpLine.toString());
+			// if(Grafika.verbose) System.out.println("GrafikaCanvas.elementDelete(): tmpLine.toString());
 			// Ce obstaja povezava pin_in2, potem je potrebno pripadajocemu elementu nastaviti pin_out na null.
 			tmpElement = tmpLine.getPartTowardsOut();
 			if(tmpElement.getLineToOut() == tmpLine)
@@ -481,28 +502,27 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	public void lineDelete(Line l){
 		Element tmpElement;
 		if(null != (tmpElement = l.getPartTowardsIn())  ){
-	//		System.out.println(tmpElement.toString());
+	//		if(Grafika.verbose) System.out.println("GrafikaCanvas.lineDelete(): tmpElement.toString());
 			//na kateri pin je povezana povezava, potrebno je tistemu pinu pobrisat povezavo
 			if(tmpElement.getLineToPin1() == l )
 				tmpElement.setLineToPin1(null);
 			else if(tmpElement.getLineToPin2() == l)
 				tmpElement.setLineToPin2(null);
 			else
-				System.err.print("Error in line delete in pin");
+				System.err.print("GrafikaCanvas.lineDelete(): Error in line delete in pin");
 		}
 		if(null !=(tmpElement = l.getPartTowardsOut() ) ) {
 			//ce je line povezana na kaksen out pin, je treba ta out pin nastavit na null
 			if(tmpElement.getLineToOut() == l)
 				tmpElement.setLineToOut(null);
 			else
-				System.err.println("Error in line delete out pin");
+				System.err.println("GrafikaCanvas.lineDelete(): Error in line delete out pin");
 		}
 					
 		this.lineList.remove(l);
 	}
 	
 	// brez tega prihaja do blinkanja 
-	@SuppressWarnings("deprecation")
 	public final synchronized void update(Graphics g) {
 		// prepare new image offscreen
 		Dimension d = getSize();
@@ -530,14 +550,27 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		g.drawImage(e.getBufferedImage(), e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
 	}
 	
+	public void drawOutPutElement(Graphics g, Element e) {
+		g.drawImage(e.getBufferedImage(), e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
+	}
+	
+	public void drawOutPut(Graphics g, Element e ) {
+		g.drawString(String.valueOf(e.getPin1value()), e.getXposition()+9, e.getYposition()+20);
+	}
+	
 	public void addNewElement(Element e) {
 		this.elementList.add(e);
-		if(Grafika.verbose) {System.err.println(e.getName());}
+		if(Grafika.verbose) {System.err.println("GrafikaCanvas.addNewElement(): "+e.getName());}
+	}
+	
+	private void addNewOutPutElement(Element e) {
+//		this.outputList.add(e);
+		if(Grafika.verbose) {System.err.println("GrafikaCanvas.addNewOutPutElement(): "+e.getName());}
 	}
 	
 	public void drawLine(Graphics g, Line l) {
 		g.setColor(l.getColor());
-//		System.err.println(l.getColor().toString());
+//		if(Grafika.verbose) System.err.println("GrafikaCanvas.drawLine(): "+l.getColor().toString());
 		g.drawLine(l.getOutPoint().x, l.getOutPoint().y, l.getInPoint().x, l.getInPoint().y);
 		g.setColor(Color.BLACK);
 	}
@@ -575,6 +608,19 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 				drawElement(g, i.next());
 		}
+		
+		// draw output windows
+//		for(Iterator<Element> i = this.outputList.iterator(); i.hasNext(); ) {
+//				drawOutPutElement(g, i.next());
+//		}
+		
+		// draw output values
+		Element tmp;
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+			tmp = i.next();
+			if(tmp.getType() == Element.OUTPUT)
+				drawOutPut(g, tmp);
+		}
 	}
 	
 	private double d(Point i, Point j) {
@@ -589,7 +635,12 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		Element temp;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			temp = i.next();
-			// Working on it
+			if(temp.getLineToPin1() == null) {
+				this.listForGenerator.add(temp);
+			}
+			else if(temp.getLineToPin2() == null) {
+				this.listForGenerator.add(temp);
+			}
 		}
 	}
 }
