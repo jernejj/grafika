@@ -24,6 +24,13 @@ public class Pin {
 		this.value = value & 0x01;
 	}
 	
+	public void setValue(int value, Element e) {
+		if(e.getType() == Element.OUTPUT)
+			this.value = value;
+		else
+			System.err.println("Pin.setValue(int,Element): Only for Element.OUTPUT");
+	}
+	
 	public Point getUp() {
 		return this.up;
 	}
@@ -52,7 +59,7 @@ public class Pin {
 				this.type = Pin.OUT;
 				break;
 			default:
-				System.err.println("Wrong pin type!");
+				System.err.println("Pin.setType(): Wrong pin type!");
 				System.exit(101);
 				break;
 		}
