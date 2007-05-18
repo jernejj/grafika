@@ -11,19 +11,23 @@ TODO:
   	lahko pa to izvedemo kar avtomasko in povezavo, ki je napacna nekako obarvamo
   	
 
-2. undo, redo! (vse kar dodas na canvas se shranis v nek seznam po katerem se potem lahko premikas naprej in nazaj)
+
 
 3. nastavi cas med dvema 'vrsticama'/ korakoma pravilnostne tabele  
 	- okence kjer lahko vpises milisekunde
 
 4. ko se kazalec zapelje cez nozico se naj pokaze njena trenutna vrednost 
 
+5. Ali dovolimo spremembe po tem, ko je enkrat nastavljen generator?
+	-> potrebno preveriti kakse so spremembe
+	-> potrebno ponovno zagnati generator ter povezati dodatne prazne povezave
+
 
 
 
 10. JPanel -> this.setCursor(Cursor cursor) // mogoce bi lahko spremenili kurzor v sliko izranega elementa
 
-
+20. undo, redo! (vse kar dodas na canvas se shranis v nek seznam po katerem se potem lahko premikas naprej in nazaj)
 
 
 
