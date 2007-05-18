@@ -20,7 +20,7 @@ public class ToolTips
 	/** Returns the ToolTip string*/
 	public String getToolTip ()
 	{
-		if (!((imageName.equals("GND")) || (imageName.equals("VCC")) || (imageName.equals("BOX"))))
+		if (!((imageName.equals("GND")) || (imageName.equals("VCC")) || (imageName.equals("BOX")) || (imageName.equals("OUTPUT"))))
 		{
 			this.toolTip = "<html><img src="+this.imageName+"></html>";
 			return this.toolTip;
@@ -31,6 +31,9 @@ public class ToolTips
 		
 		else if (imageName.equals("VCC"))
 			return "VCC";
+		
+		else if (imageName.equals("OUTPUT"))
+			return "Output window";
 		
 		else
 			return "TODO";
