@@ -149,8 +149,11 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 					
 		
 					gen = new Generator(this.parent);
-					gen.setNumber(number);
-					gen.generate();
+					if(number > 0){
+						gen.setNumber(number);
+						gen.generate();
+					}
+					
 					
 					gen.setSize(800,600); // TODO: getSite() v Generatorju je potrebno dolociti veliksot, glede na stevilo primerov.. mogoce scroll bar
 					gen.setVisible(true);
