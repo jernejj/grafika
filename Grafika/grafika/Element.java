@@ -41,6 +41,7 @@ public class Element {
 	public static final int NOT = 6;
 	public static final int GND = 7;
 	public static final int VCC = 8;
+	public static final int OUTPUT = 9;
 	
 	private Point position; 
 	
@@ -225,6 +226,17 @@ public class Element {
 				this.out.setDown(new Point(10,23));
 				this.out.setValue(1);
 				break;
+			case OUTPUT:
+				this.type = Element.OUTPUT;
+				bufImg = parent.images.elementBufferedImageOUTPUT;
+				sizeX = 24;
+				sizeY = 24;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin1.setUp(new Point(10,0));
+				this.pin1.setDown(new Point(13,5));
+				this.pin1.setValue(-1, this);
+				break;				
 			default:
 				System.err.print("Invalid Type!");
 		}
@@ -254,8 +266,10 @@ public class Element {
 				return "GND";
 			case VCC:
 				return "VCC";
+			case OUTPUT:
+				return "OUTPUT";				
 			default:
-				return "Invalid Type!";
+				return "Element.getElementType(): Invalid Type!";
 		}
 	}		
 	
@@ -288,6 +302,8 @@ public class Element {
 			case VCC:
 				this.out.setValue(~this.out.getValue());
 				break;
+			case OUTPUT:
+				break;			
 			default:
 				System.err.print("Invalid Type!");
 		}
@@ -323,6 +339,7 @@ public class Element {
 	public Point getPin1downPosition() {
 		return this.pin1.getDown();
 	}
+	
 	public Point getPin2upPosition() {
 		return this.pin2.getUp();
 	}
@@ -348,8 +365,8 @@ public class Element {
 	}
 	
 	public int getPinValue() {
-		if(this.type != Element.NOT) {
-			System.err.println("getPinValue() is only for NOT");
+		if(this.type != Element.NOT || this.type != Element.OUTPUT) {
+			System.err.println("Element.getPinValue(): is only for NOT");
 			System.exit(102);
 		}
 		return this.pin1.getValue();
@@ -357,7 +374,7 @@ public class Element {
 	
 	public void setPinValue(int value) {
 		if(this.type != Element.NOT) {
-			System.err.println("getPinValue() is only for NOT");
+			System.err.println("Element.getPinValue(): is only for NOT");
 			System.exit(102);
 		}
 		this.pin1.setValue(value);
@@ -422,7 +439,7 @@ public class Element {
 				this.toOut = line;
 				break;
 			default:
-				System.err.println("Wrong pin!");
+				System.err.println("Element.setLine(): Wrong pin!");
 				System.exit(103);
 		}
 	}
@@ -435,7 +452,7 @@ public class Element {
 			case Pin.OUT:
 				return this.toOut;
 			default:
-				System.err.println("Wrong pin!");
+				System.err.println("Element.getLine(): Wrong pin!");
 				System.exit(103);
 				return null;
 		}
@@ -459,7 +476,7 @@ public class Element {
 				else 
 					return true;
 			default:
-				System.err.println("Wrong pin!");
+				System.err.println("Element.isPinSet(): Wrong pin!");
 				System.exit(103);
 				return false;
 		}
@@ -470,7 +487,7 @@ public class Element {
         if (imgURL != null) {
             return imgURL;
         } else {
-            System.err.println("Couldn't find file: " + path);
+            System.err.println("Element.elementSymbolPath(): Couldn't find file: " + path);
             return null;
         }
     }	
@@ -490,7 +507,8 @@ public class Element {
     public boolean getComputed() {
     	return this.computed;
     }
-//	public String toString(){
-//		return getElementType(this.type);
-//	}
+	
+    public String toString(){
+		return this.name;
+	}
 }
