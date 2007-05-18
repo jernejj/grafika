@@ -42,6 +42,7 @@ public class Element {
 	public static final int GND = 7;
 	public static final int VCC = 8;
 	public static final int OUTPUT = 9;
+	public static final int GENOUT = 101;
 	
 	private Point position; 
 	
@@ -236,7 +237,18 @@ public class Element {
 				this.pin1.setUp(new Point(10,0));
 				this.pin1.setDown(new Point(13,5));
 				this.pin1.setValue(-1, this);
-				break;				
+				break;		
+			case GENOUT:
+				this.type = Element.GENOUT;
+				bufImg = null;
+				sizeX = 0;
+				sizeY = 0;
+				size = sizeX * sizeY;
+				this.pin1 = new Pin(Pin.IN1);
+				this.pin1.setUp(new Point(10,0));
+				this.pin1.setDown(new Point(13,5));
+				this.pin1.setValue(-1, this);
+				break;					
 			default:
 				System.err.print("Invalid Type!");
 		}
