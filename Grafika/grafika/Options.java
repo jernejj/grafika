@@ -3,13 +3,23 @@ package grafika;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.NumberFormat;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.ToolTipManager;
+
 
 @SuppressWarnings("serial")
-public class Options extends JPanel implements ActionListener{
+public class Options extends JPanel implements ActionListener,PropertyChangeListener {
 
 	// Set of options at the right of the screen
 	JButton b1 = new JButton("clear");
@@ -20,18 +30,45 @@ public class Options extends JPanel implements ActionListener{
 	JButton b6 = new JButton("load");
 	JButton b7 = new JButton("example");
 	JButton b8 = new JButton("exit");
+	JButton b9 = new JButton("generator");
+	
+	JLabel numLabel = new JLabel("#X: ");  
+	JFormattedTextField numTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
 
+	public int number=0;
+	
 	Grafika parent;   
 	boolean locked=false;
+	
+	//###################
+	// 		Generator
+	Generator gen;
+	
+	//###################
 
-	Options(Grafika myparent) {
+	public Options(Grafika myparent) {
+		int line = 0;
 		parent = myparent;
 		setBackground(Color.WHITE);
 		
-		setLayout(new GridBagLayout());
+		GridBagLayout gbl = new GridBagLayout();
+		setLayout(gbl);
     	GridBagConstraints c = new GridBagConstraints();
     	c.fill = GridBagConstraints.HORIZONTAL;
-        
+    	
+    	numLabel.setToolTipText("Number of generated variables:");
+    	numLabel.setBackground(Color.WHITE);
+    	numTextField.setValue(new Integer(number));
+    	numTextField.addPropertyChangeListener("value", this);
+    	numTextField.setColumns(5);
+    	
+    	numLabel.setLabelFor(numTextField);
+    	
+    	JPanel numPanel = new JPanel(new GridLayout(1,2));
+    	numPanel.setBackground(Color.WHITE);
+    	numPanel.add(numLabel);
+    	numPanel.add(numTextField);
+    	
         b1.addActionListener(this);
         b2.addActionListener(this);
         b3.addActionListener(this);
@@ -40,6 +77,7 @@ public class Options extends JPanel implements ActionListener{
         b6.addActionListener(this);
         b7.addActionListener(this);
         b8.addActionListener(this);
+        b9.addActionListener(this);
 
         b1.setActionCommand("CLEAR");
         b2.setActionCommand("RUN");
@@ -49,30 +87,37 @@ public class Options extends JPanel implements ActionListener{
         b6.setActionCommand("LOAD");
         b7.setActionCommand("EXAMPLE");
         b8.setActionCommand("EXIT");
+        b9.setActionCommand("GENERATOR");
         
         // Global settings
-        c.insets = new Insets(10,0,0,0);
-        c.gridwidth = 1;
-        c.ipady=10;
+        c.insets = new Insets(10,10,0,0);
+//        c.gridwidth = 1;
+//        c.ipady=10;
         
+        c.gridx = 0;
+        c.gridy = line++;
+    	add(numPanel,c);	
         // Button settings
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = line++;
+    	add(b9,c);
+        c.gridx = 0;
+        c.gridy = line++;
     	add(b1,c);
     	c.gridx = 0;
-    	c.gridy = 1;
+    	c.gridy = line++;
     	add(b2,c);
     	c.gridx = 0;
-    	c.gridy = 2;
+    	c.gridy = line++;
     	add(b3,c);
     	c.gridx = 0;
-    	c.gridy = 3;
+    	c.gridy = line++;
     	add(b4,c);
     	c.gridx = 0;
-    	c.gridy = 4;
+    	c.gridy = line++;
     	add(b5,c); 
     	c.gridx = 0;
-    	c.gridy = 5;
+    	c.gridy = line++;
     	add(b6,c); 
     	c.gridx = 0;
     	c.gridy = 6;
@@ -97,6 +142,19 @@ public class Options extends JPanel implements ActionListener{
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}
+			if (e.getActionCommand().equals("GENERATOR")) {
+				if(!locked) {
+					
+					parent.GrafikaCanvas.generateElementList();
+					
+					
+					gen = new Generator(this.parent);
+					gen.setSize(800,600);
+					gen.setVisible(true);
+					System.err.println();
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}	
 			if (e.getActionCommand().equals("RUN")) {
 				if(!locked) {
 					
@@ -150,4 +208,12 @@ public class Options extends JPanel implements ActionListener{
 	public void unlock() {
 		locked=false;
 	} 
+	
+    public void propertyChange(PropertyChangeEvent e) {
+        Object source = e.getSource();
+        if (source == numTextField) {
+            number = ((Number)numTextField.getValue()).intValue();
+        } 
+        System.err.println(number);
+    }
 }    
