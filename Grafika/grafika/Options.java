@@ -120,10 +120,10 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	c.gridy = line++;
     	add(b6,c); 
     	c.gridx = 0;
-    	c.gridy = 6;
+    	c.gridy = line++;
     	add(b7,c); 
     	c.gridx = 0;
-    	c.gridy = 7;
+    	c.gridy = line++;
     	c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
     	c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
     	add(b8,c);
@@ -187,7 +187,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			}
 			if (e.getActionCommand().equals("LOAD")) { 
 				if(!locked) {
-					
+					Xml.load(parent);
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}
