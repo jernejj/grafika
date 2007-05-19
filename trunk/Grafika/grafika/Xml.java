@@ -96,4 +96,9 @@ public class Xml
 		else
 			parent.documentation.doctext.showline("SAVE_CANCELLED");
 	}
+	
+	public static void load (Grafika parent)
+	{
+		
+	}
 }
