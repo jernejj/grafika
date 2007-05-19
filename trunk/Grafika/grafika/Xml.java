@@ -96,4 +96,21 @@ public class Xml
 		else
 			parent.documentation.doctext.showline("SAVE_CANCELLED");
 	}
+	
+	public static void load (Grafika parent)
+	{
+JFrame frame = new JFrame();
+		
+		FileDialog d = new FileDialog(frame, "Load", FileDialog.LOAD);
+		d.setVisible(true);
+		String file = d.getFile();
+		
+		if(file != null)
+		{
+			
+		}
+		
+		else
+			parent.documentation.doctext.showline("LOAD_CANCELLED");
+	}
 }
