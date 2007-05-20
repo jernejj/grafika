@@ -48,6 +48,13 @@ public class Images {
 		parent = myparent;
 		
 		//  Element images
+		/*try {
+			this.elementImageAND = this.getImage("grafika/logicalOperators/and.png");
+		}
+		catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} */ 
 		this.elementImageAND = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/and.png");
 		this.elementImageOR = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/or.png");
 		this.elementImageNAND = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/nand.png");
@@ -58,6 +65,7 @@ public class Images {
 		this.elementImageGND = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/gnd.png");
 		this.elementImageVCC = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/vcc.png");
 		this.elementImageOUTPUT = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/output.png");
+		
 		
 		while(!condition()) {
 			try {
@@ -105,5 +113,14 @@ public class Images {
 			return false;
 		else 
 			return true;
+	}
+	
+	private Image getImage(String relative_path) throws Exception {
+		Image temp = parent.getImage(parent.getCodeBase(), relative_path);
+		if( false) {
+			return temp;
+		} else {
+			throw new Exception("Image not found.", new Throwable(relative_path));
+		}
 	}
 }
