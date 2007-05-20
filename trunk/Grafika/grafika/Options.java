@@ -188,6 +188,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			if (e.getActionCommand().equals("LOAD")) { 
 				if(!locked) {
 					Xml.load(parent);
+					parent.GrafikaCanvas.repaint();
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}
