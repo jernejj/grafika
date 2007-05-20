@@ -18,6 +18,10 @@ class DocText extends TextArea {
 	final String IZBERI_ELEMENT = "Izberi element!";
 	final String SAVE_CANCELLED = "Save cancelled by user!";
 	final String SAVED = "Workspace successfully saved!";
+	final String LOAD_CANCELLED = "Load cancelled by user!";
+	final String LOAD_FAILED = "It is possible to load only .xml file!";
+	final String LOAD_INVALID = "There was an attemp of loading invalid .xml file!";
+	final String LOADED = "Workspace successfully loaded!";
 		
 	final String EMPTY = "";
 		
@@ -43,6 +47,10 @@ class DocText extends TextArea {
 		else if (str.equals("IZBERI_ELEMENT")) setText(IZBERI_ELEMENT);
 		else if (str.equals("SAVE_CANCELLED")) setText(SAVE_CANCELLED);
 		else if (str.equals("SAVED")) setText(SAVED);
+		else if (str.equals("LOAD_CANCELLED")) setText(LOAD_CANCELLED);
+		else if (str.equals("LOAD_FAILED")) setText(LOAD_FAILED);
+		else if (str.equals("LOAD_INVALID")) setText(LOAD_INVALID);
+		else if (str.equals("LOADED")) setText(LOADED);
 		else setText(EMPTY);
 
 	}
