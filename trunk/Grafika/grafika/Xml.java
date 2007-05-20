@@ -78,12 +78,19 @@ public class Xml
 				Vector<Line> lineList = parent.GrafikaCanvas.lineList;
 				Iterator<Line> itl = lineList.iterator();
 				Line line;
+				String pin;
 				while (itl.hasNext())
 				{
 					line = itl.next();
+					if (line == line.getPartTowardsIn().getLineToPin1())
+						pin = "Pin1";
+					else //if (line == line.getPartTowardsIn().getLineToPin2())
+						pin = "Pin2";
+
 					out.write("\t\t<Line>\r\n");
 					out.write("\t\t\t<Out>" +line.getPartTowardsOut().getName()+ "</Out>\r\n");
 					out.write("\t\t\t<In>" +line.getPartTowardsIn().getName()+ "</In>\r\n");
+					out.write("\t\t\t<InPin>" + pin + "</InPin>\r\n");
 					out.write("\t\t\t<InPoint>\r\n");
 					out.write("\t\t\t\t<PosX>" +line.getInPoint().x+ "</PosX>\r\n");
 					out.write("\t\t\t\t<PosY>" +line.getInPoint().y+ "</PosY>\r\n");
@@ -224,6 +231,7 @@ public class Xml
 		            	int lInPosY;
 		            	int lOutPosX;
 		            	int lOutPosY;
+		            	String pinIn;
 		            	
 		            	// Sprehodimo se po vseh povezavah
 			            for (int i=0; i<listOfLines.getLength(); i++)
@@ -279,6 +287,12 @@ public class Xml
 			            		NodeList textSecondYList = secondYElement.getChildNodes();
 			            		lOutPosY = Integer.parseInt((((Node)textSecondYList.item(0)).getNodeValue().trim()));
 			            		
+			            		// Za InPin
+			            		NodeList whichPin = firstLine.getElementsByTagName("InPin");
+			            		org.w3c.dom.Element whichPinElement = (org.w3c.dom.Element)whichPin.item(0);
+			            		NodeList textWhichPinList = whichPinElement.getChildNodes();
+			            		pinIn = (((Node)textWhichPinList.item(0)).getNodeValue().trim());
+
 			            		Vector<Element> elementList = parent.GrafikaCanvas.elementList;
 			    				Iterator<Element> ite = elementList.iterator();
 			    				
@@ -298,6 +312,13 @@ public class Xml
 			    				Line line = new Line (lineElementOut, lineElementIn);
 			    				line.setOutPoint(new Point(lOutPosX, lOutPosY));
 			    				line.setInPoint(new Point (lInPosX, lInPosY));
+			    				// Elementu pripnemo povezavo na vhod
+			    				lineElementOut.setLineToOut(line);
+			    				// Elementu pripnemo povezavo na vhod
+			    				if (pinIn.equals("Pin1"))
+			    					lineElementIn.setLineToPin1(line);
+			    				else
+			    					lineElementIn.setLineToPin2(line);
 			    				
 			    				parent.GrafikaCanvas.lineList.add(line);
 			            	}
