@@ -2,6 +2,9 @@ package grafika;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -16,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 
@@ -40,6 +44,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		Element tmpElement;
 		JPanel tmpPanel;
 		JPanel rowPanel;
+
 		for(Iterator<Element> i = parent.GrafikaCanvas.listForGenerator.iterator(); i.hasNext(); ) {
 			this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 			
@@ -49,39 +54,71 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
                     BorderFactory.createTitledBorder(tmpElement.getName()),
                     BorderFactory.createEmptyBorder(5,5,5,5)));
 			
-			
+			// Sem postavljamo kvadratke s pini za posamezen element
+			GridBagLayout gblMain = new GridBagLayout();
+			tmpPanel.setLayout(gblMain);
+			GridBagConstraints cMain = new GridBagConstraints();
+			cMain.fill = GridBagConstraints.HORIZONTAL;
 			
 			//Add the combo box.
 			Element[] tmpElArray = new Element[list.size()];
 			tmpElArray = list.toArray(tmpElArray); 
-	        JComboBox variableChooser = new JComboBox(tmpElArray);
-	        variableChooser.setSelectedIndex(0);
-	        variableChooser.addActionListener(this);
-	        
+	        // Za Pin1
+			JComboBox variableChooser1 = new JComboBox(tmpElArray);
+	        variableChooser1.setSelectedIndex(0);
+	        variableChooser1.addActionListener(this);
+	        // Za Pin2
+	        JComboBox variableChooser2 = new JComboBox(tmpElArray);
+	        variableChooser2.setSelectedIndex(0);
+	        variableChooser2.addActionListener(this);
 	        
 	        
 	        
 			if(tmpElement.getLineToPin1() == null) {
 				// TODO: dodam primer: 
 				// AND3 - Pin1: izberes iz menija
-				
 				rowPanel = new JPanel();
-				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
-				rowPanel.add(new JLabel("Pin1: "));
-				rowPanel.add(variableChooser);
-				rowPanel.add(Box.createGlue());
-				tmpPanel.add(rowPanel);
+				GridBagLayout gbl = new GridBagLayout();
+				rowPanel.setLayout(gbl);
+				GridBagConstraints c = new GridBagConstraints();
+		    	c.fill = GridBagConstraints.HORIZONTAL;
+		    	c.insets = new Insets(10,10,0,0);
+		    	c.gridx = 0;
+		        c.gridy = 0;
+		    	rowPanel.add(new JLabel("Pin1: "),c);
+		    	c.gridx = 1;
+		        c.gridy = 0;
+		        rowPanel.add(variableChooser1,c);
+		    	c.gridx = 2;
+		        c.gridy = 0;
+		        rowPanel.add(Box.createGlue(),c);
+		        cMain.gridx = 0;
+		        cMain.gridy = 0;
+		    	tmpPanel.add(rowPanel,cMain);
+		    	
 
 			}
 			if(tmpElement.getLineToPin2() == null) {
 				// TODO: dodam primer: 
 				// AND3 - Pin2: izberes iz menija
 				rowPanel = new JPanel();
-				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
-				rowPanel.add(new JLabel("Pin2: "));
-				rowPanel.add(variableChooser);
-				rowPanel.add(Box.createGlue());
-				tmpPanel.add(rowPanel);
+				GridBagLayout gbl = new GridBagLayout();
+				rowPanel.setLayout(gbl);
+				GridBagConstraints c = new GridBagConstraints();
+		    	c.fill = GridBagConstraints.HORIZONTAL;
+		    	c.insets = new Insets(10,10,0,0);
+		    	c.gridx = 0;
+		        c.gridy = 0;
+		    	rowPanel.add(new JLabel("Pin2: "),c);
+		    	c.gridx = 1;
+		        c.gridy = 0;
+		        rowPanel.add(variableChooser2,c);
+		    	c.gridx = 2;
+		        c.gridy = 0;
+		        rowPanel.add(Box.createGlue(),c);
+		        cMain.gridx = 0;
+		        cMain.gridy = 1;
+		    	tmpPanel.add(rowPanel,cMain);
 			}
 			tmpPanel.add(Box.createGlue());
 			this.add(tmpPanel);
