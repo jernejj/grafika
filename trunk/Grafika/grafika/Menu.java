@@ -254,7 +254,7 @@ class Menu extends JPanel implements ActionListener{
 			if (e.getActionCommand().equals("OUTPUT")) {
 				if(!locked) {
 					parent.GrafikaCanvas.elementType = Element.OUTPUT; 
-					parent.documentation.doctext.showline("BOX");
+					parent.documentation.doctext.showline("OUTPUT");
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}
