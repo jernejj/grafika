@@ -11,9 +11,10 @@ class DocText extends TextArea {
 	final String XOR = "Operator XOR selected.";
 	final String XNOR = "Operator XNOR selected.";
 	final String NOT = "Operator NOT selected.";
-	final String GND = "Operator GND selected."; 
-	final String VCC = "Operator VCC selected."; 
+	final String GND = "Operator GND selected.";
+	final String VCC = "Operator VCC selected.";
 	final String BOX = "Nothing to do!";
+	final String OUTPUT = "Output selected.";
 	final String LOCKED = "Selection not possible!";
 	final String IZBERI_ELEMENT = "Izberi element!";
 	final String SAVE_CANCELLED = "Save cancelled by user!";
@@ -43,6 +44,7 @@ class DocText extends TextArea {
 		else if (str.equals("GND")) setText(GND);
 		else if (str.equals("VCC")) setText(VCC);
 		else if (str.equals("BOX")) setText(BOX);
+		else if (str.equals("OUTPUT")) setText(OUTPUT);
 		else if (str.equals("LOCKED")) setText(LOCKED);
 		else if (str.equals("IZBERI_ELEMENT")) setText(IZBERI_ELEMENT);
 		else if (str.equals("SAVE_CANCELLED")) setText(SAVE_CANCELLED);
