@@ -35,7 +35,8 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 	JLabel numLabel = new JLabel("#X: ");  
 	JFormattedTextField numTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
 
-	public int number=0;
+	//RELEASE: public int number=0;
+	public int number=3;
 	
 	Grafika parent;   
 	boolean locked=false;
@@ -152,11 +153,17 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 					if(number > 0){
 						gen.setNumber(number);
 						gen.generate();
+						// TODO: getSite() v Generatorju je potrebno dolociti veliksot, glede na stevilo primerov.. mogoce scroll bar
+						// Najverjetneje ne bo potrebno, je gen.pack() namesto tega.
+						gen.pack();
+						//gen.setSize(800,600); 
+						gen.setVisible(true);
+					} else {
+						Error.error("Number must be > 0");
 					}
 					
 					
-					gen.setSize(800,600); // TODO: getSite() v Generatorju je potrebno dolociti veliksot, glede na stevilo primerov.. mogoce scroll bar
-					gen.setVisible(true);
+					
 					if(Grafika.verbose) System.err.println("Options.actionPerformed(): Generator");
 				}
 				else parent.documentation.doctext.showline("LOCKED");
@@ -216,11 +223,33 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 		locked=false;
 	} 
 	
+	
+	// TODO: Boljse preverjanje pravilnega vnosa.
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == numTextField) {
-            number = ((Number)numTextField.getValue()).intValue();
+        	try {
+        		number = Integer.parseInt(((Number)numTextField.getValue()).toString());       	
+        	}
+        	catch(NumberFormatException nfe) {
+        		Error.error("Number is not an integer!");
+        	}
         } 
         System.err.println(number);
     }
 }    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
