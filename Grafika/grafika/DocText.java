@@ -16,7 +16,7 @@ class DocText extends TextArea {
 	final String BOX = "Nothing to do!";
 	final String OUTPUT = "Output selected.";
 	final String LOCKED = "Selection not possible!";
-	final String IZBERI_ELEMENT = "Izberi element!";
+	final String IZBERI_ELEMENT = "Choose a logical operator!";
 	final String SAVE_CANCELLED = "Save cancelled by user!";
 	final String SAVED = "Workspace successfully saved!";
 	final String LOAD_CANCELLED = "Load cancelled by user!";
