@@ -110,8 +110,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		for(int i = 0; i < number; i++){
 			this.list.add(new Element(this.parent, Element.GENOUT, i, tabela[number -1 -i]));
 		}
-		
-		
+			
 		if(Grafika.verbose) print(tabela);
 		
 		this.listInputPins();
