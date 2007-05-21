@@ -46,9 +46,9 @@ class Menu extends JPanel implements ActionListener{
 //	JButton b9 = new JButton(createImageIcon("../grafika/logicalOperators/vcc.png"))
 	JButton b9 = new JButton(createImageIcon("logicalOperators/vcc.png"))
 	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-	JButton b10 = new JButton("BOX")
+	JButton b10 = new JButton("OUTPUT")
 	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
-	JButton b11 = new JButton("OUTPUT")
+	JButton b11 = new JButton("BOX")
 	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
 	
 	Grafika parent;   
@@ -101,9 +101,9 @@ class Menu extends JPanel implements ActionListener{
 		b8.setToolTipText(toolTip.getToolTip());
 		toolTip.setToolTip("VCC");
 		b9.setToolTipText(toolTip.getToolTip());
-		toolTip.setToolTip("BOX");
-		b10.setToolTipText(toolTip.getToolTip());
 		toolTip.setToolTip("OUTPUT");
+		b10.setToolTipText(toolTip.getToolTip());
+		toolTip.setToolTip("BOX");
 		b11.setToolTipText(toolTip.getToolTip());
 		
 		b1.addActionListener(this);
@@ -126,8 +126,8 @@ class Menu extends JPanel implements ActionListener{
 		b7.setActionCommand("NOT");
 		b8.setActionCommand("GND");
 		b9.setActionCommand("VCC");
-		b10.setActionCommand("BOX");
-		b11.setActionCommand("OUTPUT");
+		b10.setActionCommand("OUTPUT");
+		b11.setActionCommand("BOX");
 		
 		// Global settings
 		c.insets = new Insets(10,0,0,0);
