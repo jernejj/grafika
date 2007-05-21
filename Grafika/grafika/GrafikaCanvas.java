@@ -632,15 +632,18 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 	
 	public void generateElementList() {
+		this.listForGenerator.clear();
 		Element temp;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			temp = i.next();
-			if(temp.getLineToPin1() == null) {
-				this.listForGenerator.add(temp);
-			}
-			else if(temp.getLineToPin2() == null) {
-				this.listForGenerator.add(temp);
-			}
+			if(temp.getType() != Element.GND && temp.getType() != Element.VCC && temp.getType() != Element.OUTPUT  && temp.getType() != Element.GENOUT)
+				if(temp.getLineToPin1() == null) {
+					this.listForGenerator.add(temp);
+				}
+				else if(temp.getLineToPin2() == null) {
+					this.listForGenerator.add(temp);
+				}
 		}
+		if(Grafika.verbose) System.err.println("GrafikaCanvas.generateElementList(): debug");
 	}
 }

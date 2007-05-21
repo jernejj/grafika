@@ -45,8 +45,11 @@ public class Element {
 	public static final int GENOUT = 101;
 	
 	private Point position; 
+	private short tabel[];
+	private int index;
 	
 	public Element(Grafika parent, int type, Point position) {
+		if(type != Element.GENOUT) {
 		this.parent = parent;
 		this.position = position;
 		setType(type);
@@ -55,6 +58,28 @@ public class Element {
 		this.toOut = null;
 		this.computed = false;
 		this.name = getElementType(type) + Grafika.element++;
+		} 
+		else {
+			Error.error("Wrong use of contructor: use element generator out!");
+		}
+	}
+	
+	public Element(Grafika parent, int type, int index, short[] tabel) {
+		if(type == Element.GENOUT) {
+		this.parent = parent;
+		this.position = null;
+		setType(type);
+		this.toPin1 = null;
+		this.toPin2 = null;
+		this.toOut = null;
+		this.computed = false;
+		this.index = index;
+		this.name = "x"+index;
+		this.tabel = tabel;
+		}
+		else {
+			Error.error("Wrong use of contructor: Generator out!");
+		}
 	}
 	
 	public int getSizeX() {
@@ -244,10 +269,10 @@ public class Element {
 				sizeX = 0;
 				sizeY = 0;
 				size = sizeX * sizeY;
-				this.pin1 = new Pin(Pin.IN1);
-				this.pin1.setUp(new Point(10,0));
-				this.pin1.setDown(new Point(13,5));
-				this.pin1.setValue(-1, this);
+				this.out = new Pin(Pin.OUT);
+				this.out.setUp(new Point(0,0));
+				this.out.setDown(new Point(0,0));
+				//this.out.setValue(this.tabel[0]);
 				break;					
 			default:
 				System.err.print("Invalid Type!");
