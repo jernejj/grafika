@@ -1,6 +1,7 @@
 package grafika;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,13 +32,17 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		this.setTitle("Generator Window");
 		this.generatorPanel.setLayout(new BoxLayout(generatorPanel, BoxLayout.PAGE_AXIS));
 		this.generatorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		
+		this.generatorPanel.setOpaque(true);
+		this.setContentPane(this.generatorPanel);
 	}
 
 	private void listInputPins() {
 		Element tmpElement;
 		JPanel tmpPanel;
+		JPanel rowPanel;
 		for(Iterator<Element> i = parent.GrafikaCanvas.listForGenerator.iterator(); i.hasNext(); ) {
+			this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+			
 			tmpElement = i.next();
 			tmpPanel = new JPanel();
 			tmpPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -52,25 +58,35 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 	        variableChooser.setSelectedIndex(0);
 	        variableChooser.addActionListener(this);
 	        
-			
+	        
+	        
+	        
 			if(tmpElement.getLineToPin1() == null) {
 				// TODO: dodam primer: 
 				// AND3 - Pin1: izberes iz menija
-				tmpPanel.add(new JLabel(tmpElement.getName()+" - Pin1: "));
-				tmpPanel.add(variableChooser);
-				this.add(tmpPanel);
+				
+				rowPanel = new JPanel();
+				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
+				rowPanel.add(new JLabel("Pin1: "));
+				rowPanel.add(variableChooser);
+				rowPanel.add(Box.createGlue());
+				tmpPanel.add(rowPanel);
 
 			}
 			if(tmpElement.getLineToPin2() == null) {
 				// TODO: dodam primer: 
 				// AND3 - Pin2: izberes iz menija
-				tmpPanel.add(new JLabel(tmpElement.getName()+" - Pin1: "));
-				tmpPanel.add(variableChooser);
-				this.add(tmpPanel);
+				rowPanel = new JPanel();
+				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
+				rowPanel.add(new JLabel("Pin2: "));
+				rowPanel.add(variableChooser);
+				rowPanel.add(Box.createGlue());
+				tmpPanel.add(rowPanel);
 			}
-			
-			
+			tmpPanel.add(Box.createGlue());
+			this.add(tmpPanel);
 		}
+		this.generatorPanel.add(Box.createGlue());
 	}
 
 
