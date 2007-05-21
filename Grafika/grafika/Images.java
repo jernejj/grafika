@@ -115,6 +115,7 @@ public class Images {
 			return true;
 	}
 	
+	@SuppressWarnings("unused")
 	private Image getImage(String relative_path) throws Exception {
 		Image temp = parent.getImage(parent.getCodeBase(), relative_path);
 		if( false) {
