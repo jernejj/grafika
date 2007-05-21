@@ -59,6 +59,7 @@ public class Xml
 				out.write("\t<Elements>\r\n");
 				
 				Element element;
+				int type;
 				while (ite.hasNext())
 				{
 					element = ite.next();
@@ -67,9 +68,13 @@ public class Xml
 					out.write("\t\t\t<Type>" +element.getType()+ "</Type>\r\n");
 					out.write("\t\t\t<PosX>" +element.getPosition().x + "</PosX>\r\n");
 					out.write("\t\t\t<PosY>" +element.getPosition().y + "</PosY>\r\n");
-					out.write("\t\t\t<Pin1>" +element.getPin1value() + "</Pin1>\r\n");
-					out.write("\t\t\t<Pin2>" +element.getPin2value() + "</Pin2>\r\n");
-					out.write("\t\t\t<Out>" +element.getOutValue() + "</Out>\r\n");
+					type = element.getType();
+					if (type != 7 && type != 8) // GND, VCC
+						out.write("\t\t\t<Pin1>" +element.getPin1value() + "</Pin1>\r\n");
+					if (type != 6 && type != 7 && type != 8 && type != 9) // NOT, GND, VCC, OUTPUT
+						out.write("\t\t\t<Pin2>" +element.getPin2value() + "</Pin2>\r\n");
+					if (type != 9) // OUTPUT
+						out.write("\t\t\t<Out>" +element.getOutValue() + "</Out>\r\n");
 					out.write("\t\t</Element>\r\n");
 				}
 				out.write("\t</Elements>\r\n");
@@ -160,9 +165,9 @@ public class Xml
 	            		int type;
 	            		int posX;
 	            		int posY;
-	            		int pin1;
-	            		int pin2;
-	            		int out;
+	            		int pin1 = 0; // Le zaradi prevajalnika
+	            		int pin2 = 0; // Le zaradi prevajalnika
+	            		int out = 0; // Le zaradi prevajalnika
 			            
 			            // Sprehodimo se po vseh elementih
 			            for (int i=0; i<listOfElements.getLength(); i++)
@@ -197,27 +202,41 @@ public class Xml
 			            		posY = Integer.parseInt(((Node)textElPosYList.item(0)).getNodeValue().trim());
 			            		
 			            		// Za Element Pin1
-			            		NodeList elementPin1 = firstElement.getElementsByTagName("Pin1");
-			            		org.w3c.dom.Element elementPin1Element = (org.w3c.dom.Element)elementPin1.item(0);
-			            		NodeList textElPin1List = elementPin1Element.getChildNodes();
-			            		pin1 = Integer.parseInt(((Node)textElPin1List.item(0)).getNodeValue().trim());
+			            		if (type != 7 && type != 8) // GND, VCC
+			            		{
+				            		NodeList elementPin1 = firstElement.getElementsByTagName("Pin1");
+				            		org.w3c.dom.Element elementPin1Element = (org.w3c.dom.Element)elementPin1.item(0);
+				            		NodeList textElPin1List = elementPin1Element.getChildNodes();
+				            		pin1 = Integer.parseInt(((Node)textElPin1List.item(0)).getNodeValue().trim());
+			            		}
 			            		
 			            		// Za Element Pin2
-			            		NodeList elementPin2 = firstElement.getElementsByTagName("Pin2");
-			            		org.w3c.dom.Element elementPin2Element = (org.w3c.dom.Element)elementPin2.item(0);
-			            		NodeList textElPin2List = elementPin2Element.getChildNodes();
-			            		pin2 = Integer.parseInt(((Node)textElPin2List.item(0)).getNodeValue().trim());
+			            		if (type != 6 && type != 7 && type != 8 && type != 9) // NOT, GND, VCC, OUTPUT
+			            		{
+				            		NodeList elementPin2 = firstElement.getElementsByTagName("Pin2");
+				            		org.w3c.dom.Element elementPin2Element = (org.w3c.dom.Element)elementPin2.item(0);
+				            		NodeList textElPin2List = elementPin2Element.getChildNodes();
+				            		pin2 = Integer.parseInt(((Node)textElPin2List.item(0)).getNodeValue().trim());
+			            		}
 			            		
 			            		// Za Element Out
-			            		NodeList elementOut = firstElement.getElementsByTagName("Out");
-			            		org.w3c.dom.Element elementOutElement = (org.w3c.dom.Element)elementOut.item(0);
-			            		NodeList textElOutList = elementOutElement.getChildNodes();
-			            		out = Integer.parseInt(((Node)textElOutList.item(0)).getNodeValue().trim());
+			            		if (type != 9) // OUTPUT
+			            		{
+				            		NodeList elementOut = firstElement.getElementsByTagName("Out");
+				            		org.w3c.dom.Element elementOutElement = (org.w3c.dom.Element)elementOut.item(0);
+				            		NodeList textElOutList = elementOutElement.getChildNodes();
+				            		out = Integer.parseInt(((Node)textElOutList.item(0)).getNodeValue().trim());
+			            		}
 			            		
 			            		Element element = new Element (parent, type, new Point (posX, posY));
-			            		element.setPin1value(pin1);
-			            		element.setPin2value(pin2);
-			            		element.setOut(out);
+			            		if (type != 7 && type != 8) // GND, VCC
+			            			element.setPin1value(pin1);
+			            		
+			            		if (type != 6 && type != 7 && type != 8 && type != 9) // NOT, GND, VCC, OUTPUT
+			            			element.setPin2value(pin2);
+			            		
+			            		if (type != 9) // OUTPUT
+			            			element.setOut(out);
 			            		element.setName(name);
 			            		
 			            		parent.GrafikaCanvas.elementList.add(element);
