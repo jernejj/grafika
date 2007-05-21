@@ -154,6 +154,9 @@ public class Xml
 		            
 		            else
 		            {
+		            	// We have to clear the canvas first
+		            	parent.GrafikaCanvas.clear();
+		            	
 			            NodeList numOfElements = doc.getElementsByTagName("NumberOfElements");
 			            org.w3c.dom.Element firstElNode = (org.w3c.dom.Element)numOfElements.item(0);
 			            NodeList firstEleNodeValue = firstElNode.getChildNodes();
