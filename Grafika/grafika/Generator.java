@@ -3,6 +3,7 @@ package grafika;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,8 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 	
 	private Vector<Element> list = new Vector<Element>();
 	JPanel generatorPanel = new JPanel();
-
+	GridBagConstraints genPanelConst;
+	
 	public Generator(Grafika parent) {
 		this.parent = parent;
 		this.setTitle("Generator Window");
@@ -36,13 +38,19 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		this.generatorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		this.generatorPanel.setOpaque(true);
 		this.setContentPane(this.generatorPanel);
+		
+		// Da nastavitve za pin postavimo vodoravno
+		GridBagLayout genPanel = new GridBagLayout();
+		this.setLayout(genPanel);
+		genPanelConst = new GridBagConstraints();
+		genPanelConst.fill = GridBagConstraints.HORIZONTAL;
 	}
 
 	private void listInputPins() {
 		Element tmpElement;
 		JPanel tmpPanel;
 		JPanel rowPanel;
-
+		int j=0;
 		for(Iterator<Element> i = parent.GrafikaCanvas.listForGenerator.iterator(); i.hasNext(); ) {
 			this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 			
@@ -119,7 +127,10 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		    	tmpPanel.add(rowPanel,cMain);
 			}
 			tmpPanel.add(Box.createGlue());
-			this.add(tmpPanel);
+			// Nastavitve za pin postavimo vodoravno
+			genPanelConst.gridx=j++;
+			genPanelConst.gridy=0;
+			this.add(tmpPanel,genPanelConst);
 		}
 		this.generatorPanel.add(Box.createGlue());
 	}
