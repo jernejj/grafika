@@ -52,9 +52,12 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		JPanel rowPanel;
 		int j=0;
 		for(Iterator<Element> i = parent.GrafikaCanvas.listForGenerator.iterator(); i.hasNext(); ) {
-			this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-			
 			tmpElement = i.next();
+			if (!((tmpElement.getLineToPin1() != null) && tmpElement.getType() == 6))
+			{	
+				this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+			
+			
 			tmpPanel = new JPanel();
 			tmpPanel.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createTitledBorder(tmpElement.getName()),
@@ -104,7 +107,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		    	
 
 			}
-			if(tmpElement.getLineToPin2() == null) {
+			if((tmpElement.getLineToPin2() == null && (tmpElement.getType() != 6))) {
 				// TODO: dodam primer: 
 				// AND3 - Pin2: izberes iz menija
 				rowPanel = new JPanel();
@@ -133,6 +136,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 			this.add(tmpPanel,genPanelConst);
 		}
 		this.generatorPanel.add(Box.createGlue());
+		}
 	}
 
 
