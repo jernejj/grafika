@@ -87,6 +87,15 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 				// TODO: dodam primer: 
 				// AND3 - Pin1: izberes iz menija
 				rowPanel = new JPanel();
+
+//				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
+//				rowPanel.add(new JLabel("Pin1: ", JLabel.LEFT));
+//				rowPanel.add(new JLabel("Pin1: "), BorderLayout.LINE_START);
+//				
+//				rowPanel.add(variableChooser, BorderLayout.LINE_END);
+//				rowPanel.add(Box.createGlue());
+//				tmpPanel.add(rowPanel);
+
 				GridBagLayout gbl = new GridBagLayout();
 				rowPanel.setLayout(gbl);
 				GridBagConstraints c = new GridBagConstraints();
@@ -106,11 +115,19 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		    	tmpPanel.add(rowPanel,cMain);
 		    	
 
+
 			}
 			if((tmpElement.getLineToPin2() == null && (tmpElement.getType() != 6))) {
 				// TODO: dodam primer: 
 				// AND3 - Pin2: izberes iz menija
 				rowPanel = new JPanel();
+
+//				rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.PAGE_AXIS));
+//				rowPanel.add(new JLabel("Pin2: ", JLabel.LEFT));
+//				rowPanel.add(variableChooser);
+//				rowPanel.add(Box.createGlue());
+//				tmpPanel.add(rowPanel);
+
 				GridBagLayout gbl = new GridBagLayout();
 				rowPanel.setLayout(gbl);
 				GridBagConstraints c = new GridBagConstraints();
@@ -128,6 +145,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		        cMain.gridx = 0;
 		        cMain.gridy = 1;
 		    	tmpPanel.add(rowPanel,cMain);
+
 			}
 			tmpPanel.add(Box.createGlue());
 			// Nastavitve za pin postavimo vodoravno
