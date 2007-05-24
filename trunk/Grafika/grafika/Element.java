@@ -45,37 +45,37 @@ public class Element {
 	public static final int GENOUT = 101;
 	
 	private Point position; 
-	private short tabel[];
+	private short table[];
 	private int index;
 	
 	public Element(Grafika parent, int type, Point position) {
 		if(type != Element.GENOUT) {
-		this.parent = parent;
-		this.position = position;
-		setType(type);
-		this.toPin1 = null;
-		this.toPin2 = null;
-		this.toOut = null;
-		this.computed = false;
-		this.name = getElementType(type) + Grafika.element++;
+			this.parent = parent;
+			this.position = position;
+			setType(type);
+			this.toPin1 = null;
+			this.toPin2 = null;
+			this.toOut = null;
+			this.computed = false;
+			this.name = getElementType(type) + Grafika.element++;
 		} 
 		else {
 			Error.error("Wrong use of contructor: use element generator out!");
 		}
 	}
 	
-	public Element(Grafika parent, int type, int index, short[] tabel) {
+	public Element(Grafika parent, int type, int index, short[] table) {
 		if(type == Element.GENOUT) {
-		this.parent = parent;
-		this.position = null;
-		setType(type);
-		this.toPin1 = null;
-		this.toPin2 = null;
-		this.toOut = null;
-		this.computed = false;
-		this.index = index;
-		this.name = "x"+index;
-		this.tabel = tabel;
+			this.parent = parent;
+			this.position = null;
+			setType(type);
+			this.toPin1 = null;
+			this.toPin2 = null;
+			this.toOut = null;
+			this.computed = false;
+			this.index = index;
+			this.name = "x"+index;
+			this.table = table;
 		}
 		else {
 			Error.error("Wrong use of contructor: Generator out!");
@@ -265,13 +265,14 @@ public class Element {
 				break;		
 			case GENOUT:
 				this.type = Element.GENOUT;
-				bufImg = null;
-				sizeX = 0;
-				sizeY = 0;
+				bufImg = parent.images.elementBufferedImageGENOUT;
+				sizeX = 24;
+				sizeY = 24;
 				size = sizeX * sizeY;
 				this.out = new Pin(Pin.OUT);
-				this.out.setUp(new Point(0,0));
-				this.out.setDown(new Point(0,0));
+				this.out.setUp(new Point(11,19));
+				this.out.setDown(new Point(14,24));
+				this.out.setValue(-1, this);
 				//this.out.setValue(this.tabel[0]);
 				break;					
 			default:
@@ -281,6 +282,10 @@ public class Element {
 	
 	public int getType() {
 		return this.type;
+	}
+	
+	public short[] getTable(){
+		return this.table;
 	}
 	
 	public String getElementType(int type) {
@@ -310,39 +315,91 @@ public class Element {
 		}
 	}		
 	
-	public void compute() {
+	public void compute(int step) {
 		switch(this.type) {
 			case AND:
 				this.out.setValue(this.pin1.getValue() & this.pin2.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case OR:
 				this.out.setValue(this.pin1.getValue() | this.pin2.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case NAND:
 				this.out.setValue(~(this.pin1.getValue() & this.pin2.getValue()));
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case NOR:
 				this.out.setValue(~(this.pin1.getValue() | this.pin2.getValue()));
-				break;
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}break;
 			case XOR:
 				this.out.setValue(this.pin1.getValue() ^ this.pin2.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case XNOR:
 				this.out.setValue(~(this.pin1.getValue() ^ this.pin2.getValue()));
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case NOT:
 				this.out.setValue(~this.pin1.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case GND:
 				this.out.setValue(~this.out.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case VCC:
 				this.out.setValue(~this.out.getValue());
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
+				break;
+			case GENOUT:
+				this.out.setValue(table[step]);
+				if(this.toOut.getPartTowardsIn().getLineToPin1() == toOut) {
+					this.toOut.getPartTowardsIn().setPin1value(this.out.getValue());
+				} else if (this.toOut.getPartTowardsIn().getType() != Element.OUTPUT && this.toOut.getPartTowardsIn().getType() != Element.NOT && this.toOut.getPartTowardsIn().getLineToPin2() == toOut) {
+					this.toOut.getPartTowardsIn().setPin2value(this.out.getValue());
+				}
 				break;
 			case OUTPUT:
 				break;			
 			default:
-				System.err.print("Invalid Type!");
+				Error.error("Invalid Type!");
 		}
 	}
 	
@@ -552,4 +609,12 @@ public class Element {
     public String toString(){
 		return this.name;
 	}
+    
+    public int getIndex(){
+    	return this.index;
+    }
+    
+    public void setIndex(int index){
+    	this.index = index;
+    }
 }

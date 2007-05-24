@@ -50,6 +50,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 	public Options(Grafika myparent) {
 		int line = 0;
 		parent = myparent;
+		gen = new Generator(this.parent);
 		setBackground(Color.WHITE);
 		
 		GridBagLayout gbl = new GridBagLayout();
@@ -147,9 +148,6 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 				if(!locked) {
 					
 					parent.GrafikaCanvas.generateElementList();
-					
-		
-					gen = new Generator(this.parent);
 					if(number > 0){
 						gen.setNumber(number);
 						gen.generate();
@@ -176,7 +174,20 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			}				
 			if (e.getActionCommand().equals("STEP")) { 
 				if(!locked) {
-					
+					if(parent.GrafikaCanvas.init()) {
+						parent.GrafikaCanvas.step();
+						b3.setText("next step");
+						b3.setActionCommand("NEXT STEP");
+						b3.setToolTipText("next step");
+					} else {
+						Error.error("You have to have at least one output window!");
+					}
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}
+			if (e.getActionCommand().equals("NEXT STEP")) { 
+				if(!locked) {
+					parent.GrafikaCanvas.step();					
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}
