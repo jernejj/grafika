@@ -55,7 +55,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// for run option
 	Thread algrthm;
 	private Vector<Element> startList = new Vector<Element>();
-	private int step;
+	// private int step;
+	int step;
 	private int maxSteps;
 	boolean performAlgorithm;
 
@@ -85,14 +86,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	public boolean init() {
-		maxSteps = parent.options.number;
+		maxSteps = (int)Math.pow((double)2,(double)parent.options.number);
 		Element tmpStart;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			tmpStart = i.next();
 			if(tmpStart.getType() == Element.OUTPUT)
 				startList.add(tmpStart);
 		}
-		
 		return !startList.isEmpty();
 	}
 
@@ -141,9 +141,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			if(e.getType() != Element.NOT && e.getType() != Element.OUTPUT) {
 				algorithm(e.getLineToPin2().getPartTowardsOut());
 			}
-			e.compute(step);
-		}
-		
+		}		
+		e.compute(step);
 	}
 	
 	public void step() {

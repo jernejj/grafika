@@ -187,6 +187,8 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			}
 			if (e.getActionCommand().equals("NEXT STEP")) { 
 				if(!locked) {
+					if(parent.GrafikaCanvas.step == 4)
+						System.out.println();
 					parent.GrafikaCanvas.step();					
 				}
 				else parent.documentation.doctext.showline("LOCKED");
