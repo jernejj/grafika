@@ -104,6 +104,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		this.listForGenerator.clear();
 		this.lineList.clear();
 		Grafika.element = 0;
+		this.step = 0;
+		parent.options.b3.setText("step");
+		parent.options.b3.setActionCommand("STEP");
+		parent.options.b3.setToolTipText("step");
 		parent.unlock();
 		repaint();
 	}
