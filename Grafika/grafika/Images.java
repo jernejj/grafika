@@ -21,6 +21,7 @@ public class Images {
 	public static final int GND = 7;
 	public static final int VCC = 8;
 	public static final int OUTPUT = 9;
+	public static final int GENOUT = 101;
 	
 	private Image elementImageAND;
 	private Image elementImageOR;
@@ -32,6 +33,7 @@ public class Images {
 	private Image elementImageGND;
 	private Image elementImageVCC;
 	private Image elementImageOUTPUT;
+	private Image elementImageGENOUT;
 
 	public BufferedImage elementBufferedImageAND;
 	public BufferedImage elementBufferedImageOR;
@@ -43,6 +45,7 @@ public class Images {
 	public BufferedImage elementBufferedImageGND;
 	public BufferedImage elementBufferedImageVCC;
 	public BufferedImage elementBufferedImageOUTPUT;
+	public BufferedImage elementBufferedImageGENOUT;
 	
 	public Images(Grafika myparent) {
 		parent = myparent;
@@ -65,6 +68,7 @@ public class Images {
 		this.elementImageGND = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/gnd.png");
 		this.elementImageVCC = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/vcc.png");
 		this.elementImageOUTPUT = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/output.png");
+		this.elementImageGENOUT = parent.getImage(parent.getCodeBase(), "grafika/logicalOperators/genout.png");
 		
 		
 		while(!condition()) {
@@ -86,6 +90,7 @@ public class Images {
 		this.elementBufferedImageGND = convert(this.elementImageGND);
 		this.elementBufferedImageVCC = convert(this.elementImageVCC);
 		this.elementBufferedImageOUTPUT = convert(this.elementImageOUTPUT);
+		this.elementBufferedImageGENOUT = convert(this.elementImageGENOUT);
 		
 		 // if(Grafika.verbose) System.out.println(this.elementBufferedImageAND.getWidth()+" "+this.elementBufferedImageAND.getHeight());
 	}
@@ -109,7 +114,8 @@ public class Images {
 				this.elementImageNOT.getWidth(null) < 0 || 
 				this.elementImageGND.getWidth(null) < 0 ||
 				this.elementImageVCC.getWidth(null) < 0 || 
-				this.elementImageOUTPUT.getWidth(null) < 0)
+				this.elementImageOUTPUT.getWidth(null) < 0 ||
+				this.elementImageGENOUT.getWidth(null) < 0)
 			return false;
 		else 
 			return true;

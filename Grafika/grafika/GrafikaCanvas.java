@@ -54,8 +54,12 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	// for run option
 	Thread algrthm;
+	private Vector<Element> startList = new Vector<Element>();
+	private int step;
+	private int maxSteps;
+	boolean performAlgorithm;
 
-	boolean stepthrough=false;
+	boolean stepThrough=false;
 
 	// locking the screen while running the algorithm
 	boolean Locked = false;
@@ -64,8 +68,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	GrafikaCanvas(Grafika myparent) {
 		parent = myparent;
-		init();
-		setBackground(Color.white);
+		setBackground(Color.WHITE);
 	}
 
 	/** lock screen while running an algorithm */
@@ -77,17 +80,25 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		Locked=false;
 	}
 
-//	public void start() {
-//		if (algrthm != null) algrthm.resume();
-//	}
+	public void start() {
+		if (algrthm != null) algrthm.resume();
+	}
 
-	public void init() {
-		setBackground(Color.WHITE);
+	public boolean init() {
+		maxSteps = parent.options.number;
+		Element tmpStart;
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
+			tmpStart = i.next();
+			if(tmpStart.getType() == Element.OUTPUT)
+				startList.add(tmpStart);
+		}
+		
+		return !startList.isEmpty();
 	}
 
 	/** removes elements and arrows from screen */
 	public void clear() {
-		init();
+		setBackground(Color.WHITE);
 		this.elementList.clear();
 		// this.outputList.clear();
 		this.listForGenerator.clear();
@@ -100,41 +111,58 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	/** resets a graph after running an algorithm */
 	public void reset() {
 		init(); 
-		// TODO: postavi generator na zacetek
+		step = 0;
 		parent.unlock();
 		repaint();
 	}
 
 //	/** gives an animation of the algorithm */
-//	public void runalg() {
-//		parent.lock();
+	public void runAlgorithm() {
+		parent.lock();
 //		initalg();
-//		performalg = true;
-//		algrthm = new Thread(this);
-//		algrthm.start();
-//	}
+		performAlgorithm = true;
+		algrthm = new Thread(this);
+		algrthm.start();
+	}
 
 	/** lets you step through the algorithm */ 
-//	public void stepalg() {
-//		parent.lock();
+	public void stepalg() {
+		parent.lock();
 //		initalg();
-//		performalg = true;
-//		nextstep();
-//	}
+		performAlgorithm = true;
+		nextstep();
+	}
 
-//	public void initalg() {
-//		init();
-//		step=0;
-//	}
-
+	public void algorithm(Element e) {
+		if(e.getType() == Element.GND || e.getType() == Element.VCC || e.getType() == Element.GENOUT) {
+			e.compute(step);
+		} else {
+			algorithm(e.getLineToPin1().getPartTowardsOut());
+			if(e.getType() != Element.NOT && e.getType() != Element.OUTPUT) {
+				algorithm(e.getLineToPin2().getPartTowardsOut());
+			}
+			e.compute(step);
+		}
+		
+	}
+	
+	public void step() {
+		if(step == maxSteps) {step = 0;}
+		for(Iterator<Element> i = this.startList.iterator(); i.hasNext(); ) {
+			algorithm(i.next());
+		}
+		step++;
+		repaint();
+	}
+	
 	public void nextstep() {
 		// TODO: step true generator
 		repaint();
 	}
 
-//	public void stop() {
-//		if (algrthm != null) algrthm.suspend();
-//	}
+	public void stop() {
+		if (algrthm != null) algrthm.suspend();
+	}
 
 	
 	public void run() {
@@ -150,19 +178,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// TODO: Dodajmo en primer za zacetek
 	public void showexample() {
 		// draws a graph on the screen
-		@SuppressWarnings("unused")
-		int w, h;
+
 		clear();
 		init();
 
-		w=this.getWidth()/8;
-		h=this.getHeight()/8;
-		
-//		node[0]=new Point(w, h);     node[1]=new Point(3*w, h);   
-//		node[2]=new Point(5*w, h);   node[3]=new Point(w, 4*h); 
-//		node[4]=new Point(3*w, 4*h); node[5]=new Point(5*w, 4*h);
-//		node[6]=new Point(w, 7*h);   node[7]=new Point(3*w, 7*h); 
-//		node[8]=new Point(5*w, 7*h); node[9]=new Point(7*w, 4*h);
+		Error.error("Se ni primera!");
 
 
 		repaint();
@@ -400,6 +420,14 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				return e.getOut();
 			}
 		}
+		else if (e.getType() == Element.GENOUT) {
+			// Out clicked
+			if(absX >= e.getOutUpPosition().x &&  absX <= e.getOutDownPosition().x && absY >= e.getOutUpPosition().y &&  absY <= e.getOutDownPosition().y) {
+				if(Grafika.verbose) System.out.println("GrafikaCanvas.pinHit(): Out clicked.");
+
+				return e.getOut();
+			}
+		}		
 		else {
 			// Pin1 clicked
 			if( absX >= e.getPin1upPosition().x &&  absX <= e.getPin1downPosition().x && absY >= e.getPin1upPosition().y &&  absY <= e.getPin1downPosition().y) {
@@ -555,7 +583,12 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 	
 	public void drawOutPut(Graphics g, Element e ) {
-		g.drawString(String.valueOf(e.getPin1value()), e.getXposition()+9, e.getYposition()+20);
+		if(e.getType() == Element.OUTPUT)
+			g.drawString(String.valueOf(e.getPin1value()), e.getXposition()+9, e.getYposition()+20);
+		else if(e.getType() == Element.GENOUT)
+			g.drawString(String.valueOf(e.getOutValue()), e.getXposition()+9, e.getYposition()+14);
+		else
+			Error.error("drawOutPut !");
 	}
 	
 	public void addNewElement(Element e) {
@@ -609,16 +642,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				drawElement(g, i.next());
 		}
 		
-		// draw output windows
-//		for(Iterator<Element> i = this.outputList.iterator(); i.hasNext(); ) {
-//				drawOutPutElement(g, i.next());
-//		}
-		
 		// draw output values
 		Element tmp;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			tmp = i.next();
-			if(tmp.getType() == Element.OUTPUT)
+			if(tmp.getType() == Element.OUTPUT || tmp.getType() == Element.GENOUT)
 				drawOutPut(g, tmp);
 		}
 	}
@@ -637,10 +665,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			temp = i.next();
 			if(temp.getType() != Element.GND && temp.getType() != Element.VCC && temp.getType() != Element.OUTPUT  && temp.getType() != Element.GENOUT)
-				if(temp.getLineToPin1() == null) {
+				if(temp.getLineToPin1() == null || temp.getLineToPin1().getPartTowardsOut().getType() == Element.GENOUT) {
 					this.listForGenerator.add(temp);
 				}
-				else if(temp.getLineToPin2() == null) {
+				else if(temp.getLineToPin2() == null || temp.getLineToPin2().getPartTowardsOut().getType() == Element.GENOUT) {
 					this.listForGenerator.add(temp);
 				}
 		}

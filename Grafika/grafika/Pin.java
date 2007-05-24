@@ -25,7 +25,7 @@ public class Pin {
 	}
 	
 	public void setValue(int value, Element e) {
-		if(e.getType() == Element.OUTPUT)
+		if(e.getType() == Element.OUTPUT || e.getType() == Element.GENOUT)
 			this.value = value;
 		else
 			System.err.println("Pin.setValue(int,Element): Only for Element.OUTPUT");
