@@ -18,9 +18,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.ToolTipManager;
 
 
-@SuppressWarnings("serial")
 public class Options extends JPanel implements ActionListener,PropertyChangeListener {
 
+	private static final long serialVersionUID = 7718176968975619237L;
 	// Set of options at the right of the screen
 	JButton b1 = new JButton("clear");
 	JButton b2 = new JButton("run");
