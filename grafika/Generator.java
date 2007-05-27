@@ -303,15 +303,19 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 				this.setVisible(false);
 			}
 			else if (e.getActionCommand().equals("CANCEL")) {
-				//this.tempList.clear();
-				parent.GrafikaCanvas.listForGenerator.clear();
-				this.elCombo.clear();
-				this.setGeneratorPanel();
-				this.setVisible(false);
+				close();
 			}
 		}
 	}
-
+	
+	public void close()
+	{
+		// this.tempList.clear();
+		parent.GrafikaCanvas.listForGenerator.clear();
+		this.elCombo.clear();
+		this.setGeneratorPanel();
+		this.setVisible(false);
+	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
