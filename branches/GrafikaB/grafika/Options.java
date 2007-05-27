@@ -39,6 +39,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 
 	//RELEASE: public int number=0;
 	public int number=3;
+	public int time=5000;
 	
 	Grafika parent;   
 	boolean locked=false;
@@ -64,7 +65,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	numLabel.setBackground(Color.WHITE);
     	numTextField.setValue(new Integer(number));
     	numTextField.addPropertyChangeListener("value", this);
-    	numTextField.setColumns(5);
+    	//numTextField.setColumns(5);
     	
     	numLabel.setLabelFor(numTextField);
     	
@@ -75,8 +76,9 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	
     	timeLabel.setToolTipText("Time (ms) to run the algorithm");
     	timeLabel.setBackground(Color.WHITE);
+    	timeTextField.setValue(new Integer(time));
     	timeTextField.addPropertyChangeListener("value", this);
-    	timeTextField.setColumns(5);
+    	//timeTextField.setColumns(5);
     	
     	timeLabel.setLabelFor(timeTextField);
     	
@@ -185,7 +187,11 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			}	
 			if (e.getActionCommand().equals("RUN")) {
 				if(!locked) {
-					
+					if(time > 0){
+						
+					} else {
+						Error.error("Time number must be > 0");
+					}
 				}
 				else parent.documentation.doctext.showline("LOCKED");
 			}				
@@ -266,6 +272,14 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         	}
         	catch(NumberFormatException nfe) {
         		Error.error("Number is not an integer!");
+        	}
+        }
+        if (source == timeTextField) {
+        	try {
+        		time = Integer.parseInt(((Number)timeTextField.getValue()).toString());       	
+        	}
+        	catch(NumberFormatException nfe) {
+        		Error.error("Time number is not an integer!");
         	}
         } 
         System.err.println(number);
