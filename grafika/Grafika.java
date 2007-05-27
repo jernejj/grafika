@@ -10,10 +10,10 @@ public class Grafika extends JApplet {
 
 	private static final long serialVersionUID = -2741614183571105141L;
 
-	GrafikaCanvas GrafikaCanvas = new GrafikaCanvas(this);
-	Options options = new Options(this);   
-	Documentation documentation = new Documentation();
-	Menu menu = new Menu(this);
+	GrafikaCanvas GrafikaCanvas;
+	Options options;   
+	Documentation documentation;
+	Menu menu;
 	Images images;
 	
 	static int element = 0;
@@ -22,7 +22,13 @@ public class Grafika extends JApplet {
 	public void init() { 
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);
+		
 		Grafika.verbose = true;
+		
+		GrafikaCanvas = new GrafikaCanvas(this);
+		options = new Options(this);
+		documentation = new Documentation();
+		menu = new Menu(this);
 		
 		int requestedWidth = 0;
 		String windowWidthString = this.getParameter("WINDOWWIDTH");

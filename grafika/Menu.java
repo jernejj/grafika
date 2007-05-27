@@ -38,7 +38,7 @@ class Menu extends JPanel implements ActionListener
 	JButton b9 = new JButton(createImageIcon("logicalOperators/vcc.png"))
 	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
 	JButton b10 = new JButton("OUTPUT")
-	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
+	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};	
 	JButton b11 = new JButton("BOX")
 	{public Point getToolTipLocation(MouseEvent event) { return new Point(getWidth()+10, 0);}};
 	
@@ -143,12 +143,21 @@ class Menu extends JPanel implements ActionListener
 		c.gridwidth = 2;
 		c.gridx = 0;
 		c.gridy = 8;
-		add(b10,c);
-		c.gridx = 0;
-		c.gridy = 9;
-		c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
-		c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
-		add(b11,c);
+		if (Grafika.verbose)
+		{
+			add(b10,c);
+			c.gridx = 0;
+			c.gridy = 9;
+			c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
+			c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
+			add(b11,c);
+		}
+		else
+		{
+			c.weighty=1.0; // Zadnji prostor razsirimo cez preostanek JPanela
+			c.anchor=GridBagConstraints.NORTH; // Zadnji gumb postavimo zgoraj
+			add(b10,c);
+		}
 		
 		// Omogocimo, da je ToolTip viden cez vse elemente layouta
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
