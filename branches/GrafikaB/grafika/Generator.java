@@ -19,6 +19,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
 
 class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 
@@ -44,18 +47,18 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		OK.addActionListener(this);
 		CANCEL.setActionCommand("CANCEL");
 		CANCEL.addActionListener(this);
-
 	}
 
 	private void setGeneratorPanel() {
+		// Prvi element takoj na JScrollPane (vsebuje elemente in gumba OK ter CANCEL)
 		this.generatorPanel = new JPanel();
-		this.generatorPanel.setLayout(new BoxLayout(generatorPanel, BoxLayout.PAGE_AXIS));
+		this.generatorPanel.setLayout(new GridBagLayout());
 		this.generatorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		this.generatorPanel.setOpaque(true);
-		this.setContentPane(this.generatorPanel);
-		// Da nastavitve za pin postavimo vodoravno
-		GridBagLayout genPanel = new GridBagLayout();
-		this.setLayout(genPanel);
+		// JScrollPane potrebuje ScrollPaneLayout - sicer ne deluje!
+		ScrollPaneLayout genPanel = new ScrollPaneLayout();
+		this.setLayout(genPanel); // Layout nastavimo JFrame-u, a ker bo JScrollPane prvi element na JFrame-u, mora biti tocno ta Layout manager
+		// Za vse elemente, ki pridejo na JScrollPane (Elementi in gumba OK ter CANCEL)
 		genPanelConst = new GridBagConstraints();
 		genPanelConst.fill = GridBagConstraints.HORIZONTAL;
 	}
@@ -69,13 +72,14 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 			tmpElement = i.next();
 
 			this.generatorPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+			
+			// Sem postavljamo kvadratke s pini za posamezen element
 			tmpPanel = new JPanel();
 			tmpPanel.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createTitledBorder(tmpElement.getName()),
 					BorderFactory.createEmptyBorder(5,5,5,5)));
 			tmpPanel.setName(tmpElement.getName());
 
-			// Sem postavljamo kvadratke s pini za posamezen element
 			GridBagLayout gblMain = new GridBagLayout();
 			tmpPanel.setLayout(gblMain);
 			GridBagConstraints cMain = new GridBagConstraints();
@@ -161,6 +165,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 			this.generatorPanel.add(Box.createGlue());
 		}
 
+		// Gumba OK in CANCEL
 		this.genPanelConst.insets = new Insets(5,5,5,5);
 		this.genPanelConst.gridwidth = 1;
 		this.genPanelConst.gridx = 0;
@@ -168,6 +173,13 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		this.generatorPanel.add(OK, genPanelConst);
 		this.genPanelConst.gridx = 1;
 		this.generatorPanel.add(CANCEL, genPanelConst);
+		
+		// Vse damo na JScrollPane (to je potrebno dati na koncu, saj konstruktor zahteva JPanel z vsemi elementi)
+		JScrollPane scroller = new JScrollPane(this.generatorPanel);
+		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		// JFrame-u nastavimo JScrollPane
+		this.setContentPane(scroller);
 	}
 
 	public void generate() {
