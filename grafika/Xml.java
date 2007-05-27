@@ -63,19 +63,22 @@ public class Xml
 				while (ite.hasNext())
 				{
 					element = ite.next();
+					if (element.getType() != Element.GENOUT)
+					{
 					out.write("\t\t<Element>\r\n");
 					out.write("\t\t\t<ID>" +element.getName()+ "</ID>\r\n");
 					out.write("\t\t\t<Type>" +element.getType()+ "</Type>\r\n");
 					out.write("\t\t\t<PosX>" +element.getPosition().x + "</PosX>\r\n");
 					out.write("\t\t\t<PosY>" +element.getPosition().y + "</PosY>\r\n");
 					type = element.getType();
-					if (type != Element.GENOUT && type != Element.GND && type != Element.VCC)
+					if (type != Element.GND && type != Element.VCC)
 						out.write("\t\t\t<Pin1>" +element.getPin1value() + "</Pin1>\r\n");
-					if (type != Element.GENOUT && type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
+					if (type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
 						out.write("\t\t\t<Pin2>" +element.getPin2value() + "</Pin2>\r\n");
 					if (type != Element.OUTPUT)
 						out.write("\t\t\t<Out>" +element.getOutValue() + "</Out>\r\n");
 					out.write("\t\t</Element>\r\n");
+					}
 				}
 				out.write("\t</Elements>\r\n");
 				out.write("\t<Lines>\r\n");
@@ -87,24 +90,27 @@ public class Xml
 				while (itl.hasNext())
 				{
 					line = itl.next();
-					if (line == line.getPartTowardsIn().getLineToPin1())
-						pin = "Pin1";
-					else //if (line == line.getPartTowardsIn().getLineToPin2())
-						pin = "Pin2";
-
-					out.write("\t\t<Line>\r\n");
-					out.write("\t\t\t<Out>" +line.getPartTowardsOut().getName()+ "</Out>\r\n");
-					out.write("\t\t\t<In>" +line.getPartTowardsIn().getName()+ "</In>\r\n");
-					out.write("\t\t\t<InPin>" + pin + "</InPin>\r\n");
-					out.write("\t\t\t<InPoint>\r\n");
-					out.write("\t\t\t\t<PosX>" +line.getInPoint().x+ "</PosX>\r\n");
-					out.write("\t\t\t\t<PosY>" +line.getInPoint().y+ "</PosY>\r\n");
-					out.write("\t\t\t</InPoint>\r\n");
-					out.write("\t\t\t<OutPoint>\r\n");
-					out.write("\t\t\t\t<PosX>" +line.getOutPoint().x+ "</PosX>\r\n");
-					out.write("\t\t\t\t<PosY>" +line.getOutPoint().y+ "</PosY>\r\n");
-					out.write("\t\t\t</OutPoint>\r\n");
-					out.write("\t\t</Line>\r\n");
+					if (!line.getPartTowardsOut().getName().startsWith("x"))
+					{
+						if (line == line.getPartTowardsIn().getLineToPin1())
+							pin = "Pin1";
+						else //if (line == line.getPartTowardsIn().getLineToPin2())
+							pin = "Pin2";
+	
+						out.write("\t\t<Line>\r\n");
+						out.write("\t\t\t<Out>" +line.getPartTowardsOut().getName()+ "</Out>\r\n");
+						out.write("\t\t\t<In>" +line.getPartTowardsIn().getName()+ "</In>\r\n");
+						out.write("\t\t\t<InPin>" + pin + "</InPin>\r\n");
+						out.write("\t\t\t<InPoint>\r\n");
+						out.write("\t\t\t\t<PosX>" +line.getInPoint().x+ "</PosX>\r\n");
+						out.write("\t\t\t\t<PosY>" +line.getInPoint().y+ "</PosY>\r\n");
+						out.write("\t\t\t</InPoint>\r\n");
+						out.write("\t\t\t<OutPoint>\r\n");
+						out.write("\t\t\t\t<PosX>" +line.getOutPoint().x+ "</PosX>\r\n");
+						out.write("\t\t\t\t<PosY>" +line.getOutPoint().y+ "</PosY>\r\n");
+						out.write("\t\t\t</OutPoint>\r\n");
+						out.write("\t\t</Line>\r\n");
+					}
 				}
 				
 				out.write("\t</Lines>\r\n");
@@ -205,7 +211,7 @@ public class Xml
 			            		posY = Integer.parseInt(((Node)textElPosYList.item(0)).getNodeValue().trim());
 			            		
 			            		// Za Element Pin1
-			            		if (type != Element.GENOUT && type != Element.GND && type != Element.VCC)
+			            		if (type != Element.GND && type != Element.VCC)
 			            		{
 				            		NodeList elementPin1 = firstElement.getElementsByTagName("Pin1");
 				            		org.w3c.dom.Element elementPin1Element = (org.w3c.dom.Element)elementPin1.item(0);
@@ -214,7 +220,7 @@ public class Xml
 			            		}
 			            		
 			            		// Za Element Pin2
-			            		if (type != Element.GENOUT && type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
+			            		if (type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
 			            		{
 				            		NodeList elementPin2 = firstElement.getElementsByTagName("Pin2");
 				            		org.w3c.dom.Element elementPin2Element = (org.w3c.dom.Element)elementPin2.item(0);
@@ -232,7 +238,7 @@ public class Xml
 			            		}
 
 			            		Element element = new Element (parent, type, new Point (posX, posY));
-			            		if (type != Element.GENOUT && type != Element.GND && type != Element.VCC)
+			            		if (type != Element.GND && type != Element.VCC)
 			            		{
 			            			if (type == Element.OUTPUT)
 			            				element.setPin1value(pin1, element);
@@ -240,16 +246,12 @@ public class Xml
 			            				element.setPin1value(pin1);
 			            		}
 			            		
-			            		if (type != Element.GENOUT && type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
+			            		if (type != Element.GND && type != Element.NOT && type != Element.OUTPUT && type != Element.VCC)
 			            			element.setPin2value(pin2);
 			            		
 			            		if (type != Element.OUTPUT)
-			            		{
-			            			if (type == Element.GENOUT)
-			            				element.setOut(out, element);
-			            			else
-			            				element.setOut(out);
-			            		}
+			            			element.setOut(out);
+			            		
 			            		element.setName(name);
 			            		
 			            		parent.GrafikaCanvas.elementList.add(element);
