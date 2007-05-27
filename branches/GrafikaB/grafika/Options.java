@@ -39,7 +39,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 
 	//RELEASE: public int number=0;
 	public int number=3;
-	public int time=5000;
+	public int time=2000;
 	
 	Grafika parent;   
 	boolean locked=false;
@@ -170,17 +170,12 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 					if(number > 0){
 						gen.setNumber(number);
 						gen.generate();
-						// TODO: getSite() v Generatorju je potrebno dolociti veliksot, glede na stevilo primerov.. mogoce scroll bar
-						// Najverjetneje ne bo potrebno, je gen.pack() namesto tega.
 						gen.pack();
-						//gen.setSize(800,600); 
 						gen.setVisible(true);
 					} else {
-						Error.error("Number must be > 0");
+						Error.error("Number must be greater than zero!");
 					}
-					
-					
-					
+
 					if(Grafika.verbose) System.err.println("Options.actionPerformed(): Generator");
 				}
 				else parent.documentation.doctext.showline("LOCKED");
@@ -188,9 +183,25 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			if (e.getActionCommand().equals("RUN")) {
 				if(!locked) {
 					if(time > 0){
-						
+						parent.GrafikaCanvas.run();
+						b2.setActionCommand("STOP");
+						b2.setName("stop");
+						b2.setToolTipText("stop the algorithm");
 					} else {
-						Error.error("Time number must be > 0");
+						Error.error("Time number must be greater than 0!");
+					}
+				}
+				else parent.documentation.doctext.showline("LOCKED");
+			}		
+			if (e.getActionCommand().equals("STOP")) {
+				if(locked) {
+					if(time > 0){
+						parent.GrafikaCanvas.stop();
+						b2.setActionCommand("RUN");
+						b2.setName("run");
+						b2.setToolTipText("stop the algorithm");
+					} else {
+						Error.error("Time number must be greater than 0!");
 					}
 				}
 				else parent.documentation.doctext.showline("LOCKED");
@@ -269,6 +280,11 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         if (source == numTextField) {
         	try {
         		number = Integer.parseInt(((Number)numTextField.getValue()).toString());       	
+        		if( number < -1 || number > 20) {
+        			number = 2;
+        			numTextField.setValue(2);
+        			Error.error("Number must be from an interval [1,20]!");
+        		}
         	}
         	catch(NumberFormatException nfe) {
         		Error.error("Number is not an integer!");
@@ -277,6 +293,12 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         if (source == timeTextField) {
         	try {
         		time = Integer.parseInt(((Number)timeTextField.getValue()).toString());       	
+        		
+        		if(time < 0) {
+        			time = 2000;
+        			timeTextField.setValue(2000);
+        			Error.error("Time number must be a positive integer!");
+        		}
         	}
         	catch(NumberFormatException nfe) {
         		Error.error("Time number is not an integer!");
