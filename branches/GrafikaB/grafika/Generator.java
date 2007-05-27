@@ -157,8 +157,7 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 			genPanelConst.gridwidth = 2;
 			genPanelConst.gridx=0;
 			genPanelConst.gridy=j++;
-			this.add(tmpPanel,genPanelConst);
-
+			this.generatorPanel.add(tmpPanel,genPanelConst);
 			this.generatorPanel.add(Box.createGlue());
 		}
 
