@@ -528,6 +528,10 @@ public class Element {
 		this.pin1.setValue(value);
 	}
 	
+	public void setPin1value(int value, Element e) {
+		this.pin1.setValue(value, e);
+	}
+	
 	public int getPin2value() {
 		return this.pin2.getValue();
 	}
@@ -542,6 +546,10 @@ public class Element {
 	
 	public void setOut(int value) {
 		this.out.setValue(value);
+	}
+	
+	public void setOut(int value, Element e) {
+		this.out.setValue(value, e);
 	}
 	
 	public void setLineToPin1(Line line_to_pin1) {
