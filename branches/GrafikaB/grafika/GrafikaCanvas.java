@@ -62,7 +62,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	// private int step;
 	int step;
 	private int maxSteps;
-	boolean performAlgorithm;
+	boolean runAlgorithm;
 	boolean loop = false;
 	boolean stepThrough=false;
 
@@ -86,7 +86,8 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	public void start() {
-		if (algrthm != null) algrthm.resume();
+		if (algrthm != null) 
+			this.runAlgorithm = true;
 	}
 
 	public boolean init() {
@@ -102,7 +103,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return !startList.isEmpty();
 	}
 
-	/** removes elements and arrows from screen */
+	/** removes elements and lines from screen */
 	public void clear() {
 		setBackground(Color.WHITE);
 		this.elementList.clear();
@@ -141,8 +142,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 //	/** gives an animation of the algorithm */
 	public void runAlgorithm() {
 		parent.lock();
-//		initalg();
-		performAlgorithm = true;
+		init();
 		algrthm = new Thread(this);
 		algrthm.start();
 	}
@@ -233,30 +233,28 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 
 	public void run() {
-		// TODO: Algoritem za izracun
 		if(loop) {
-		for(int i=0; i<this.elementList.size(); i++){
-			step();
-			try { Thread.sleep(2000); }
-			catch (InterruptedException e) {}
-		}
+			while(this.runAlgorithm) {
+				step();
+				try { Thread.sleep(parent.options.time); }
+				catch (InterruptedException e) {}
+			}
 		}
 		else {
-			;
+			for(int i=0; i<(int)Math.pow((double)2,(double)parent.options.number) && this.runAlgorithm; i++){
+				step();
+				try { Thread.sleep(parent.options.time); }
+				catch (InterruptedException e) {}
+			}
 		}
 		algrthm = null;
 	}
 
 	// TODO: Dodajmo en primer za zacetek
 	public void showexample() {
-		// draws a graph on the screen
-
 		clear();
 		init();
-
 		Error.error("Se ni primera!");
-
-
 		repaint();
 	}
 
