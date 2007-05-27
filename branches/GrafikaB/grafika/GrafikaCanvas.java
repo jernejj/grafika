@@ -122,6 +122,17 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		this.step = 0;
 		this.AlgSet.clear();
 		this.firstTime = true;
+		Element tmp;
+		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext();) {
+			tmp = i.next();
+			if(tmp.getType() == Element.GENOUT) {
+				tmp.setOut(-1, tmp);
+			}
+			else if(tmp.getType() == Element.OUTPUT) {
+				tmp.setPin1value(-1, tmp);
+			}
+		}
+			
 		parent.unlock();
 		repaint();
 	}
@@ -204,10 +215,10 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 //	}
 
 	public void step() {
+		parent.lock();
 		if(step == maxSteps) {step = 0;}
 		for(Iterator<Element> i = this.startList.iterator(); i.hasNext(); ) {
 			algorithm(i.next());
-			
 		}
 		this.firstTime = false;
 		this.AlgSet.clear();
@@ -346,9 +357,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 					parent.documentation.doctext.showline("IZBERI_ELEMENT");
 				}
 				else {
-//					if(elementType == Element.OUTPUT)
-//					addNewOutPutElement(new Element(parent, elementType, new Point(x,y)));
-//					else
 					addNewElement(new Element(parent, elementType, new Point(x,y)));
 				}
 			}
@@ -714,38 +722,28 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 
 	public void drawElement(Graphics g, Element e) {
-//		try {
-//		img = ImageIO.read(e.symbol_path);
-
-//		//img = new BufferedImage();
-//		}
-//		catch (IOException e1) {
-//		e1.printStackTrace();
-//		}
-		g.drawImage(e.getBufferedImage(), e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
-	}
-
-	public void drawOutPutElement(Graphics g, Element e) {
 		g.drawImage(e.getBufferedImage(), e.getXposition(), e.getYposition(), e.getSizeX(), e.getSizeY(), null);
 	}
 
 	public void drawOutPut(Graphics g, Element e ) {
-		if(e.getType() == Element.OUTPUT)
-			g.drawString(String.valueOf(e.getPin1value()), e.getXposition()+9, e.getYposition()+20);
-		else if(e.getType() == Element.GENOUT)
-			g.drawString(String.valueOf(e.getOutValue()), e.getXposition()+9, e.getYposition()+14);
-		else
+		if(e.getType() == Element.OUTPUT) {
+			if(e.getPin1value() != -1) {
+				g.drawString(String.valueOf(e.getPin1value()), e.getXposition()+9, e.getYposition()+20);
+			}
+		}
+		else if(e.getType() == Element.GENOUT) {
+			if(e.getOutValue() != -1) {
+				g.drawString(String.valueOf(e.getOutValue()), e.getXposition()+9, e.getYposition()+14);
+			}
+		}
+		else {
 			Error.error("drawOutPut !");
+		}
 	}
 
 	public void addNewElement(Element e) {
 		this.elementList.add(e);
 		if(Grafika.verbose) {System.err.println("GrafikaCanvas.addNewElement(): "+e.getName());}
-	}
-
-	private void addNewOutPutElement(Element e) {
-//		this.outputList.add(e);
-		if(Grafika.verbose) {System.err.println("GrafikaCanvas.addNewOutPutElement(): "+e.getName());}
 	}
 
 	public void drawLine(Graphics g, Line l) {
@@ -799,8 +797,9 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		Element tmp;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			tmp = i.next();
-			if(tmp.getType() == Element.OUTPUT || tmp.getType() == Element.GENOUT)
+			if(tmp.getType() == Element.OUTPUT || tmp.getType() == Element.GENOUT) {
 				drawOutPut(g, tmp);
+			}
 		}
 	}
 
