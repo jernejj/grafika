@@ -209,7 +209,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 				else parent.documentation.doctext.showline("LOCKED");
 			}
 			if (e.getActionCommand().equals("NEXT STEP")) { 
-				if(!locked) {
+				if(locked) {
 					if(parent.GrafikaCanvas.step == 4)
 						System.out.println();
 					parent.GrafikaCanvas.step();					
@@ -217,8 +217,8 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 				else parent.documentation.doctext.showline("LOCKED");
 			}
 			if (e.getActionCommand().equals("RESET")) { 
-				if(!locked) {
-					parent.GrafikaCanvas.step = 0;
+				if(locked) {
+					parent.GrafikaCanvas.reset();
 					this.b3.setText("step");
 					this.b3.setActionCommand("STEP");
 					this.b3.setToolTipText("step");
