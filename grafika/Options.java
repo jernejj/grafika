@@ -34,6 +34,8 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 	
 	JLabel numLabel = new JLabel("#X: ");  
 	JFormattedTextField numTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
+	JLabel timeLabel = new JLabel("Time in ms: ");  
+	JFormattedTextField timeTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
 
 	//RELEASE: public int number=0;
 	public int number=3;
@@ -71,6 +73,18 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	numPanel.add(numLabel);
     	numPanel.add(numTextField);
     	
+    	timeLabel.setToolTipText("Time (ms) to run the algorithm");
+    	timeLabel.setBackground(Color.WHITE);
+    	timeTextField.addPropertyChangeListener("value", this);
+    	timeTextField.setColumns(5);
+    	
+    	timeLabel.setLabelFor(timeTextField);
+    	
+    	JPanel timePanel = new JPanel(new GridLayout(1,2));
+    	timePanel.setBackground(Color.WHITE);
+    	timePanel.add(timeLabel);
+    	timePanel.add(timeTextField);
+    	
         b1.addActionListener(this);
         b2.addActionListener(this);
         b3.addActionListener(this);
@@ -106,6 +120,9 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         c.gridx = 0;
         c.gridy = line++;
     	add(b1,c);
+    	c.gridx = 0;
+        c.gridy = line++;
+    	add(timePanel,c);
     	c.gridx = 0;
     	c.gridy = line++;
     	add(b2,c);
