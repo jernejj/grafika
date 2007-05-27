@@ -28,7 +28,7 @@ public class Pin {
 		if(e.getType() == Element.OUTPUT || e.getType() == Element.GENOUT)
 			this.value = value;
 		else
-			System.err.println("Pin.setValue(int,Element): Only for Element.OUTPUT");
+			System.err.println("Pin.setValue(int,Element): Only for Element.OUTPUT and Element.GENOUT!");
 	}
 	
 	public Point getUp() {
