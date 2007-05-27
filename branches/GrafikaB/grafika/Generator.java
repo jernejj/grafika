@@ -178,6 +178,8 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 		JScrollPane scroller = new JScrollPane(this.generatorPanel);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		if (j-1 >= 6)
+			scroller.setPreferredSize(new Dimension (180,579));
 		// JFrame-u nastavimo JScrollPane
 		this.setContentPane(scroller);
 	}
