@@ -408,7 +408,7 @@ public class Element {
 				}
 				break;
 			case GND:
-				this.out.setValue(~this.out.getValue());
+				this.out.setValue(this.out.getValue());
 				this.toOut = null;
 				for(Iterator<Line> i = this.toOutSet.iterator(); i.hasNext();) {
 					this.toOut = i.next();
@@ -420,7 +420,7 @@ public class Element {
 				}
 				break;
 			case VCC:
-				this.out.setValue(~this.out.getValue());
+				this.out.setValue(this.out.getValue());
 				this.toOut = null;
 				for(Iterator<Line> i = this.toOutSet.iterator(); i.hasNext();) {
 					this.toOut = i.next();
