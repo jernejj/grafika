@@ -66,28 +66,27 @@ public class Grafika extends JApplet {
 	} 
 	
 	// TODO:
-    public String[][] getParameterInfo() {
-        String[][] info = {
-          // Parameter Name     Kind of Value   Description
-            {"imagesource",     "URL",          "a directory"},
-            {"startup",         "URL",          "displayed at startup"},
-            {"background",      "URL",          "displayed as background"},
-            {"startimage",      "int",          "start index"},
-            {"endimage",        "int",          "end index"},
-            {"namepattern",     "URL",          "used to generate indexed names"},
-            {"pause",           "int",          "milliseconds"},
-            {"pauses",          "ints",         "milliseconds"},
-            {"repeat",          "boolean",      "repeat or not"},
-            {"positions",       "coordinates",  "path"},
-            {"soundsource",     "URL",          "audio directory"},
-            {"soundtrack",      "URL",          "background music"},
-            {"sounds",          "URLs",         "audio samples"},
-        };
-        return info;
-    }    
+//    public String[][] getParameterInfo() {
+//        String[][] info = {
+//          // Parameter Name     Kind of Value   Description
+//            {"imagesource",     "URL",          "a directory"},
+//            {"startup",         "URL",          "displayed at startup"},
+//            {"background",      "URL",          "displayed as background"},
+//            {"startimage",      "int",          "start index"},
+//            {"endimage",        "int",          "end index"},
+//            {"namepattern",     "URL",          "used to generate indexed names"},
+//            {"pause",           "int",          "milliseconds"},
+//            {"pauses",          "ints",         "milliseconds"},
+//            {"repeat",          "boolean",      "repeat or not"},
+//            {"positions",       "coordinates",  "path"},
+//            {"soundsource",     "URL",          "audio directory"},
+//            {"soundtrack",      "URL",          "background music"},
+//            {"sounds",          "URLs",         "audio samples"},
+//        };
+//        return info;
+//    }    
     
-    // TODO:
     public String getAppletInfo() {
-        return "GetApplets by Kathy Walrath";
+        return "Grafika applet by: \n\n- Jernej Jerebic\n- Samo Šela\n- Simon Štriker\n\nAll rights reserved!";
     }
 }
