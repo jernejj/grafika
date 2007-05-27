@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
@@ -54,6 +56,11 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 		int line = 0;
 		parent = myparent;
 		gen = new Generator(this.parent);
+		// V primeru, ko uporabnik klikne na X od generatorja
+		gen.addWindowListener(new WindowAdapter()
+		{public void windowClosing(WindowEvent winEvt) {
+	        gen.close();
+	    }});
 		setBackground(Color.WHITE);
 		
 		GridBagLayout gbl = new GridBagLayout();
