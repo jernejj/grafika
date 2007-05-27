@@ -91,11 +91,13 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	public boolean init() {
 		maxSteps = (int)Math.pow((double)2,(double)parent.options.number);
+		startList.clear();
 		Element tmpStart;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			tmpStart = i.next();
 			if(tmpStart.getType() == Element.OUTPUT)
-				startList.add(tmpStart);
+				if(tmpStart.getLineToPin1() != null)
+					startList.add(tmpStart);
 		}
 		return !startList.isEmpty();
 	}
@@ -104,7 +106,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	public void clear() {
 		setBackground(Color.WHITE);
 		this.elementList.clear();
-		// this.outputList.clear();
 		this.listForGenerator.clear();
 		this.lineList.clear();
 		Grafika.element = 0;
