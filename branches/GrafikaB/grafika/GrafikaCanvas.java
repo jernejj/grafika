@@ -206,6 +206,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	public void step() {
 		parent.lock();
+		
 		if(step == maxSteps) {step = 0;}
 		for(Iterator<Element> i = this.startList.iterator(); i.hasNext(); ) {
 			algorithm(i.next());

@@ -265,7 +265,11 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 				else parent.documentation.doctext.showline("LOCKED");
 			}
 			if (e.getActionCommand().equals("RESET")) { 
-				if(locked) {
+				if(true) {
+					parent.GrafikaCanvas.stop();
+					b2.setActionCommand("RUN");
+					b2.setText("run");
+					b2.setToolTipText("stop the algorithm");					
 					parent.GrafikaCanvas.reset();
 					this.b3.setText("step");
 					this.b3.setActionCommand("STEP");
