@@ -218,6 +218,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 
 	public void stop() {
 		if (algrthm != null) this.runAlgorithm = false;
+		parent.unlock();
 	}
 
 
