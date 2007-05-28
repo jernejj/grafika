@@ -2,6 +2,7 @@ package grafika;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -143,7 +144,10 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	add(timePanel,c);
     	c.gridx = 0;
     	c.gridy = line++;
+    	c.fill = GridBagConstraints.NONE;
+    	c.anchor = GridBagConstraints.WEST;
     	add(loopCheck,c);
+    	c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 0;
     	c.gridy = line++;
     	add(b2,c);
