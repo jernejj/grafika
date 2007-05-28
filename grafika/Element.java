@@ -294,6 +294,10 @@ public class Element {
 		return this.table;
 	}
 	
+	public void setTable(short[] table){
+		this.table = table;
+	}
+	
 	public String getElementType(int type) {
 		switch(type) {
 			case AND:

@@ -253,6 +253,8 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 							else
 							{
 								thisElement.getLineToPin1().getPartTowardsOut().setIndex(index);
+								thisElement.getLineToPin1().getPartTowardsOut().setName("x"+index);
+								thisElement.getLineToPin1().getPartTowardsOut().setTable(this.list.get(index).getTable());
 							}
 						}
 
@@ -273,6 +275,8 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 							else
 							{
 								thisElement.getLineToPin2().getPartTowardsOut().setIndex(index);
+								thisElement.getLineToPin2().getPartTowardsOut().setName("x"+index);
+								thisElement.getLineToPin2().getPartTowardsOut().setTable(this.list.get(index).getTable());
 							}
 						}
 					}
@@ -293,6 +297,8 @@ class Generator extends JFrame implements ActionListener,PropertyChangeListener{
 						else
 						{
 							thisElement.getLineToPin1().getPartTowardsOut().setIndex(index);
+							thisElement.getLineToPin1().getPartTowardsOut().setName("x"+index);
+							thisElement.getLineToPin1().getPartTowardsOut().setTable(this.list.get(index).getTable());
 						}
 					}
 				}
