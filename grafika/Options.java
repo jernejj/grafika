@@ -112,7 +112,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         loopCheck.addItemListener(this);
         loopCheck.setSelected(true); parent.GrafikaCanvas.loop = true;
         loopCheck.setBackground(Color.WHITE);
-        loopCheck.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        loopCheck.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); // Najprej zelimo label, nato checkbox
 
         b1.setActionCommand("CLEAR");
         b2.setActionCommand("RUN");
@@ -144,10 +144,10 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	add(timePanel,c);
     	c.gridx = 0;
     	c.gridy = line++;
-    	c.fill = GridBagConstraints.NONE;
-    	c.anchor = GridBagConstraints.WEST;
+    	c.fill = GridBagConstraints.NONE; // Ne zelimo rzsiriti cez celoten GridbagLayout
+    	c.anchor = GridBagConstraints.WEST; // Postavimo na levo
     	add(loopCheck,c);
-    	c.fill = GridBagConstraints.HORIZONTAL;
+    	c.fill = GridBagConstraints.HORIZONTAL; // Vse ostalo zelimo razsiriti cez celoten GridBagLayout
     	c.gridx = 0;
     	c.gridy = line++;
     	add(b2,c);
