@@ -37,7 +37,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 	JButton b7 = new JButton("example");
 	JButton b8 = new JButton("exit");
 	JButton b9 = new JButton("generator");
-	JCheckBox loopCheck = new JCheckBox("Loop: ");
+	JCheckBox loopCheck = new JCheckBox("Loop: ",true);
 	
 	JLabel numLabel = new JLabel("#X: ");  
 	JFormattedTextField numTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -109,7 +109,6 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         b8.addActionListener(this);
         b9.addActionListener(this);
         loopCheck.addItemListener(this);
-        loopCheck.setSelected(true);
         loopCheck.setBackground(Color.WHITE);
         loopCheck.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
