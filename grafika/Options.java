@@ -1,18 +1,22 @@
 package grafika;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +24,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.ToolTipManager;
 
 
-public class Options extends JPanel implements ActionListener,PropertyChangeListener {
+public class Options extends JPanel implements ActionListener,PropertyChangeListener,ItemListener {
 
 	private static final long serialVersionUID = 7718176968975619237L;
 	// Set of options at the right of the screen
@@ -33,6 +37,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 	JButton b7 = new JButton("example");
 	JButton b8 = new JButton("exit");
 	JButton b9 = new JButton("generator");
+	JCheckBox loopCheck = new JCheckBox("Loop: ");
 	
 	JLabel numLabel = new JLabel("#X: ");  
 	JFormattedTextField numTextField = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -103,6 +108,10 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         b7.addActionListener(this);
         b8.addActionListener(this);
         b9.addActionListener(this);
+        loopCheck.addItemListener(this);
+        loopCheck.setSelected(true);
+        loopCheck.setBackground(Color.WHITE);
+        loopCheck.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         b1.setActionCommand("CLEAR");
         b2.setActionCommand("RUN");
@@ -134,6 +143,9 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	add(timePanel,c);
     	c.gridx = 0;
     	c.gridy = line++;
+    	add(loopCheck,c);
+    	c.gridx = 0;
+    	c.gridy = line++;
     	add(b2,c);
     	c.gridx = 0;
     	c.gridy = line++;
@@ -160,6 +172,20 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
     	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     	ToolTipManager ttm = ToolTipManager.sharedInstance();
     	ttm.setLightWeightPopupEnabled(false);
+	}
+	
+	public void itemStateChanged(ItemEvent e)
+	{
+		Object source = e.getItemSelectable();
+		if (source == loopCheck)
+		{
+			// loopCheck ni bil izbran
+			if (e.getStateChange() == ItemEvent.DESELECTED)
+				System.out.println ("Loop deselected.");
+			// loopCheck je bil izbran
+			else if (e.getStateChange() == ItemEvent.SELECTED)
+				System.out.println ("Loop selected.");
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
