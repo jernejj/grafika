@@ -109,6 +109,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
         b8.addActionListener(this);
         b9.addActionListener(this);
         loopCheck.addItemListener(this);
+        loopCheck.setSelected(true); parent.GrafikaCanvas.loop = true;
         loopCheck.setBackground(Color.WHITE);
         loopCheck.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
@@ -179,11 +180,15 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 		if (source == loopCheck)
 		{
 			// loopCheck ni bil izbran
-			if (e.getStateChange() == ItemEvent.DESELECTED)
-				System.out.println ("Loop deselected.");
+			if (e.getStateChange() == ItemEvent.DESELECTED) {
+				parent.GrafikaCanvas.loop = false;
+				if(Grafika.verbose) System.out.println ("Loop deselected.");
+			}
 			// loopCheck je bil izbran
-			else if (e.getStateChange() == ItemEvent.SELECTED)
-				System.out.println ("Loop selected.");
+			else if (e.getStateChange() == ItemEvent.SELECTED) {
+				parent.GrafikaCanvas.loop = true;
+				if(Grafika.verbose) System.out.println ("Loop selected.");
+			}
 		}
 	}
 
