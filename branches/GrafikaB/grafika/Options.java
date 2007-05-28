@@ -190,7 +190,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 			if (e.getActionCommand().equals("RUN")) {
 				if(!locked) {
 					if(time > 0){
-						parent.GrafikaCanvas.run();
+						parent.GrafikaCanvas.runAlgorithm();
 						b2.setActionCommand("STOP");
 						b2.setName("stop");
 						b2.setToolTipText("stop the algorithm");

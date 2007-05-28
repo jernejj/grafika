@@ -46,7 +46,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	Font helvetica= new Font("Helvetica", Font.BOLD, 15);
 	FontMetrics fmetrics = getFontMetrics(roman);
 
-	int h = (int)fmetrics.getHeight()/3;
+	int h = fmetrics.getHeight()/3;
 
 	// for double buffering
 	private Image offScreenImage;
@@ -91,7 +91,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	public boolean init() {
-		maxSteps = (int)Math.pow((double)2,(double)parent.options.number);
+		maxSteps = (int)Math.pow(2,parent.options.number);
 		startList.clear();
 		Element tmpStart;
 		for(Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
@@ -121,6 +121,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	/** resets a graph after running an algorithm */
 	public void reset() {
 		init(); 
+		this.runAlgorithm = false;
 		this.step = 0;
 		this.AlgSet.clear();
 		this.firstTime = true;
@@ -134,14 +135,15 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				tmp.setPin1value(-1, tmp);
 			}
 		}
-			
+		this.algrthm = null;
 		parent.unlock();
 		repaint();
 	}
 
-//	/** gives an animation of the algorithm */
+	/** gives an animation of the algorithm */
 	public void runAlgorithm() {
 		parent.lock();
+		this.runAlgorithm = true;
 		init();
 		algrthm = new Thread(this);
 		algrthm.start();
@@ -202,19 +204,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		}		
 	}
 
-
-//	public void algorithm(Element e) {
-//	if(e.getType() == Element.GND || e.getType() == Element.VCC || e.getType() == Element.GENOUT) {
-//	e.compute(step);
-//	} else {
-//	algorithm(e.getLineToPin1().getPartTowardsOut());
-//	if(e.getType() != Element.NOT && e.getType() != Element.OUTPUT) {
-//	algorithm(e.getLineToPin2().getPartTowardsOut());
-//	}
-//	}		
-//	e.compute(step);
-//	}
-
 	public void step() {
 		parent.lock();
 		if(step == maxSteps) {step = 0;}
@@ -228,7 +217,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	public void stop() {
-		if (algrthm != null) algrthm.suspend();
+		if (algrthm != null) this.runAlgorithm = false;
 	}
 
 
@@ -237,11 +226,15 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 			while(this.runAlgorithm) {
 				step();
 				try { Thread.sleep(parent.options.time); }
-				catch (InterruptedException e) {}
+				catch (InterruptedException e) {
+					Error.error("Exception: Thread.sleep()!");
+					System.err.println("Exception: Thread.sleep()!");
+					e.printStackTrace();
+				}
 			}
 		}
 		else {
-			for(int i=0; i<(int)Math.pow((double)2,(double)parent.options.number) && this.runAlgorithm; i++){
+			for(int i=0; i<(int)Math.pow(2,parent.options.number) && this.runAlgorithm; i++){
 				step();
 				try { Thread.sleep(parent.options.time); }
 				catch (InterruptedException e) {}
@@ -258,6 +251,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		repaint();
 	}
 
+	@Override
 	public boolean mouseDown(Event evt, int x, int y) {
 		if (Locked)
 			parent.documentation.doctext.showline("locked");
@@ -364,6 +358,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return true;
 	}
 
+	@Override
 	public boolean mouseDrag(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
 			if (moveElement) { 
@@ -391,6 +386,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		return true;
 	}
 
+	@Override
 	public boolean mouseUp(Event evt, int x, int y) {
 		if ( (!Locked) && clicked ) {
 			if(moveElement) {
@@ -478,8 +474,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	public Element elementHit(int x, int y) {
 		// checks if you hit an element with your mouseclick
 		Element check;
-//		if(this.elementList.isEmpty())
-//		return null;
 		for (Iterator<Element> i = this.elementList.iterator(); i.hasNext(); ) {
 			check = i.next();
 			if ( ((x > check.getXposition() && (x < (check.getXposition() + check.getSizeX())))) &&  
@@ -487,13 +481,6 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 				return check;
 			}
 		}
-//		for (Iterator<Element> i = this.outputList.iterator(); i.hasNext(); ) {
-//		check = i.next();
-//		if ( ((x > check.getXposition() && (x < (check.getXposition() + check.getSizeX())))) &&  
-//		((y > check.getYposition() && (y < (check.getYposition() + check.getSizeY())))) ) {
-//		return check;
-//		}
-//		}
 		return null;
 	}
 
@@ -705,6 +692,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	// brez tega prihaja do blinkanja 
+	@Override
 	public final synchronized void update(Graphics g) {
 		// prepare new image offscreen
 		Dimension d = getSize();
@@ -778,6 +766,7 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		g.setFont(roman);
 		g.setColor(Color.black);
@@ -803,11 +792,11 @@ class GrafikaCanvas extends Canvas implements Runnable  {
 	}
 
 	private double d(Point i, Point j) {
-		return  Math.sqrt(Math.pow((double)(j.x-i.x), 2.0) + Math.pow((double)(j.y-i.y), 2.0));
+		return  Math.sqrt(Math.pow((j.x-i.x), 2.0) + Math.pow((j.y-i.y), 2.0));
 	}
 
 	private double d(int x1, int y1, int x2, int y2) {
-		return  Math.sqrt(Math.pow((double)(x2-x1), 2.0) + Math.pow((double)(y2-y1), 2.0));
+		return  Math.sqrt(Math.pow((x2-x1), 2.0) + Math.pow((y2-y1), 2.0));
 	}
 
 	public void generateElementList() {
