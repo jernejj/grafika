@@ -19,8 +19,8 @@ public class Grafika extends JApplet {
 	static int element = 0;
 	static Boolean verbose;
 
-	int width = 1024;
-	int height = 768;
+	int windowWidth;
+	int windowHeight;
 	
 	public void init() { 
 		this.setBackground(Color.WHITE);
@@ -28,13 +28,11 @@ public class Grafika extends JApplet {
 		
 		Grafika.verbose = true;
 		
-		GrafikaCanvas = new GrafikaCanvas(this);
-		options = new Options(this);
-		documentation = new Documentation();
-		menu = new Menu(this);
+		
+		
 		
 		int requestedWidth = 0;
-		String windowWidthString = this.getParameter("WINDOWWIDTH");
+		String windowWidthString = this.getParameter("WIDTH");
 		if (windowWidthString != null) {
 		    try {
 		        requestedWidth = Integer.parseInt(windowWidthString);
@@ -43,7 +41,41 @@ public class Grafika extends JApplet {
 		    }
 		}
 		
-		this.setSize(1024,768);
+		if(requestedWidth > 800 && requestedWidth < 2000) {
+			this.windowWidth = requestedWidth;
+		} else {
+			this.windowWidth = 1024;
+		}
+		
+		int requestedHeight = 0;
+		String windowHeightString = this.getParameter("HEIGHT");
+		if (windowWidthString != null) {
+		    try {
+		    	requestedHeight = Integer.parseInt(windowHeightString);
+		    } catch (NumberFormatException e) {
+		        //Use default height.
+		    }
+		}
+		
+		if(requestedHeight > 800 && requestedHeight < 2000) {
+			this.windowHeight = requestedHeight;
+		} 
+		else {
+			this.windowHeight = 768;
+		}
+		
+		String debugVerbose = this.getParameter("VERBOSE");
+		if( debugVerbose.equalsIgnoreCase("true")) {
+			Grafika.verbose = true;
+		} else {
+			Grafika.verbose = false;
+		}
+		
+		GrafikaCanvas = new GrafikaCanvas(this);
+		options = new Options(this);
+		documentation = new Documentation();
+		menu = new Menu(this);
+		this.setSize(windowWidth,windowHeight);
 		BorderLayout bl = new BorderLayout(0, 0);
 		this.setLayout(bl);
 		this.add("Center", GrafikaCanvas);
@@ -74,26 +106,15 @@ public class Grafika extends JApplet {
 		options.unlock();
 	} 
 	
-	// TODO:
-//    public String[][] getParameterInfo() {
-//        String[][] info = {
-//          // Parameter Name     Kind of Value   Description
-//            {"imagesource",     "URL",          "a directory"},
-//            {"startup",         "URL",          "displayed at startup"},
-//            {"background",      "URL",          "displayed as background"},
-//            {"startimage",      "int",          "start index"},
-//            {"endimage",        "int",          "end index"},
-//            {"namepattern",     "URL",          "used to generate indexed names"},
-//            {"pause",           "int",          "milliseconds"},
-//            {"pauses",          "ints",         "milliseconds"},
-//            {"repeat",          "boolean",      "repeat or not"},
-//            {"positions",       "coordinates",  "path"},
-//            {"soundsource",     "URL",          "audio directory"},
-//            {"soundtrack",      "URL",          "background music"},
-//            {"sounds",          "URLs",         "audio samples"},
-//        };
-//        return info;
-//    }    
+    public String[][] getParameterInfo() {
+        String[][] info = {
+          // Parameter Name     Kind of Value   Description
+            {"width",     "Pixels",          "Window width."},
+            {"height",         "Pixels",          "Window height."},
+            {"verbose",      "boolean",          "For debug output."},
+        };
+        return info;
+    }    
     
     public String getAppletInfo() {
         return "Grafika applet by: \n\n- Jernej Jerebic\n- Samo Šela\n- Simon Štriker\n\nAll rights reserved!";
