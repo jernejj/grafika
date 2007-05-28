@@ -19,6 +19,9 @@ public class Grafika extends JApplet {
 	static int element = 0;
 	static Boolean verbose;
 
+	int width = 1024;
+	int height = 768;
+	
 	public void init() { 
 		this.setBackground(Color.WHITE);
 		this.setForeground(Color.WHITE);

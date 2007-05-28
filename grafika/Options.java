@@ -218,7 +218,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 					if(time > 0){
 						parent.GrafikaCanvas.runAlgorithm();
 						b2.setActionCommand("STOP");
-						b2.setName("stop");
+						b2.setText("stop");
 						b2.setToolTipText("stop the algorithm");
 					} else {
 						Error.error("Time number must be greater than 0!");
@@ -231,7 +231,7 @@ public class Options extends JPanel implements ActionListener,PropertyChangeList
 					if(time > 0){
 						parent.GrafikaCanvas.stop();
 						b2.setActionCommand("RUN");
-						b2.setName("run");
+						b2.setText("run");
 						b2.setToolTipText("stop the algorithm");
 					} else {
 						Error.error("Time number must be greater than 0!");
